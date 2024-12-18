@@ -1,0 +1,11 @@
+# Node.js dependencies
+frontend/node_modules/
+
+# Build files
+frontend/build/
+backend/target/
+
+# OS and IDE-specific files
+.DS_Store
+.idea/
+.vscode/
