@@ -1,6 +1,6 @@
 import React from "react";
 
-function Working() {
+const Working = () => {
   return (
     <>
       <div>Final Year Project</div>
