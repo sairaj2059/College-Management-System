@@ -3,22 +3,20 @@ import { AppProvider } from "@toolpad/core/AppProvider";
 import { SignInPage } from "@toolpad/core/SignInPage";
 import { useTheme } from "@mui/material/styles";
 import {
-  Button,
   FormControl,
-  FormControlLabel,
-  Checkbox,
   InputLabel,
   OutlinedInput,
-  TextField,
   InputAdornment,
   Link,
-  Alert,
   IconButton,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Logo_image from '../resources/images/Llogo.png';
+import { Typography } from "@mui/material";
 
-const providers = [{ id: "credentials", name: "Password and Email" }];
+
+const providers = [{ id: "credentials", name: "Password and Username" }];//name creates two fields in the ui
 
 function CustomPasswordField() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -62,6 +60,30 @@ function CustomPasswordField() {
   );
 }
 
+const CustomUserName = () =>{
+  return(
+  <FormControl sx={{ my: 2 }} fullWidth variant="outlined">
+    <InputLabel size="small" htmlFor="outlined-adornment-username">
+      Username
+    </InputLabel>
+    <OutlinedInput
+      id="outlined-adornment-username"
+      type="text"
+      name="username"
+      size="small"
+      label="Username"
+    />
+  </FormControl>);
+}
+
+function CustomWelcomeText() {
+  return (
+    <Typography variant="h4" sx={{ marginBottom: 3, fontFamily: 'LoginFont, sans-serif' }}>
+      Log In 
+    </Typography>
+  );
+}
+
 function ForgotPasswordLink() {
   return (
     <Link href="/" variant="body2">
@@ -73,12 +95,28 @@ function ForgotPasswordLink() {
 function SignUpLink() {
   return (
     <Link href="/" variant="body2">
-      create a new account
+      Create an account
     </Link>
   );
 }
 
-const signIn = async (provider) => {
+const BRANDING = {
+  logo: (
+    <img
+      src={Logo_image}
+      alt="sssihl logo"
+      style={{ height: '90px', maxWidth: '100%' }}
+    />
+  ),
+};
+
+const signIn = async (provider,formData) => {
+  const username = formData.get("username");
+  const password = formData.get("password");
+
+  console.log(`Username: ${username}`);
+  console.log(`Password: ${password}`);
+
   const promise = new Promise((resolve) => {
     setTimeout(() => {
       console.log(`Sign in with ${provider.id}`);
@@ -92,22 +130,25 @@ export default function BrandingSignInPage() {
   const theme = useTheme();
   return (
     // preview-start
-    <AppProvider theme={theme}>
+    <AppProvider branding={BRANDING} theme={theme}>
       <SignInPage
         signIn={signIn}
-        providers={providers}
-        slots={{
-          passwordField: CustomPasswordField,
-          forgotPasswordLink: ForgotPasswordLink,
-          signUpLink: SignUpLink,
-        }}
         slotProps={{
           submitButton: {
-            children: "Log In",
             onClick: () => console.log("submitted"),
           },
         }}
+        slots={{
+          emailField: CustomUserName,
+          passwordField: CustomPasswordField,
+          forgotPasswordLink: ForgotPasswordLink,
+          signUpLink: SignUpLink,
+          subtitle: 'null',
+          title:CustomWelcomeText,
+        }}
+        providers={providers}
       />
+      
     </AppProvider>
     // preview-end
   );
