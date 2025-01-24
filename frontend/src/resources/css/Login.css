@@ -30,7 +30,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    filter: blur(10px); 
+    filter: blur(5px); 
     z-index: -1;
     opacity: 0.7;
   }
@@ -45,6 +45,7 @@
     margin: 0;
     position: relative;
     z-index: 2;
+    flex-wrap: wrap;
 }
 
 .Announcements{
@@ -94,10 +95,54 @@
     font-weight: 500;
 }
 
-input:-internal-autofill-selected {
-    appearance: menulist-button;
-    background-image: none !important;
-    background-color: transparent !important;  /* Change this line */
-    color: fieldtext !important;
+/* Responsive Styles */
+@media (max-width: 1024px) {
+    .login_wrapper {
+        flex-direction: column;
+        height: auto;
+        width: 95vw;
+    }
+
+    .BrandingSignInPageWrapper, .Announcements {
+        width: 80vw;
+        height: auto;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .SignInBox {
+        padding: 10px;
+    }
+
+    .BrandingSignInPageWrapper, .Announcements {
+        width: 100%;
+        padding: 10px;
+    }
+
+    .css-12brfqg-MuiTypography-root {
+        font-size: 1rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .SignInBox {
+        height: auto;
+        padding: 10px;
+    }
+
+    .login_wrapper {
+        width: 100%;
+    }
+
+    .BrandingSignInPageWrapper, .Announcements {
+        width: 100%;
+        padding: 5px;
+    }
+
+    .css-12brfqg-MuiTypography-root {
+        font-size: 0.9rem !important;
+    }
 }
  

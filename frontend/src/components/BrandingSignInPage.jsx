@@ -7,16 +7,17 @@ import {
   InputLabel,
   OutlinedInput,
   InputAdornment,
-  Link,
   IconButton,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
-import Logo_image from '../resources/images/Llogo.png';
+import Logo_image from "../resources/images/Llogo.png";
 import { Typography } from "@mui/material";
+import axios from'axios';
+//import { useDispatch } from "react-redux";
 
 
-const providers = [{ id: "credentials", name: "Password and Username" }];//name creates two fields in the ui
+const providers = [{ id: "credentials", name: "Password and Username" }]; //name creates two fields in the ui
 
 function CustomPasswordField() {
   const [showPassword, setShowPassword] = React.useState(false);
@@ -37,6 +38,7 @@ function CustomPasswordField() {
         type={showPassword ? "text" : "password"}
         name="password"
         size="small"
+        required
         endAdornment={
           <InputAdornment position="end">
             <IconButton
@@ -60,79 +62,98 @@ function CustomPasswordField() {
   );
 }
 
-const CustomUserName = () =>{
-  return(
-  <FormControl sx={{ my: 2 }} fullWidth variant="outlined">
-    <InputLabel size="small" htmlFor="outlined-adornment-username">
-      Username
-    </InputLabel>
-    <OutlinedInput
-      id="outlined-adornment-username"
-      type="text"
-      name="username"
-      size="small"
-      label="Username"
-    />
-  </FormControl>);
-}
+const CustomUserName = () => {
+  return (
+    <FormControl sx={{ my: 2 }} fullWidth variant="outlined">
+      <InputLabel size="small" htmlFor="outlined-adornment-username">
+        Username
+      </InputLabel>
+      <OutlinedInput
+        id="outlined-adornment-username"
+        type="text"
+        name="username"
+        size="small"
+        label="Username"
+        autoComplete="off"
+        required
+      />
+    </FormControl>
+  );
+};
 
 function CustomWelcomeText() {
   return (
-    <Typography variant="h4" sx={{ marginBottom: 3, fontFamily: 'LoginFont, sans-serif' }}>
-      Log In 
+    <Typography
+      variant="h4"
+      sx={{
+        marginBottom: 2,
+        marginTop:2,
+        fontFamily: "LoginFont, sans-serif",
+      }}
+    >
+      Login
     </Typography>
   );
 }
 
-function ForgotPasswordLink() {
-  return (
-    <Link href="/" variant="body2">
-      Forgot password?
-    </Link>
-  );
-}
+// function ForgotPasswordLink() {
+//   return (
+//       <Typography sx={{color:'black',textDecoration: 'none'}}>Forgot password?</Typography>
+//   );
+// }
 
-function SignUpLink() {
-  return (
-    <Link href="/" variant="body2">
-      Create an account
-    </Link>
-  );
-}
+// function SignUpLink() {
+//   return (
+//     <Link href="/" variant="body2">
+//       Create an account
+//     </Link>
+//   );
+// }
 
 const BRANDING = {
   logo: (
     <img
       src={Logo_image}
       alt="sssihl logo"
-      style={{ height: '90px', maxWidth: '100%' }}
+      style={{ height: "90px", maxWidth: "100%" }}
     />
   ),
 };
 
-const signIn = async (provider,formData) => {
+const SignIn = async (provider, formData) => {//call api here
   const username = formData.get("username");
   const password = formData.get("password");
 
   console.log(`Username: ${username}`);
   console.log(`Password: ${password}`);
 
-  const promise = new Promise((resolve) => {
-    setTimeout(() => {
-      console.log(`Sign in with ${provider.id}`);
-      resolve();
-    }, 500);
-  });
-  return promise;
+  try{
+    const response = await axios.post('',{
+      username,
+      password,
+    });
+    console.log("Sign-in successful:", response.data);
+    
+  }
+  catch(error){
+    if(error.response){
+      console.log("sign in failed:",error.response.request.status)
+    }
+    else{
+      console.log("Error during sign-in:", error.message);
+    }
+  }
+
+  
 };
 
 export default function BrandingSignInPage() {
-  const theme = useTheme();
+  const Theme = useTheme();
   return (
     // preview-start
-    <AppProvider branding={BRANDING} theme={theme}>
+    <AppProvider branding={BRANDING} theme={Theme}>
       <SignInPage
-        signIn={signIn}
+        signIn={SignIn}
         slotProps={{
           submitButton: {
             onClick: () => console.log("submitted"),
@@ -141,14 +162,14 @@ export default function BrandingSignInPage() {
         slots={{
           emailField: CustomUserName,
           passwordField: CustomPasswordField,
-          forgotPasswordLink: ForgotPasswordLink,
-          signUpLink: SignUpLink,
-          subtitle: 'null',
-          title:CustomWelcomeText,
+          forgotPasswordLink: "null",
+          signUpLink: "null",
+          subtitle: "null",
+          rememberMe: "null",
+          title: CustomWelcomeText,
         }}
         providers={providers}
       />
-      
     </AppProvider>
     // preview-end
   );
