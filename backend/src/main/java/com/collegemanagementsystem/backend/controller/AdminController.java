@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AdminController {
     
-    @GetMapping("/")
+    @GetMapping("/dashboard")
     public String greet(){
-        return "Hello Admin";
+        return "Hello Admin from admin Dashboard";
     }
 }
