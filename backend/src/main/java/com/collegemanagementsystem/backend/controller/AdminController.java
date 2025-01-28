@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     @Autowired
     private AdminService service;
-    @GetMapping("/")
+    @GetMapping("/dashboard")
     public String greet(HttpServletRequest request){
         return "Hello Admin"+request.getSession().getId();
     }
