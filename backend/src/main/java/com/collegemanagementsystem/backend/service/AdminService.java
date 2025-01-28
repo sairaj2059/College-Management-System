@@ -38,6 +38,7 @@ public class AdminService {
             Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(student.getUsername(), student.getPassword()));
             if (authentication.isAuthenticated()) {
+                System.out.println(jwtService.generateToken(student.getUsername()));
                 return jwtService.generateToken(student.getUsername());
             } else {
                 logger.warn("Authentication failed for user: " + student.getUsername());

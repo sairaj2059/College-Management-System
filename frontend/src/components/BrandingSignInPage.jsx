@@ -19,6 +19,8 @@ import login_logo from "../resources/images/login_logo.png";
 import { Typography } from "@mui/material";
 import axios from "axios";
 //import { useDispatch } from "react-redux";
+import { URL } from "../resources/Constants";
+import {useNavigate} from "react-router-dom";
 
 const providers = [{ id: "credentials", name: "Password and Username" }]; //name creates two fields in the ui
 
@@ -139,34 +141,40 @@ const BRANDING = {
   ),
 };
 
-const SignIn = async (provider, formData) => {
-  //call api here
-  const username = formData.get("username");
-  const password = formData.get("password");
 
-  console.log(`Username: ${username}`);
-  console.log(`Password: ${password}`);
-
-  try {
-    const response = await axios.post("", {
-      username,
-      password,
-    });
-    if (response.success) {
-      console.log("Sign-in successful:", response.data);
-    }
-  } catch (error) {
-    if (error.response) {
-      console.log("sign in failed:", error.response.request.status);
-    } else {
-      console.log("Error during sign-in:", error.message);
-    }
-  }
-};
 
 export default function BrandingSignInPage() {
   const Theme = useTheme();
   const Noop = () => null; //rendering no component
+  const navigate = useNavigate();
+
+  const SignIn = async (provider, formData) => {
+    
+    //call api here
+    const username = formData.get("username");
+    const password = formData.get("password");
+  
+    console.log(`Username: ${username}`);
+    console.log(`Password: ${password}`);
+  
+    try {
+      const response = await axios.post(URL + '/login', {
+        username,
+        password,
+      });
+      console.log(response);
+      if (response.data.success) {
+        console.log("Sairam");
+        navigate("/dashboard");
+      }
+    } catch (error) {
+      if (error.response) {
+        console.log("sign in failed:", error.response.request.status);
+      } else {
+        console.log("Error during sign-in:", error.message);
+      }
+    }
+  };
 
   return (
     // preview-start
