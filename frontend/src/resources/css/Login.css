@@ -1,67 +1,68 @@
 @font-face {
-    font-family: 'LoginFont';
-    src: url('../fonts/NotoSerifDogra-Regular.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-  }
+  font-family: "LoginFont";
+  src: url("../fonts/NotoSerifDogra-Regular.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
 
 .SignInBox {
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5); 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0px;
-    margin: 0;
-    box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5);
-    overflow: hidden;
-    position: relative;
-    z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0px;
+  margin: 0;
+  box-shadow: inset 0 0 1px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
 }
 
 .background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('../images/loginBg.jpg');
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    filter: blur(5px); 
-    z-index: -1;
-    opacity: 0.7;
-  }
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("../images/loginBg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  filter: blur(5px);
+  z-index: -1;
+  opacity: 0.7;
+  box-shadow: inset 0px 4px 10px rgba(255, 69, 0, 0.6);
+}
 
 .login_wrapper {
-    width: 90vw;
-    height: 90vh;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    padding: 0px;
-    margin: 0;
-    position: relative;
-    z-index: 2;
-    flex-wrap: wrap;
+  width: 90vw;
+  height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  padding: 0px;
+  margin: 0;
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
 }
 
-.Announcements{
-    width: 35vw;
-    height:70vh;
-    padding: 0% 2% 2% 6%;
+.Announcements {
+  width: 35vw;
+  height: 70vh;
+  padding: 0% 2% 2% 6%;
 }
 
-.BrandingSignInPageWrapper{
-    width: 40vw;
-    height: 80vh;
-    text-align: center;
-    padding: 3% 2% 2% 0%;
+.BrandingSignInPageWrapper {
+  width: 40vw;
+  height: 80vh;
+  text-align: center;
+  padding: 3% 2% 2% 0%;
 }
 
- /* .SignInBox .BrandingSignInPage {
+/* .SignInBox .BrandingSignInPage {
     width: 100%;
     height: 100%;
     padding: 0;
@@ -69,80 +70,105 @@
     filter: blur(5px);
 }  */
 
-.css-bfm88r{
-    background-color:transparent !important ;
-    border: none !important;
-    box-shadow: 
-    0px 2px 10px -2px rgba(0, 0, 0, 0.4),  /* Increased opacity */
-    0px 4px 5px 0px rgba(0, 0, 0, 0.28),  /* Increased opacity */
-    0px 1px 10px 0px rgba(0, 0, 0, 0.24)!important; /* Increased opacity */
-    width: 26vw;
-    height: 70vh;
-    justify-content: space-around;
+.css-bfm88r {
+  /* background-color:transparent !important ; */
+  border: none !important;
+  box-shadow:
+    0px 2px 10px -2px rgba(0, 0, 0, 0.4),
+    /* Increased opacity */ 0px 4px 5px 0px rgba(0, 0, 0, 0.28),
+    /* Increased opacity */ 0px 1px 10px 0px rgba(0, 0, 0, 0.24) !important; /* Increased opacity */
+  /* width: 26vw; */
+  /* height: 70vh; */
+  justify-content: space-around;
+  opacity: 1;
+  border-radius: 20px !important;
 }
 
 .css-gam7qw-MuiTypography-root {
-    color: rgba(0, 0, 0, 0.99) !important;
-    font-weight: 500 !important;
+  color: rgba(0, 0, 0, 0.99) !important;
+  font-weight: 500 !important;
 }
 
-.css-ay5mhz{
-    min-height: 0 !important;
+.css-ay5mhz {
+  min-height: 0 !important;
 }
 
-.css-12brfqg-MuiTypography-root{
-    font-size: 1.2rem !important;
-    font-weight: 500;
+.css-12brfqg-MuiTypography-root {
+  font-size: 1.2rem !important;
+  font-weight: 500;
+}
+
+/* .css-quhxjy-MuiInputBase-root-MuiOutlinedInput-root,
+.css-jupps9-MuiInputBase-root-MuiOutlinedInput-root {
+  letter-spacing: -0.10em !important;
+} */
+
+.css-4bojcr-MuiInputBase-root-MuiOutlinedInput-root,
+.css-1mnoz6i-MuiInputBase-root-MuiOutlinedInput-root {
+  letter-spacing: -0.05em !important;
+}
+
+.css-t27b17-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root {
+  border-radius: 20px !important;
+  color: white !important;
+  background-color: rgba(15, 14, 14, 0.929) !important;
+}
+
+.css-4bojcr-MuiInputBase-root-MuiOutlinedInput-root,
+.css-1mnoz6i-MuiInputBase-root-MuiOutlinedInput-root {
+  border-radius: 8px !important;
 }
 
 /* Responsive Styles */
 @media (max-width: 1024px) {
-    .login_wrapper {
-        flex-direction: column;
-        height: auto;
-        width: 95vw;
-    }
+  .login_wrapper {
+    flex-direction: column;
+    height: auto;
+    width: 95vw;
+  }
 
-    .BrandingSignInPageWrapper, .Announcements {
-        width: 80vw;
-        height: auto;
-        text-align: center;
-        margin-bottom: 20px;
-    }
+  .BrandingSignInPageWrapper,
+  .Announcements {
+    width: 80vw;
+    height: auto;
+    text-align: center;
+    margin-bottom: 20px;
+  }
 }
 
 @media (max-width: 768px) {
-    .SignInBox {
-        padding: 10px;
-    }
+  .SignInBox {
+    padding: 10px;
+  }
 
-    .BrandingSignInPageWrapper, .Announcements {
-        width: 100%;
-        padding: 10px;
-    }
+  .BrandingSignInPageWrapper,
+  .Announcements {
+    width: 100%;
+    padding: 10px;
+  }
 
-    .css-12brfqg-MuiTypography-root {
-        font-size: 1rem !important;
-    }
+  .css-12brfqg-MuiTypography-root {
+    font-size: 1rem !important;
+  }
 }
 
 @media (max-width: 480px) {
-    .SignInBox {
-        height: auto;
-        padding: 10px;
-    }
+  .SignInBox {
+    height: auto;
+    padding: 10px;
+  }
 
-    .login_wrapper {
-        width: 100%;
-    }
+  .login_wrapper {
+    width: 100%;
+  }
 
-    .BrandingSignInPageWrapper, .Announcements {
-        width: 100%;
-        padding: 5px;
-    }
+  .BrandingSignInPageWrapper,
+  .Announcements {
+    width: 100%;
+    padding: 5px;
+  }
 
-    .css-12brfqg-MuiTypography-root {
-        font-size: 0.9rem !important;
-    }
+  .css-12brfqg-MuiTypography-root {
+    font-size: 0.9rem !important;
+  }
 }
- 
