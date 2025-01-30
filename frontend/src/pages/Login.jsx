@@ -2,7 +2,6 @@ import React from "react";
 import "../resources/css/Login.css";
 import BrandingSignInPage from "../components/BrandingSignInPage";
 
-
 const message = ['"The cultivation of human values alone is true education."'];
 
 const Login = () => {
@@ -15,10 +14,10 @@ const Login = () => {
         </div>
         <div className="Messages">
           <div className="message-holder">
-            <p>
-              {message}
-            </p><br/>
-            <p id="author">Sri Sathya Sai Baba</p><br/>
+            <p>{message}</p>
+            <br />
+            <p id="author">Sri Sathya Sai Baba</p>
+            <br />
             <p id="place">Revered Founder Chancellor, SSSIHL</p>
           </div>
         </div>

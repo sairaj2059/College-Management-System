@@ -20,7 +20,7 @@ import { Typography } from "@mui/material";
 import axios from "axios";
 //import { useDispatch } from "react-redux";
 import { URL } from "../resources/Constants";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const providers = [{ id: "credentials", name: "Password and Username" }]; //name creates two fields in the ui
 
@@ -114,9 +114,17 @@ function CustomWelcomeText() {
 function ForgotPasswordLink() {
   return (
     <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
-      <Link href="/" variant="body2" sx={{ 
-    color:"black",textDecoration:"none",
-  }}>
+      <Link
+        href="/reset"
+        variant="body2"
+        sx={{
+          color: "black",
+          textDecoration: "none",
+          "&:hover": {
+            color: "blue",
+          },
+        }}
+      >
         Forgot password?
       </Link>
     </Box>
@@ -141,24 +149,21 @@ const BRANDING = {
   ),
 };
 
-
-
 export default function BrandingSignInPage() {
   const Theme = useTheme();
   const Noop = () => null; //rendering no component
   const navigate = useNavigate();
 
   const SignIn = async (provider, formData) => {
-    
     //call api here
     const username = formData.get("username");
     const password = formData.get("password");
-  
+
     console.log(`Username: ${username}`);
     console.log(`Password: ${password}`);
-  
+
     try {
-      const response = await axios.post(URL + '/login', {
+      const response = await axios.post(URL + "/login", {
         username,
         password,
       });

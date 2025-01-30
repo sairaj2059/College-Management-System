@@ -92,7 +92,7 @@
 }
 
 .message-holder p {
-  font-size: 2.5rem;
+  font-size: 2.6rem;
   font-family: MessageFont;
   color: black;
   display: flex;
@@ -103,12 +103,12 @@
 }
 
 #author {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   font-weight: bolder;
 }
 
 #place{
-  font-size: 1.3rem;
+  font-size: 1.4rem;
 }
 
 .css-bfm88r {
@@ -153,6 +153,10 @@
   border-radius: 20px !important;
   color: white !important;
   background-color: rgba(15, 14, 14, 0.929) !important;
+}
+
+.css-t27b17-MuiButtonBase-root-MuiButton-root-MuiLoadingButton-root:hover{
+  background-color: rgba(25, 118, 210, 1)!important;
 }
 
 .css-4bojcr-MuiInputBase-root-MuiOutlinedInput-root,
