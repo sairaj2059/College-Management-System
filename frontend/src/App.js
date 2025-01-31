@@ -1,8 +1,12 @@
+
 import { Routes, Route,Navigate } from 'react-router-dom'; 
 import Login from './pages/Login';
 import Home from './pages/Home';
 import { useSelector } from 'react-redux';
 import StudentDashboard from './components/StudentDashboard';
+import PageNotFound from "./pages/PageNotFound";
+import ResetPassword from "./pages/ResetPassword";
+
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
@@ -15,8 +19,10 @@ function App() {
         <Route path='/home' element={<Home/>}></Route>
         <Route path='/student/dashboard' element={<StudentDashboard/>}></Route>
         <Route path='/dashboard' element={<Home/>}></Route>
-      </Routes>
+        <Route path="/reset" element={<ResetPassword />} />
+        <Route path="/pagenotfound" element={PageNotFound} />
 
+      </Routes>
     </>
   );
 }
