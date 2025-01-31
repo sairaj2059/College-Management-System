@@ -24,18 +24,18 @@ export default function MultilineTextFields() {
       component="form"
       sx={{
         "& .MuiTextField-root": { m: 1, width: "22vw" },
-        backgroundColor: "white",
+        backgroundColor: "rgba(255, 255, 255, 0.5)",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "space-around",
         width: "26vw",
-        height: "38vh",
+        height: "40vh",
         borderRadius: "2%",
         minWidth: "150px",
         minHeight: "200px",
-        boxShadow: "4px 4px 20px rgba(0, 0, 0, 0.2)",
-        padding: "1.4rem 1.8rem 1.9rem 1.8rem",
+        boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.5)",
+        padding: "2rem 1.8rem 1.9rem 1.8rem",
         gap: "1rem",
       }}
       noValidate
@@ -73,7 +73,7 @@ export default function MultilineTextFields() {
           <Typography
             variant="h9"
             sx={{
-              color: "rgb(88, 88, 88)",
+              color: "rgb(62, 62, 62)",
               fontSize: "clamp(0.75rem, 1.2vw, 1.5rem)",
             }}
           >

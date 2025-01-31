@@ -14,11 +14,22 @@ const Login = () => {
         </div>
         <div className="Messages">
           <div className="message-holder">
-            <p>{message}</p>
+            <p style={{ fontSize: "clamp(1.6rem, 3.2vw, 3.8rem)" }}>
+              {message}
+            </p>
             <br />
-            <p id="author">Sri Sathya Sai Baba</p>
+            <p
+              style={{
+                fontSize: "clamp(0.8rem,1.2rem,2.9rem)",
+                fontWeight: "bolder",
+              }}
+            >
+              Sri Sathya Sai Baba
+            </p>
             <br />
-            <p id="place">Revered Founder Chancellor, SSSIHL</p>
+            <p style={{ fontSize: "clamp(0.7rem,1.1rem,2.4rem)" }}>
+              Revered Founder Chancellor, SSSIHL
+            </p>
           </div>
         </div>
       </div>

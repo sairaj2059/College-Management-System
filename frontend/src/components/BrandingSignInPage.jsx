@@ -15,7 +15,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
-import login_logo from "../resources/images/login_logo.png";
+import login_logo from "../resources/images/Llogo.png";
 import { Typography } from "@mui/material";
 import axios from "axios";
 //import { useDispatch } from "react-redux";
@@ -123,6 +123,7 @@ function ForgotPasswordLink() {
           "&:hover": {
             color: "blue",
           },
+          fontWeight:'500',
         }}
       >
         Forgot password?
@@ -144,7 +145,12 @@ const BRANDING = {
     <img
       src={login_logo}
       alt="sssihl logo"
-      style={{ height: "90px", maxWidth: "100%" }}
+      style={{
+        height: "14vh",
+        maxWidth: "100%",
+        maxHeight: "120px",
+        width: "auto",
+      }}
     />
   ),
 };
@@ -167,6 +173,7 @@ export default function BrandingSignInPage() {
         username,
         password,
       });
+      
       console.log(response);
       if (response.data.success) {
         console.log("Sairam");
@@ -184,23 +191,32 @@ export default function BrandingSignInPage() {
   return (
     // preview-start
     <AppProvider branding={BRANDING} theme={Theme}>
-      <SignInPage
-        signIn={SignIn}
-        slotProps={{
-          submitButton: {
-            onClick: () => console.log("submitted"),
-          },
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100vh",
+          minWidth: "300px",
+          width: "30vw",
+          maxWidth: "500px",
         }}
-        slots={{
-          emailField: CustomUserName,
-          passwordField: CustomPasswordField,
-          subtitle: Noop,
-          rememberMe: Noop,
-          title: CustomWelcomeText,
-          forgotPasswordLink: ForgotPasswordLink,
-        }}
-        providers={providers}
-      />
+      >
+        <SignInPage
+          signIn={SignIn}
+
+          slots={{
+            emailField: CustomUserName,
+            passwordField: CustomPasswordField,
+            subtitle: Noop,
+            rememberMe: Noop,
+            title: CustomWelcomeText,
+            forgotPasswordLink: ForgotPasswordLink,
+          }}
+          providers={providers}
+        />
+      </Box>
     </AppProvider>
     // preview-end
   );
