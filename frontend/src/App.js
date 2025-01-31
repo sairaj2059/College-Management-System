@@ -1,12 +1,10 @@
-
-import { Routes, Route,Navigate } from 'react-router-dom'; 
-import Login from './pages/Login';
-import Home from './pages/Home';
-import { useSelector } from 'react-redux';
-import StudentDashboard from './components/StudentDashboard';
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Login from "./pages/Login";
+import Home from "./pages/Home";
 import PageNotFound from "./pages/PageNotFound";
 import ResetPassword from "./pages/ResetPassword";
-
+import StudentDashboard from './components/StudentDashboard';
 
 function App() {
   const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
