@@ -6,6 +6,7 @@
     "@base-ui-components/react": "^1.0.0-alpha.5",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@mui/icons-material": "^6.4.1",
     "@mui/icons-material": "^6.4.0",
     "@mui/joy": "^5.0.0-beta.51",
     "@mui/material": "^6.4.0",
@@ -19,8 +20,10 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-redux": "^9.2.0",
-    "react-scripts": "^5.0.1",
-    "web-vitals": "^4.2.4"
+    "react-scripts": "5.0.1",
+    "web-vitals": "^4.2.4",
+    "proxy": "http://localhost:8080"
+
   },
   "scripts": {
     "start": "react-scripts start",
