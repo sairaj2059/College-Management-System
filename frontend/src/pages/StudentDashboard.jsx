@@ -8,8 +8,11 @@ import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import profileImage from "../resources/images/224206.jpg";
 import { UserData } from "../resources/DataList";
-import Sidebar from "./Sidebar";
+import Sidebar from "../components/Sidebar";
 import { CssVarsProvider } from "@mui/joy/styles";
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 
 function UserCard() {
   return (
@@ -18,7 +21,7 @@ function UserCard() {
         width: "35%",
         position: "relative",
         overflow: { xs: "auto", sm: "initial" },
-        mt:"2%",
+        mt: "2%",
         zIndex: 1,
       }}
     >
@@ -105,27 +108,35 @@ function UserCard() {
   );
 }
 
+// function CalendarContainer() {
+//   return (
+//       <LocalizationProvider dateAdapter={AdapterDayjs}>
+//       <DateCalendar />
+//     </LocalizationProvider>
+//   );
+// }
+
 function StudentDashboard() {
   return (
     <>
       <CssVarsProvider>
         <Box
-        sx={{
-          display:'flex',
-          gap:"2%"
-        }}>
+          sx={{
+            display: "flex",
+            gap: "2%",
+          }}
+        >
           <Sidebar />
           <Box
-          component="main"
-          className="main-container"
-          sx={{
-            width:"100vw"
-          }}
+            component="main"
+            className="main-container"
+            sx={{
+              width: "100vw",
+            }}
           >
             <UserCard />
+            {/* <CalendarContainer/> */}
           </Box>
-
-          
         </Box>
       </CssVarsProvider>
     </>

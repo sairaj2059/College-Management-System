@@ -22,7 +22,6 @@ import SupportRoundedIcon from "@mui/icons-material/SupportRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-// import sssihlLogo from "../resources/images/SSSIHL-Logo_White.png";
 import sssihlLogo from "../resources/images/Llogo.png";
 
 import ColorSchemeToggle from "./ColorSchemeToggle";

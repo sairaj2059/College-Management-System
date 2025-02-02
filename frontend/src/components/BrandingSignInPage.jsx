@@ -20,7 +20,8 @@ import { Typography } from "@mui/material";
 import axios from "axios";
 //import { useDispatch } from "react-redux";
 import { URL } from "../resources/Constants";
-import { useNavigate } from "react-router-dom";
+import { data, useNavigate } from "react-router-dom";
+import UserService from "../services/UserService";
 
 const providers = [{ id: "credentials", name: "Password and Username" }]; //name creates two fields in the ui
 
@@ -157,39 +158,26 @@ const BRANDING = {
 
 export default function BrandingSignInPage() {
   const Theme = useTheme();
-  const Noop = () => null; //rendering no component
+  const Noop = () => null;
   const navigate = useNavigate();
 
   const SignIn = async (provider, formData) => {
-    //call api here
     const username = formData.get("username");
     const password = formData.get("password");
 
-    console.log(`Username: ${username}`);
-    console.log(`Password: ${password}`);
-
     try {
-      const response = await axios.post(URL + "/login", {
-        username,
-        password,
-      });
-      
-      console.log(response);
-      if (response.data.success) {
-        console.log("Sairam");
-        navigate("/dashboard");
+      const userData = await UserService.login(username, password);
+      if (userData.token) {
+        localStorage.setItem('token', userData.token);
+        localStorage.setItem('role', userData.role);
+        navigate("/test");
       }
     } catch (error) {
-      if (error.response) {
-        console.log("sign in failed:", error.response.request.status);
-      } else {
-        console.log("Error during sign-in:", error.message);
-      }
+      
     }
   };
 
   return (
-    // preview-start
     <AppProvider branding={BRANDING} theme={Theme}>
       <Box
         sx={{
@@ -216,8 +204,8 @@ export default function BrandingSignInPage() {
           }}
           providers={providers}
         />
+        
       </Box>
     </AppProvider>
-    // preview-end
   );
 }

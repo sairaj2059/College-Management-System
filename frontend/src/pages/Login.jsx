@@ -1,6 +1,7 @@
 import React from "react";
 import "../resources/css/Login.css";
 import BrandingSignInPage from "../components/BrandingSignInPage";
+import { Typography } from "@mui/material";
 
 const message = ['"The cultivation of human values alone is true education."'];
 
