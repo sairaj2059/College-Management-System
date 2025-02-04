@@ -99,11 +99,12 @@ const CustomUserName = () => {
 function CustomWelcomeText() {
   return (
     <Typography
-      variant="h4"
+      //variant="h4"
       sx={{
         marginBottom: 2,
         marginTop: 2,
         fontFamily: "LoginFont, sans-serif",
+        fontSize: 'clamp(1.8rem, 2.5vw, 3.5rem)',
       }}
     >
       Login
@@ -116,7 +117,6 @@ function ForgotPasswordLink() {
     <Box sx={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
       <Link
         href="/reset"
-        variant="body2"
         sx={{
           color: "black",
           textDecoration: "none",
@@ -124,6 +124,7 @@ function ForgotPasswordLink() {
             color: "blue",
           },
           fontWeight:'500',
+          fontSize:'clamp(0.7rem,1vw,2.5rem)',
         }}
       >
         Forgot password?
@@ -155,7 +156,7 @@ const BRANDING = {
   ),
 };
 
-export default function BrandingSignInPage() {
+export default function SignInPageComponent() {
   const Theme = useTheme();
   const Noop = () => null; //rendering no component
   const navigate = useNavigate();

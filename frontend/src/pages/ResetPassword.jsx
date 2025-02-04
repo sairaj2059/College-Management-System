@@ -1,4 +1,4 @@
-import MultilineTextFields from "../components/MultilineTextFields";
+import ResetPasswordComponent from "../components/ResetPasswordComponent";
 import "../resources/css/Login.css";
 
 const ResetPassword = () => {
@@ -14,7 +14,7 @@ const ResetPassword = () => {
             justifyContent: "center",
           }}
         >
-          <MultilineTextFields />
+          <ResetPasswordComponent />
         </div>
       </div>
     </div>

@@ -18,7 +18,7 @@ const Root = styled("div")(({ theme }) => ({
   },
 }));
 
-export default function MultilineTextFields() {
+export default function ResetPasswordComponent() {
   return (
     <Box
       component="form"
@@ -33,7 +33,7 @@ export default function MultilineTextFields() {
         height: "40vh",
         borderRadius: "2%",
         minWidth: "150px",
-        minHeight: "200px",
+        minHeight: "250px",
         boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.5)",
         padding: "2rem 1.8rem 1.9rem 1.8rem",
         gap: "1rem",

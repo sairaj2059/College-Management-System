@@ -1,6 +1,6 @@
 import React from "react";
 import "../resources/css/Login.css";
-import BrandingSignInPage from "../components/BrandingSignInPage";
+import SignInPageComponent from "../components/SignInPageComponent";
 
 const message = ['"The cultivation of human values alone is true education."'];
 
@@ -10,7 +10,7 @@ const Login = () => {
       <div className="background"></div>
       <div className="login_wrapper">
         <div className="BrandingSignInPageWrapper">
-          <BrandingSignInPage />
+          <SignInPageComponent />
         </div>
         <div className="Messages">
           <div className="message-holder">
