@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Document(collection = "students")
-public class StudentAuth{
+public class UserAuth{
 
     @Id
     private String id; // MongoDB generates `_id` if this is null
