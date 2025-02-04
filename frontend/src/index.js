@@ -11,9 +11,9 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       {/* store is provided for storing global states */}
-      <Provider store={store}>
-        <App />
-      </Provider>
+        <Provider store={store}>
+          <App />
+        </Provider>
     </BrowserRouter>
   </React.StrictMode>
 );

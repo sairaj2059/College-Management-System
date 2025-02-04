@@ -10,9 +10,23 @@ import profileImage from "../resources/images/224206.jpg";
 import { UserData } from "../resources/DataList";
 import Sidebar from "../components/Sidebar";
 import { CssVarsProvider } from "@mui/joy/styles";
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import sssihlLogo from "../resources/images/Llogo.png";
+import "../resources/css/studentdashboard.css";
+
+import IconButton from "@mui/joy/IconButton";
+import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
+import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
+import ChatRoundedIcon from "@mui/icons-material/ChatRounded";
+import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
+import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
+import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+
+import List from "@mui/joy/List";
+import ListItem from "@mui/joy/ListItem";
+import ListItemButton from "@mui/joy/ListItemButton";
+import ListItemContent from "@mui/joy/ListItemContent";
+import Avatar from "@mui/joy/Avatar";
 
 function UserCard() {
   return (
@@ -126,7 +140,94 @@ function StudentDashboard() {
             gap: "2%",
           }}
         >
-          <Sidebar />
+          <Box
+            className="sidebar-container"
+            sx={{
+              // backgroundColor:'#004071',
+              width: "20vw",
+              height: "100vh",
+              display: "flex",
+              flexDirection: "column",
+            }}
+          >
+            <Box
+              className="sidebar-header"
+              sx={{
+                p: "5%",
+                display: "flex",
+                gap: 1,
+                alignItems: "center",
+                justifyContent: "flex-start",
+              }}
+            >
+              <IconButton variant="soft" color="black" size="sm">
+                <Avatar src={sssihlLogo} />
+              </IconButton>
+              <Typography level="title-lg">Nandigiri Campus</Typography>
+              <IconButton>
+                <MenuRoundedIcon sx={{ fontSize: 25 }} />
+              </IconButton>
+            </Box>
+            <List sx={{ mt: "10%", alignSelf: "center", width: "90%" }}>
+              <ListItem sx={{ m: "3%", p: "3%" }}>
+                <ListItemButton sx={{ borderRadius: 7 }}>
+                  <HomeRoundedIcon />
+                  <ListItemContent>
+                    <Typography level="title-sm">Home</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+
+              <ListItem sx={{ m: "3%", p: "3%" }}>
+                <ListItemButton sx={{ borderRadius: 7 }}>
+                  <ChatRoundedIcon />
+                  <ListItemContent>
+                    <Typography level="title-sm">Discussions</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+              <ListItem sx={{ m: "3%", p: "3%" }}>
+                <ListItemButton sx={{ borderRadius: 7 }}>
+                  <AssignmentRoundedIcon />
+                  <ListItemContent>
+                    <Typography level="title-sm">Assignment</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+              <ListItem sx={{ m: "3%", p: "3%" }}>
+                <ListItemButton sx={{ borderRadius: 7 }}>
+                  <PersonRoundedIcon />
+                  <ListItemContent>
+                    <Typography level="title-sm">Profile</Typography>
+                  </ListItemContent>
+                </ListItemButton>
+              </ListItem>
+            </List>
+
+            <List
+              sx={{
+                mt: "10%",
+                alignSelf: "center",
+                width: "90%",
+                justifyContent: "flex-end",
+                mb: 2,
+              }}
+            >
+              <ListItem sx={{ m: "3%", p: "3%" }}>
+                <ListItemButton sx={{ borderRadius: 7 }}>
+                  <LogoutRoundedIcon />
+                  Logout
+                </ListItemButton>
+              </ListItem>
+              <ListItem sx={{ m: "3%", p: "3%" }}>
+                <ListItemButton sx={{ borderRadius: 7 }}>
+                  <SettingsRoundedIcon />
+                  Settings
+                </ListItemButton>
+              </ListItem>
+            </List>
+          </Box>
+          {/* <Sidebar /> */}
           <Box
             component="main"
             className="main-container"
@@ -135,7 +236,7 @@ function StudentDashboard() {
             }}
           >
             <UserCard />
-            {/* <CalendarContainer/> */}
+            <Box></Box>
           </Box>
         </Box>
       </CssVarsProvider>
