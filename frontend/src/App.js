@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route} from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 // import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 // import Home from "./pages/Home";
@@ -9,13 +9,14 @@ import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
+import ResetPasswordComponent from "./components/ResetPasswordComponent";
 
 function App() {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Login />} />
+      {/* <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} /> */}
 
       {/* Admin Ony Pages */}
       <Route element={<ProtectedRoute roleRequired={"ADMIN"} />}>
@@ -31,7 +32,11 @@ function App() {
       <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
         <Route path="/teacher" element={<TeacherDashboard />} />
       </Route>
+      <Route element={<ProtectedRoute />}>
+        <Route path="/" element={<Login />} />
+      </Route>
 
+        <Route path="/reset" element={<ResetPasswordComponent/>}/>
       <Route path="/test" element={<StudentDashboard />}></Route>
     </Routes>
   );

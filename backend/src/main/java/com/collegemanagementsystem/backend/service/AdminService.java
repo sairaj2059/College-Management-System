@@ -1,8 +1,10 @@
 package com.collegemanagementsystem.backend.service;
 
+import com.collegemanagementsystem.backend.model.AuthResponse;
 import com.collegemanagementsystem.backend.model.UserAuth;
 import com.collegemanagementsystem.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,6 +38,7 @@ public class AdminService {
         return repo.save(student);
     }
 
+<<<<<<< HEAD
 //    public String verify(UserAuth student) {
 //        try {
 //            Authentication authentication = authManager.authenticate(
@@ -60,6 +63,28 @@ public String verify(UserAuth student) {
         if (user == null) {
             logger.error("User not found: " + student.getUsername());
             return "fail";
+=======
+    public AuthResponse verify(String username, String password) {
+        try {
+            Authentication authentication = authManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password));
+            AuthResponse authResponse = new AuthResponse("fail", null);
+
+            if (authentication.isAuthenticated()) {
+                authResponse.setUserAuth(repo.findByUsername(username)); // ✅ Fetch user from DB
+                if (authResponse.getUserAuth() == null)
+                    return authResponse;
+                authResponse.setJwtToken(jwtService.generateToken(authResponse.getUserAuth().getUsername(),
+                        authResponse.getUserAuth().getRole()));
+                return authResponse;
+            } else {
+                logger.warn("Authentication failed for user: " + username);
+                return authResponse;
+            }
+        } catch (Exception e) {
+            logger.error("Error during authentication: " + e.getMessage());
+            return new AuthResponse("fail", null);
+>>>>>>> baca8b9faba31bdb790f65a7cf1bad59e1d278c1
         }
         Authentication authentication = authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(user.getUsername(), student.getPassword()));

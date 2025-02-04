@@ -49,6 +49,8 @@
 //}
 package com.collegemanagementsystem.backend.controller;
 
+import com.collegemanagementsystem.backend.dto.LoginRequest;
+import com.collegemanagementsystem.backend.model.AuthResponse;
 import com.collegemanagementsystem.backend.model.UserAuth;
 import com.collegemanagementsystem.backend.service.AdminService;
 import com.collegemanagementsystem.backend.service.JWTService;
@@ -58,8 +60,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -67,14 +67,11 @@ public class AdminController {
 
     @Autowired
     private AdminService service;
-
-    @Autowired
-    private JWTService jwtService;
-
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/dashboard")
-    public String greet(HttpServletRequest request) {
-        return "Hello Admin, Session ID: " + request.getSession().getId();
+
+    public String greet(HttpServletRequest request){
+        return "Hello Admin"+request.getSession().getId();
     }
 
     @PostMapping("/register")
@@ -83,23 +80,19 @@ public class AdminController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody UserAuth student) {
-        Map<String, Object> response = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UserAuth student){
+        Map<String,Object> response = new HashMap<>();
         String authenticate = service.verify(student);
-
-        if (!authenticate.equals("fail")) {
+        if (authenticate != "fail"){
             response.put("success", true);
             response.put("token", authenticate);
-
-            // Extract the role from the JWT token using JWTService
-            String role = jwtService.extractRole(authenticate);
-            response.put("Role", role);
-
             return ResponseEntity.ok(response);
         } else {
             response.put("success", false);
             response.put("token", "Invalid Credentials");
             return ResponseEntity.status(404).body(response);
         }
+        
+        
     }
 }
