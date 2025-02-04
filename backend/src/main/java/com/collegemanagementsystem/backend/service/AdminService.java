@@ -1,8 +1,10 @@
 package com.collegemanagementsystem.backend.service;
 
+import com.collegemanagementsystem.backend.model.AuthResponse;
 import com.collegemanagementsystem.backend.model.UserAuth;
 import com.collegemanagementsystem.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -36,23 +38,26 @@ public class AdminService {
         return repo.save(student);
     }
 
-    public String verify(UserAuth student) {
+    public AuthResponse verify(String username, String password) {
         try {
             Authentication authentication = authManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(student.getUsername(), student.getPassword()));
+                    new UsernamePasswordAuthenticationToken(username, password));
+            AuthResponse authResponse = new AuthResponse("fail", null);
 
             if (authentication.isAuthenticated()) {
-                UserAuth user = repo.findByUsername(student.getUsername()); // ✅ Fetch user from DB
-                if (user == null) return "fail";
-
-                return jwtService.generateToken(user.getUsername(), user.getRole());
+                authResponse.setUserAuth(repo.findByUsername(username)); // ✅ Fetch user from DB
+                if (authResponse.getUserAuth() == null)
+                    return authResponse;
+                authResponse.setJwtToken(jwtService.generateToken(authResponse.getUserAuth().getUsername(),
+                        authResponse.getUserAuth().getRole()));
+                return authResponse;
             } else {
-                logger.warn("Authentication failed for user: " + student.getUsername());
-                return "fail";
+                logger.warn("Authentication failed for user: " + username);
+                return authResponse;
             }
         } catch (Exception e) {
             logger.error("Error during authentication: " + e.getMessage());
-            return "fail";
+            return new AuthResponse("fail", null);
         }
     }
 }
