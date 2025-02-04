@@ -3,18 +3,16 @@ package com.collegemanagementsystem.backend.model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@Document(collection = "students")
-public class StudentAuth{
+@Document(collection = "users")
+public class UserAuth {
 
     @Id
-    private String id; // MongoDB generates `_id` if this is null
+    private String id; // MongoDB generates `_id` if null
     private String username;
     private String password;
-    private Set<String> roles = new HashSet<>();
+    private String role; // Change this to String instead of Set<String>
 
+    // Getters and Setters
     public String getId() {
         return id;
     }
@@ -23,12 +21,12 @@ public class StudentAuth{
         this.id = id;
     }
 
-    public Set<String> getRoles() {
-        return roles;
+    public String getRole() {
+        return role; // Return role as String
     }
 
-    public void setRoles(Set<String> roles) {
-        this.roles = roles;
+    public void setRole(String role) {
+        this.role = role; // Set role as a String
     }
 
     public String getPassword() {
@@ -49,12 +47,11 @@ public class StudentAuth{
 
     @Override
     public String toString() {
-        return "StudentAuth{" +
+        return "UserAuth{" +
                 "id='" + id + '\'' +
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
-                ", roles=" + roles +
+                ", role='" + role + '\'' + // Use role as String in toString
                 '}';
     }
-// Getters and Setters
 }

@@ -1,6 +1,6 @@
 package com.collegemanagementsystem.backend.controller;
 
-import com.collegemanagementsystem.backend.model.StudentAuth;
+import com.collegemanagementsystem.backend.model.UserAuth;
 import com.collegemanagementsystem.backend.service.AdminService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -9,6 +9,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -17,16 +18,18 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
     @Autowired
     private AdminService service;
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/dashboard")
+
     public String greet(HttpServletRequest request){
         return "Hello Admin"+request.getSession().getId();
     }
-    @PostMapping("/Register")
-    public StudentAuth register(@RequestBody StudentAuth student){
+        @PostMapping("/register")
+    public UserAuth register(@RequestBody UserAuth student){
         return service.register(student);
     }
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody StudentAuth student){
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UserAuth student){
         Map<String,Object> response = new HashMap<>();
         String authenticate = service.verify(student);
         if (authenticate != "fail"){

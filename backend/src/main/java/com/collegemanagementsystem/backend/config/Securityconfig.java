@@ -24,27 +24,36 @@ public class Securityconfig {
     private UserDetailsService userDetailsService;
     @Autowired
     private JwtFilter jwtFilter;
+
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.csrf(customizer->customizer.disable());
-        http.authorizeHttpRequests(request -> request.
-                requestMatchers("Register","login").permitAll().anyRequest().authenticated());
-        //http.formLogin(Customizer.withDefaults());
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http.csrf(customizer -> customizer.disable());
+
+        http.authorizeHttpRequests(request -> request
+                .requestMatchers("/login", "/register").permitAll() // Allow registration and login
+                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN") // ✅ Use hasAuthority
+                .requestMatchers("/teacher/**").hasAuthority("ROLE_TEACHER")
+                .requestMatchers("/student/**").hasAuthority("ROLE_STUDENT")
+                .anyRequest().authenticated()); // All other requests require authentication
+
         http.httpBasic(Customizer.withDefaults());
-        http.sessionManagement(session ->session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+
         return http.build();
     }
 
     @Bean
-    public AuthenticationProvider authenticationProvider(){
+    public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
         provider.setUserDetailsService(userDetailsService);
         return provider;
     }
+
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-    return config.getAuthenticationManager();
+        return config.getAuthenticationManager();
     }
 }

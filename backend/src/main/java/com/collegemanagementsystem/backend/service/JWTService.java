@@ -14,6 +14,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import static io.jsonwebtoken.Jwts.*;
 
 @Service
 public class JWTService {
@@ -29,16 +33,16 @@ public class JWTService {
             throw new RuntimeException(e);
         }
     }
-    public String generateToken(String username) {
+
+    public String generateToken(String username, String role) {
         Map<String, Object> claims = new HashMap<>();
 
         return Jwts.builder()
-                .claims()
-                .add(claims)
+                .claims(claims)
                 .subject(username)
+                .claim("role", "ROLE_" + role) // Add roles to the token
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis()+60*60*60))
-                .and()
+                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // Set expiration (1 hour)
                 .signWith(getKey())
                 .compact();
 
@@ -56,7 +60,7 @@ public class JWTService {
         return claimResolver.apply(claims);
     }
     private Claims extractAllClaims(String token) {
-        return Jwts.parser()
+        return parser()
                 .verifyWith(getKey())
                 .build()
                 .parseSignedClaims(token)
