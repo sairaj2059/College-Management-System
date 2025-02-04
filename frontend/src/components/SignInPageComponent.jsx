@@ -22,6 +22,7 @@ import axios from "axios";
 import { URL } from "../resources/Constants";
 import { data, useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";
+import ProtectedRoute from "./ProtectedRoute";
 
 const providers = [{ id: "credentials", name: "Password and Username" }]; //name creates two fields in the ui
 
@@ -168,10 +169,11 @@ export default function SignInPageComponent() {
 
     try {
       const userData = await UserService.login(username, password);
-      if (userData.token) {
+      console.log(userData);
+      if (userData.success) {
         localStorage.setItem('token', userData.token);
         localStorage.setItem('role', userData.role);
-        navigate("/test");
+        ProtectedRoute(localStorage.getItem("role"));
       }
     } catch (error) {
       

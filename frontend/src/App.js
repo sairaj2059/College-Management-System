@@ -15,8 +15,8 @@ function App() {
   return (
     <Routes>
       {/* Public Routes */}
-      {/* <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Login />} /> */}
+      <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
 
       {/* Admin Ony Pages */}
       <Route element={<ProtectedRoute roleRequired={"ADMIN"} />}>
@@ -31,9 +31,6 @@ function App() {
       {/* Teacher Ony Pages */}
       <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
         <Route path="/teacher" element={<TeacherDashboard />} />
-      </Route>
-      <Route element={<ProtectedRoute />}>
-        <Route path="/" element={<Login />} />
       </Route>
 
         <Route path="/reset" element={<ResetPasswordComponent/>}/>
