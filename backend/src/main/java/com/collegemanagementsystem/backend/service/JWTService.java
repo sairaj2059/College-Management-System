@@ -40,7 +40,7 @@ public class JWTService {
         return Jwts.builder()
                 .claims(claims)
                 .subject(username)
-                .claim("role", "ROLE_" + role) // Add roles to the token
+                .claim("role", role) // Add roles to the token
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // Set expiration (1 hour)
                 .signWith(getKey())
