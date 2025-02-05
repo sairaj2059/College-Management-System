@@ -38,24 +38,6 @@ public class AdminService {
         return repo.save(student);
     }
 
-//    public String verify(UserAuth student) {
-//        try {
-//            Authentication authentication = authManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(student.getUsername(), student.getPassword()));
-//
-//            if (authentication.isAuthenticated()) {
-//                UserAuth user = repo.findByUsername(student.getUsername()); // ✅ Fetch user from DB
-//                if (user == null) return "fail";
-//
-//                return jwtService.generateToken(user.getUsername(), user.getRole());
-//            } else {
-//                logger.warn("Authentication failed for user: " + student.getUsername());
-//                return "fail";
-//            }
-//        } catch (Exception e) {
-//            logger.error("Error during authentication: " + e.getMessage());
-//            return "fail";
-//        }
 public String verify(UserAuth student) {
     try {
         UserAuth user = repo.findByUsername(student.getUsername());
