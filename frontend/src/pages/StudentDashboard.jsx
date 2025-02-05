@@ -1,7 +1,6 @@
 import React from "react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
-import Button from "@mui/joy/Button";
 import Card from "@mui/joy/Card";
 import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
@@ -21,12 +20,17 @@ import ChatRoundedIcon from "@mui/icons-material/ChatRounded";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import SettingsRoundedIcon from "@mui/icons-material/SettingsRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
+import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+import CalendarMonthRounded from "@mui/icons-material/CalendarMonthRounded";
+import CalendarTodayRounded from "@mui/icons-material/CalendarTodayRounded";
 
 import List from "@mui/joy/List";
 import ListItem from "@mui/joy/ListItem";
 import ListItemButton from "@mui/joy/ListItemButton";
 import ListItemContent from "@mui/joy/ListItemContent";
 import Avatar from "@mui/joy/Avatar";
+import Input from "@mui/joy/Input";
+import Button from "@mui/joy/Button";
 
 function UserCard() {
   return (
@@ -36,7 +40,6 @@ function UserCard() {
         position: "relative",
         overflow: { xs: "auto", sm: "initial" },
         mt: "2%",
-        zIndex: 1,
       }}
     >
       <Box
@@ -144,6 +147,8 @@ function StudentDashboard() {
             className="sidebar-container"
             sx={{
               // backgroundColor:'#004071',
+              borderRight: "1px solid",
+              borderColor: "divider",
               width: "20vw",
               height: "100vh",
               display: "flex",
@@ -168,7 +173,14 @@ function StudentDashboard() {
                 <MenuRoundedIcon sx={{ fontSize: 25 }} />
               </IconButton>
             </Box>
-            <List sx={{ mt: "10%", alignSelf: "center", width: "90%" }}>
+
+            <Input
+              sx={{ marginInline: "8%", mt: "3%", paddingInline: "3%" }}
+              size="sm"
+              startDecorator={<SearchRoundedIcon />}
+              placeholder="Search"
+            />
+            <List sx={{ mt: "2%", alignSelf: "center", width: "90%" }}>
               <ListItem sx={{ m: "3%", p: "3%" }}>
                 <ListItemButton sx={{ borderRadius: 7 }}>
                   <HomeRoundedIcon />
@@ -233,10 +245,62 @@ function StudentDashboard() {
             className="main-container"
             sx={{
               width: "100vw",
+              display: "flex",
+              flexDirection: "column",
+              gap: "2%",
             }}
           >
             <UserCard />
-            <Box></Box>
+            <Box
+              className="features-container"
+              sx={{ display: "flex", gap: 1.25 }}
+            >
+              <Button
+                sx={{
+                  backgroundColor: "#ecebeb",
+                  color: "black",
+                  borderBottom: "2px solid #fbe855",
+                  padding:'1%',
+                  width:'10vw',
+                  ":hover":{
+                    backgroundColor:'#e2e1e1'
+                  }
+                }}
+                startDecorator={<AssignmentRoundedIcon />}
+              >
+                Exam Results
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "#ecebeb",
+                  color: "black",
+                  borderBottom: "2px solid #4a4afd",
+                  padding:'1%',
+                  width:'10vw',
+                  ":hover":{
+                    backgroundColor:'#e2e1e1'
+                  }
+                }}
+                startDecorator={<CalendarTodayRounded />}
+              >
+                Attendance
+              </Button>
+              <Button
+                sx={{
+                  backgroundColor: "#ecebeb",
+                  color: "black",
+                  borderBottom: "2px solid #fe4f4f",
+                  padding:'1%',
+                  width:'10vw',
+                  ":hover":{
+                    backgroundColor:'#e2e1e1'
+                  }
+                }}
+                startDecorator={<CalendarMonthRounded />}
+              >
+                Calendar
+              </Button>
+            </Box>
           </Box>
         </Box>
       </CssVarsProvider>

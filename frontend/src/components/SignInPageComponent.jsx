@@ -173,10 +173,19 @@ export default function SignInPageComponent() {
       if (userData.success) {
         localStorage.setItem('token', userData.token);
         localStorage.setItem('role', userData.role);
-        ProtectedRoute(localStorage.getItem("role"));
+        if (userData.role === "ADMIN") {
+          navigate("/admin");
+        }else if (userData.role === "TEACHER") {
+          navigate("/teacher");
+        }else if(userData.role === "STUDENT"){
+          navigate("/student");
+        }else{
+          alert("Invalid Login Credentials");
+        }
       }
     } catch (error) {
-      
+      console.error("Login failed", error);
+      alert("Something went wrong!");
     }
   };
 

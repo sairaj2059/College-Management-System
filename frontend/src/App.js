@@ -20,17 +20,17 @@ function App() {
 
       {/* Admin Ony Pages */}
       <Route element={<ProtectedRoute roleRequired={"ADMIN"} />}>
-        <Route path="/admin" element={<AdminDasboard />} />
+        <Route path="/admin/*" element={<AdminDasboard />} />
       </Route>
 
       {/* Student Ony Pages */}
       <Route element={<ProtectedRoute roleRequired={"STUDENT"} />}>
-        <Route path="/student" element={<StudentDashboard />} />
+        <Route path="/student/*" element={<StudentDashboard />} />
       </Route>
 
       {/* Teacher Ony Pages */}
       <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
-        <Route path="/teacher" element={<TeacherDashboard />} />
+        <Route path="/teacher/*" element={<TeacherDashboard />} />
       </Route>
 
         <Route path="/reset" element={<ResetPasswordComponent/>}/>

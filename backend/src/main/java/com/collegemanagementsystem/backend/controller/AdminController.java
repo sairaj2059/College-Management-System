@@ -93,7 +93,7 @@ public class AdminController {
 
             // Extract the role from the JWT token using JWTService
             String role = jwtService.extractRole(authenticate);
-            response.put("Role", role);
+            response.put("role", role);
 
             return ResponseEntity.ok(response);
         } else {

@@ -2,7 +2,6 @@ import { Navigate, Outlet } from "react-router-dom";
 import UserService from "../services/UserService";
 
 function ProtectedRoute({ roleRequired = null }) {
-  console.log("Sairam");
   if (!UserService.isAuthenticated()) {
     return <Navigate to={"/login"}/>;
   }
