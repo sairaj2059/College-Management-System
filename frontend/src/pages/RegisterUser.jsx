@@ -29,10 +29,9 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 import Autocomplete from "@mui/joy/Autocomplete";
 import Avatar from "@mui/joy/Avatar";
-import CountrySelector from "../components/CountrySelector";
-import { countries, department, departments } from "../resources/DataList";
-import { TextField } from "@mui/material";
+import { roles, countries, departments } from "../resources/DataList";
 import UserService from "../services/UserService";
+
 
 const courses = [
   { label: "BSc Computer Science 2022" },
@@ -42,7 +41,7 @@ const courses = [
   { label: "MSc Data Science 2024" },
 ];
 
-const Roles = [{ label: "ADMIN" }, { label: "TEACHER" }, { label: "STUDENT" }];
+
 
 export default function RegisterUser() {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -302,7 +301,7 @@ export default function RegisterUser() {
                         value={formData.role}
                         placeholder="Select Role"
                         onChange={handleAutocompleteChange("role")}
-                        options={Roles}
+                        options={roles}
                         sx={{ width: 300 }}
                         getOptionLabel={getOptionLabel}
                         isOptionEqualToValue={isOptionEqualToValue}
