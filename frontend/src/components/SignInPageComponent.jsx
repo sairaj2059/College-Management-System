@@ -10,6 +10,7 @@ import {
   InputAdornment,
   IconButton,
   Box,
+  FormHelperText ,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -23,10 +24,11 @@ import { URL } from "../resources/Constants";
 import { data, useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";
 import ProtectedRoute from "./ProtectedRoute";
+import { useState,useEffect } from "react";
 
 const providers = [{ id: "credentials", name: "Password and Username" }]; //name creates two fields in the ui
 
-function CustomPasswordField() {
+function CustomPasswordField({error,setError}) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -35,8 +37,13 @@ function CustomPasswordField() {
     event.preventDefault();
   };
 
+  const handleError = () =>{
+    if(error == true)
+      setError(false)
+  }
+
   return (
-    <FormControl sx={{ my: 2 }} fullWidth variant="outlined">
+    <FormControl sx={{ my: 2 }} fullWidth variant="outlined" error={error}>
       <InputLabel size="small" htmlFor="outlined-adornment-password">
         Password
       </InputLabel>
@@ -46,6 +53,7 @@ function CustomPasswordField() {
         name="password"
         size="small"
         required
+        onClick={handleError}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
@@ -70,13 +78,20 @@ function CustomPasswordField() {
         }
         label="Password"
       />
+      {error && <FormHelperText>Incorrect username or password</FormHelperText>}
     </FormControl>
   );
 }
 
-const CustomUserName = () => {
+const CustomUserName = ({error,setError}) => {
+
+  const handleError = () =>{
+    if(error == true )
+      setError(false)
+  }
+
   return (
-    <FormControl sx={{ my: 2 }} fullWidth variant="outlined">
+    <FormControl sx={{ my: 2 }} fullWidth variant="outlined" error={error}>
       <InputLabel size="small" htmlFor="outlined-adornment-username">
         Username
       </InputLabel>
@@ -88,6 +103,8 @@ const CustomUserName = () => {
         label="Username"
         autoComplete="off"
         required
+        onClick={handleError}
+        autoFocus = {!error}
         startAdornment={
           <InputAdornment position="start">
             <PersonIcon sx={{ fontSize: 20 }} />
@@ -135,14 +152,6 @@ function ForgotPasswordLink() {
   );
 }
 
-// function SignUpLink() {
-//   return (
-//     <Link href="/" variant="body2">
-//       Create an account
-//     </Link>
-//   );
-// }
-
 const BRANDING = {
   logo: (
     <img
@@ -162,6 +171,7 @@ export default function SignInPageComponent() {
   const Theme = useTheme();
   const Noop = () => null;
   const navigate = useNavigate();
+  const [error, setError] = useState(false);
 
   const SignIn = async (provider, formData) => {
     const username = formData.get("username");
@@ -169,10 +179,13 @@ export default function SignInPageComponent() {
 
     try {
       const userData = await UserService.login(username, password);
+
       console.log(userData);
+
       if (userData.success) {
         localStorage.setItem('token', userData.token);
         localStorage.setItem('role', userData.role);
+
         if (userData.role === "ADMIN") {
           navigate("/admin");
         }else if (userData.role === "TEACHER") {
@@ -183,9 +196,14 @@ export default function SignInPageComponent() {
           alert("Invalid Login Credentials");
         }
       }
+      else {
+        setError(true);
+      }
+
     } catch (error) {
       console.error("Login failed", error);
-      alert("Something went wrong!");
+      //alert("Something went wrong!");
+      setError(true);
     }
   };
 
@@ -207,8 +225,8 @@ export default function SignInPageComponent() {
           signIn={SignIn}
 
           slots={{
-            emailField: CustomUserName,
-            passwordField: CustomPasswordField,
+            emailField: () => <CustomUserName error={error} setError={setError}/>,
+            passwordField: () => <CustomPasswordField error={error} setError={setError}/>,
             subtitle: Noop,
             rememberMe: Noop,
             title: CustomWelcomeText,
