@@ -16,6 +16,7 @@ export const courses = [
     { label: "MSc Data Science 2024" },
   ];
   
+  export const roles = [{ label: "ADMIN" }, { label: "TEACHER" }, { label: "STUDENT" }];
 export const departments = [{ label: "DMACS" }, { label: "DLL" }];
 
 export const countries = [
