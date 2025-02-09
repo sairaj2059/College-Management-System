@@ -71,7 +71,7 @@ public class AdminController {
     @Autowired
     private JWTService jwtService;
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/dashboard")
     public String greet(HttpServletRequest request) {
         return "Hello Admin, Session ID: " + request.getSession().getId();

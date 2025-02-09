@@ -1,10 +1,5 @@
 package com.collegemanagementsystem.backend.service;
 
-import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student;
-import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth;
-
-import java.time.YearMonth;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;

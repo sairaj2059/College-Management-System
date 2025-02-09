@@ -1,10 +1,8 @@
 package com.collegemanagementsystem.backend.service;
 
-import com.collegemanagementsystem.backend.model.AuthResponse;
 import com.collegemanagementsystem.backend.model.UserAuth;
 import com.collegemanagementsystem.backend.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -34,7 +32,7 @@ public class AdminService {
             throw new RuntimeException("Username already exists");
         }
         student.setPassword(encoder.encode(student.getPassword()));
-        student.setRole("TEACHER"); // ✅ Ensure role is stored correctly
+        student.setRole("TEACHER");
         return repo.save(student);
     }
 

@@ -10,6 +10,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import ResetPasswordComponent from "./components/ResetPasswordComponent";
+import RegisterUser from "./pages/RegisterUser";
 
 function App() {
   return (
@@ -33,8 +34,10 @@ function App() {
         <Route path="/teacher/*" element={<TeacherDashboard />} />
       </Route>
 
-        <Route path="/reset" element={<ResetPasswordComponent/>}/>
+
+      <Route path="/register-user" element={<RegisterUser />} />
       <Route path="/test" element={<StudentDashboard />}></Route>
+      <Route path="/test1" element={<AdminDasboard />}></Route>
     </Routes>
   );
 

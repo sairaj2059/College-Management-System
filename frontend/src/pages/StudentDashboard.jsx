@@ -31,27 +31,27 @@ import ListItemContent from "@mui/joy/ListItemContent";
 import Avatar from "@mui/joy/Avatar";
 import Input from "@mui/joy/Input";
 import Button from "@mui/joy/Button";
-import { BarChart, legendClasses, PieChart } from "@mui/x-charts";
+import { BarChart, legendClasses } from "@mui/x-charts";
+import { PieChart } from "@mui/x-charts/PieChart";
 
 const otherProps = {
   width: 400,
   height: 200,
   sx: {
     [`.${legendClasses.root}`]: {
-      transform: 'translate(20px, 0)',
+      transform: "translate(20px, 0)",
     },
   },
 };
 
 const data = [
-  { team: 'Amber Ants', rank: 3, points: 31 },
-  { team: 'Eagle Warriors', rank: 1, points: 50 },
-  { team: 'Elephant Trunk', rank: 4, points: 18 },
-  { team: 'Jaguars', rank: 2, points: 37 },
-  { team: 'Smooth Pandas', rank: 5, points: 6 },
+  { team: "Amber Ants", rank: 3, points: 31 },
+  { team: "Eagle Warriors", rank: 1, points: 50 },
+  { team: "Elephant Trunk", rank: 4, points: 18 },
+  { team: "Jaguars", rank: 2, points: 37 },
+  { team: "Smooth Pandas", rank: 5, points: 6 },
 ];
 function UserCard() {
-
   return (
     <Box
       sx={{
@@ -157,8 +157,6 @@ function StudentDashboard() {
     setIsExpanded(!isExpanded);
   };
 
-  
-  
   return (
     <>
       <CssVarsProvider>
@@ -348,20 +346,19 @@ function StudentDashboard() {
               </Button>
             </Box>
             <Box>
-
-<PieChart
-  series={[
-    {
-      data: [
-        { id: 0, value: 10, label: 'series A' },
-        { id: 1, value: 15, label: 'series B' },
-        { id: 2, value: 20, label: 'series C' },
-      ],
-    },
-  ]}
-  width={400}
-  height={200}
-/>
+              <PieChart
+                series={[
+                  {
+                    data: [
+                      { id: 0, value: 10, label: "series A" },
+                      { id: 1, value: 15, label: "series B" },
+                      { id: 2, value: 20, label: "series C" },
+                    ],
+                  },
+                ]}
+                width={400}
+                height={200}
+              />
             </Box>
           </Box>
         </Box>
