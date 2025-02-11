@@ -11,6 +11,7 @@ import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import ResetPasswordComponent from "./components/ResetPasswordComponent";
 import RegisterUser from "./pages/RegisterUser";
+import ExamResults from "./components/ExamResults";
 
 function App() {
   return (
@@ -38,6 +39,7 @@ function App() {
       <Route path="/register-user" element={<RegisterUser />} />
       <Route path="/test" element={<StudentDashboard />}></Route>
       <Route path="/test1" element={<AdminDasboard />}></Route>
+      <Route path="/exam" element={<ExamResults/>}/>
     </Routes>
   );
 
