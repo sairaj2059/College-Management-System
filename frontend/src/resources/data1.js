@@ -31,6 +31,7 @@ export const semesters = [
       },
     ],
   },
+  
   {
     number: 2,
     subjects: [

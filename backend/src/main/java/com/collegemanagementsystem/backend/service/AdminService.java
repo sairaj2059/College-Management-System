@@ -32,7 +32,7 @@ public class AdminService {
             throw new RuntimeException("Username already exists");
         }
         student.setPassword(encoder.encode(student.getPassword()));
-        student.setRole("TEACHER");
+        student.setRole("STUDENT");
         return repo.save(student);
     }
 

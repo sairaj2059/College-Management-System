@@ -107,7 +107,7 @@ export default function ResetPasswordComponent() {
           />
         </div>
         <Root>
-          <Divider>OR</Divider>
+          <Divider>OR CONTINUE WITH</Divider>
         </Root>
         <div>
           <TextField

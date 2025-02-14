@@ -3,13 +3,13 @@ import { Routes, Route } from "react-router-dom";
 // import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 // import Home from "./pages/Home";
-// import PageNotFound from "./pages/PageNotFound";
-// import ResetPassword from "./pages/ResetPassword";
+ import PageNotFound from "./pages/PageNotFound";
+import ResetPassword from "./pages/ResetPassword";
 import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
-import ResetPasswordComponent from "./components/ResetPasswordComponent";
+//import ResetPasswordComponent from "./components/ResetPasswordComponent";
 import RegisterUser from "./pages/RegisterUser";
 import ExamResults from "./components/ExamResults";
 
@@ -40,6 +40,8 @@ function App() {
       <Route path="/test" element={<StudentDashboard />}></Route>
       <Route path="/test1" element={<AdminDasboard />}></Route>
       <Route path="/exam" element={<ExamResults/>}/>
+      <Route path="/reset" element={<ResetPassword />} />
+      <Route path="*" element={<PageNotFound/>}/>
     </Routes>
   );
 
@@ -51,7 +53,6 @@ function App() {
   //       <Route path='/home' element={<Home/>}></Route>
   //       <Route path='/student/dashboard' element={<StudentDashboard/>}></Route>
   //       <Route path='/dashboard' element={UserService.isAuthenticated()?<Home/>: }></Route>
-  //       <Route path="/reset" element={<ResetPassword />} />
   //       <Route path="/pagenotfound" element={PageNotFound} />
 
   //     </Routes>
