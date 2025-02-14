@@ -1,5 +1,172 @@
 import SyamImage from "../resources/images/224206.jpg";
 
+export const tempDiscussionSidebar = [
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish OPENMP assignments",
+  },
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish OPENMP assignments",
+  },
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish OPENMP assignments",
+  },
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish OPENMP assignments",
+  },
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish OPENMP assignments",
+  },
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish OPENMP assignments",
+  },
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish OPENMP assignments",
+  },
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish OPENMP assignments",
+  },
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish OPENMP assignments",
+  },
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish OPENMP assignments",
+  },
+  {
+    subject: "High Performance Computing",
+    messsage: "Finish assignments",
+  },
+];
+
+export const attachments = [
+  {
+    id: "att1",
+    type: "image",
+    name: "Vacation Photo.jpg",
+    url: "https://via.placeholder.com/300x200.png?text=Vacation+Photo"
+  },
+  {
+    id: "att2",
+    type: "video",
+    name: "Funny Cat Video.mp4",
+    url: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+  },
+  {
+    id: "att3",
+    type: "pdf",
+    name: "Report.pdf",
+    url: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf"
+  },
+  {
+    id: "att4",
+    type: "image",
+    name: "Birthday Party.png",
+    url: "https://via.placeholder.com/300x200.png?text=Birthday+Party"
+  },
+  {
+    id: "att5",
+    type: "video",
+    name: "Interview Clip.mp4",
+    url: "https://sample-videos.com/video123/mp4/720/big_buck_bunny_720p_1mb.mp4"
+  },
+  {
+    id: "att6",
+    type: "pdf",
+    name: "UserManual.pdf",
+    url: "https://www.orimi.com/pdf-test.pdf"
+  }
+];
+
+
+
+export const  tempMessages = [
+  {
+    id: "msg01",
+    sender: "Prof. Sita Sharma",
+    message: "Welcome to the Computer Science discussion group. Let's start with the basics of algorithms.",
+    timestamp: "2025-02-11T09:00:00Z",
+    avatar: "SS"
+  },
+  {
+    id: "msg02",
+    sender: "Raj Guragain",
+    message: "Professor, could you explain the concept of time complexity?",
+    timestamp: "2025-02-11T09:05:00Z",
+    avatar: "RG"
+  },
+  {
+    id: "msg03",
+    sender: "Prof. Sita Sharma",
+    message: "Sure, Raj. Time complexity is used to evaluate the efficiency of an algorithm, measured by the number of operations it takes to complete.",
+    timestamp: "2025-02-11T09:10:00Z",
+    avatar: "SS"
+  },
+  {
+    id: "msg04",
+    sender: "Amit Shrestha",
+    message: "Can we use time complexity to compare different algorithms for the same task?",
+    timestamp: "2025-02-11T09:12:00Z",
+    avatar: "AS"
+  },
+  {
+    id: "msg05",
+    sender: "Prof. Sita Sharma",
+    message: "Exactly, Amit. Time complexity helps us decide which algorithm is more efficient for a specific task, especially as the size of input grows.",
+    timestamp: "2025-02-11T09:15:00Z",
+    avatar: "SS"
+  },
+  {
+    id: "msg06",
+    sender: "Sita Sharma",
+    message: "I am still a bit confused. Could you provide an example?",
+    timestamp: "2025-02-11T09:20:00Z",
+    avatar: "SS2"
+  },
+  {
+    id: "msg07",
+    sender: "Prof. Sita Sharma",
+    message: "Sure, Sita. For example, sorting algorithms like Merge Sort and Bubble Sort have different time complexities, where Merge Sort is more efficient.",
+    timestamp: "2025-02-11T09:25:00Z",
+    avatar: "SS"
+  },
+  {
+    id: "msg08",
+    sender: "Rita Joshi",
+    message: "Thank you, Professor! This is much clearer now.",
+    timestamp: "2025-02-11T09:28:00Z",
+    avatar: "RJ"
+  },
+  {
+    id: "msg09",
+    sender: "Kiran Thapa",
+    message: "Could you recommend any resources for learning more about algorithms?",
+    timestamp: "2025-02-11T09:30:00Z",
+    avatar: "KT"
+  },
+  {
+    id: "msg10",
+    sender: "Prof. Sita Sharma",
+    message: "I suggest checking out 'Introduction to Algorithms' by Cormen, Leiserson, Rivest, and Stein, as well as free resources like Khan Academy.",
+    timestamp: "2025-02-11T09:35:00Z",
+    avatar: "SS"
+  },
+  {
+    sender: "Prof. Sita Sharma",
+    message: "This is new message",
+    timestamp: "",
+    avatar: "SS"
+  }
+];
+
 export const UserData = {
   name: "Kokkonda Sri Shyam Sundar",
   regdNo: "224206",
@@ -9,14 +176,18 @@ export const UserData = {
   image: SyamImage,
 };
 export const courses = [
-    { label: "BSc Computer Science 2022" },
-    { label: "BSc Computer Science 2023" },
-    { label: "BSc Computer Science 2024" },
-    { label: "MSc Data Science 2023" },
-    { label: "MSc Data Science 2024" },
-  ];
-  
-  export const roles = [{ label: "ADMIN" }, { label: "TEACHER" }, { label: "STUDENT" }];
+  { label: "BSc Computer Science 2022" },
+  { label: "BSc Computer Science 2023" },
+  { label: "BSc Computer Science 2024" },
+  { label: "MSc Data Science 2023" },
+  { label: "MSc Data Science 2024" },
+];
+
+export const roles = [
+  { label: "ADMIN" },
+  { label: "TEACHER" },
+  { label: "STUDENT" },
+];
 export const departments = [{ label: "DMACS" }, { label: "DLL" }];
 
 export const countries = [

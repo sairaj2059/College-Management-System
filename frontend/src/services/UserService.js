@@ -1,9 +1,11 @@
 import axios from "axios";
 
 class UserService {
-  static BASE_URL = "http://localhost:8080/";
+  static BASE_URL = "http://localhost:8080";
 
   static async login(username, password) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
     try {
       const response = await axios.post(`${UserService.BASE_URL}/login`, {
         username,
