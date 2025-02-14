@@ -59,7 +59,7 @@ export default function RegisterUser() {
     lastName: "",
     dateOfBirth: "",
     admissionNumber: "",
-    registrationNumber: "",
+    regdNo: "",
     role: null,
     department: null,
     course: null,

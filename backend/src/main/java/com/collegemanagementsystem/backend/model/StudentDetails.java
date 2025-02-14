@@ -15,14 +15,14 @@ import lombok.*;
 public class StudentDetails {
 
     @Id
-    private  int id;
+    private  String id;
     private String image;
     private String title;
     private String firstName;
     private String lastName;
-    private Date dateOfBirth;
+    private String dateOfBirth;
     private String admissionNumber;
-    private int registrationNumber;
+    private String regdNo;
     private String role;
     private String department;
     private String course;
