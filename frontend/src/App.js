@@ -11,7 +11,7 @@ import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 //import ResetPasswordComponent from "./components/ResetPasswordComponent";
 import RegisterUser from "./pages/RegisterUser";
-// import ExamResults from "./components/ExamResults";
+import ExamResults from "./components/ExamResults";
 import Discussion from "./pages/Discussion";
 
 function App() {
@@ -41,7 +41,7 @@ function App() {
       <Route path="/test" element={<StudentDashboard />}></Route>
       <Route path="/test1" element={<Discussion />}></Route>
     
-      {/* <Route path="/exam" element={<ExamResults/>}/> */}
+      <Route path="/exam" element={<ExamResults/>}/>
     </Routes>
   );
 }

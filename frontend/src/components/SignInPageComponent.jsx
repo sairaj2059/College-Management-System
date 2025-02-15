@@ -10,7 +10,8 @@ import {
   InputAdornment,
   IconButton,
   Box,
-  FormHelperText ,
+  FormHelperText, 
+  Alert,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -18,12 +19,12 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import login_logo from "../resources/images/Llogo.png";
 import { Typography } from "@mui/material";
-import axios from "axios";
+//import axios from "axios";
 //import { useDispatch } from "react-redux";
-import { URL } from "../resources/Constants";
+//import { URL } from "../resources/Constants";
 import { data, useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";
-import ProtectedRoute from "./ProtectedRoute";
+//import ProtectedRoute from "./ProtectedRoute";
 import { useState,useEffect } from "react";
 
 const providers = [{ id: "credentials", name: "Password and Username" }]; //name creates two fields in the ui
@@ -38,7 +39,7 @@ function CustomPasswordField({error,setError}) {
   };
 
   const handleError = () =>{
-    if(error == true)
+    if(error === true)
       setError(false)
   }
 
@@ -86,7 +87,7 @@ function CustomPasswordField({error,setError}) {
 const CustomUserName = ({error,setError}) => {
 
   const handleError = () =>{
-    if(error == true )
+    if(error === true )
       setError(false)
   }
 
@@ -167,15 +168,14 @@ const BRANDING = {
   ),
 };
 
-export default function SignInPageComponent() {
+export default function SignInPageComponent({serverError,setServerError}) {
   const Theme = useTheme();
   const Noop = () => null;
   const navigate = useNavigate();
   const [error, setError] = useState(false);
 
   const SignIn = async (provider, formData) => {
-    const username = formData.get("username");
-    const password = formData.get("password");
+    const { username, password } = Object.fromEntries(formData);
 
     try {
       const userData = await UserService.login(username, password);
@@ -197,14 +197,15 @@ export default function SignInPageComponent() {
         }
       }
       else {
-        setError(true);
+        console.log("error password");
+        setError(true);      
       }
 
     } catch (error) {
       console.error("Login failed", error);
-      //alert("Something went wrong!");
-      setError(true);
-    }
+      setServerError(true);
+      console.log("sairam");
+      }
   };
 
   return (

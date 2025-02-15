@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Stack,
@@ -10,9 +10,10 @@ import {
 import { BookOpen, Search } from "lucide-react";
 import { CalendarToday } from "@mui/icons-material";
 import SemesterCard from "./SemesterCard";
-import { semesters } from "../resources/data1";
+//import { semesters } from "../resources/data1";
 import "../resources/css/Semester.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import axios from "axios";
 
 const theme = createTheme({
   typography: {
@@ -23,6 +24,31 @@ const theme = createTheme({
 const ExamResults = () => {
   const [expandedSemesters, setExpandedSemesters] = useState([0]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [data, setData] = useState({ id: null, semesters: [] });
+  const id = 224209;
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        console.log(token);
+        const response = await axios.get(
+          `http://localhost:8080/student/semResults/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setData(response.data);
+      } catch (error) {
+        setData({ id: null, semesters: [] });
+        console.error("data not transmitted", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   const toggleSemester = (semesterNumber) => {
     setExpandedSemesters((prev) =>
@@ -43,17 +69,13 @@ const ExamResults = () => {
   //   ) / semesters.length;
 
   // Filter semesters based on search input
-  const filteredSemesters = semesters.filter((semester) =>
+  const filteredSemesters = data.semesters.filter((semester) =>
     semester.subjects.some(
       (subject) =>
         subject.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         subject.code.toLowerCase().includes(searchTerm.toLowerCase())
     )
   );
-
-  if (!semesters || !Array.isArray(semesters)) {
-    return <Typography>Loading semesters...</Typography>;
-  }
 
   return (
     <Box
@@ -182,10 +204,12 @@ const ExamResults = () => {
                 <ThemeProvider theme={theme}>
                   {filteredSemesters.map((semester) => (
                     <SemesterCard
-                      key={semester.number}
+                      key={semester.semesterNumber}
                       semester={semester}
-                      isExpanded={expandedSemesters.includes(semester.number)}
-                      onToggle={() => toggleSemester(semester.number)}
+                      isExpanded={expandedSemesters.includes(
+                        semester.semesterNumber
+                      )}
+                      onToggle={() => toggleSemester(semester.semesterNumber)}
                     />
                   ))}
                 </ThemeProvider>
