@@ -35,6 +35,7 @@ function App() {
 
         <Route path="/reset" element={<ResetPasswordComponent/>}/>
       <Route path="/test" element={<StudentDashboard />}></Route>
+      
     </Routes>
   );
 

@@ -1,8 +1,8 @@
 import React from 'react'
-
+import Register from "../components/Register";
 function AdminDasboard() {
   return (
-    <div>AdminDasboard</div>
+    <Register/>
   )
 }
 

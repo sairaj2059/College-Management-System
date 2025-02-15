@@ -34,7 +34,7 @@ public class AdminService {
             throw new RuntimeException("Username already exists");
         }
         student.setPassword(encoder.encode(student.getPassword()));
-        student.setRole("TEACHER"); // ✅ Ensure role is stored correctly
+        student.setRole("STUDENT"); // ✅ Ensure role is stored correctly
         return repo.save(student);
     }
 
