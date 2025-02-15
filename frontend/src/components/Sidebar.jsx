@@ -25,6 +25,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import sssihlLogo from "../resources/images/Llogo.png";
 
 import ColorSchemeToggle from "./ColorSchemeToggle";
+import { UserData } from "../resources/DataList";
 
 export function openSidebar() {
   if (typeof window !== "undefined") {
@@ -312,6 +313,7 @@ export default function Sidebar() {
             </ListItemButton>
           </ListItem>
         </List>
+        
       </Box>
     </Sheet>
   );

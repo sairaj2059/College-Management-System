@@ -10,6 +10,9 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import ResetPasswordComponent from "./components/ResetPasswordComponent";
+import RegisterUser from "./pages/RegisterUser";
+// import ExamResults from "./components/ExamResults";
+import Discussion from "./pages/Discussion";
 
 function App() {
   return (
@@ -33,26 +36,14 @@ function App() {
         <Route path="/teacher/*" element={<TeacherDashboard />} />
       </Route>
 
-        <Route path="/reset" element={<ResetPasswordComponent/>}/>
+
+      <Route path="/register-user" element={<RegisterUser />} />
       <Route path="/test" element={<StudentDashboard />}></Route>
-      
+      <Route path="/test1" element={<Discussion />}></Route>
+    
+      {/* <Route path="/exam" element={<ExamResults/>}/> */}
     </Routes>
   );
-
-  // return (
-  //   <>
-  //     <Routes>
-  //       <Route path='/login' element={<Login/>}></Route>
-  //       <Route path='/' element={ <Navigate to ="/login"/>}/>
-  //       <Route path='/home' element={<Home/>}></Route>
-  //       <Route path='/student/dashboard' element={<StudentDashboard/>}></Route>
-  //       <Route path='/dashboard' element={UserService.isAuthenticated()?<Home/>: }></Route>
-  //       <Route path="/reset" element={<ResetPassword />} />
-  //       <Route path="/pagenotfound" element={PageNotFound} />
-
-  //     </Routes>
-  //   </>
-  // );
 }
 
 export default App;

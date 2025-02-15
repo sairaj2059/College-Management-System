@@ -5,7 +5,6 @@ import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
-import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student;
 
 @Repository
 public interface ClassWiseAttendaceRepo extends MongoRepository<ClasswiseAttendance, String> {

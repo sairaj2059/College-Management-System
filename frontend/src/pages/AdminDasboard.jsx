@@ -1,8 +1,15 @@
 import React from 'react'
-import Register from "../components/Register";
+import Button from "@mui/joy/Button";
+import { Link } from 'react-router-dom';
+
 function AdminDasboard() {
   return (
-    <Register/>
+    <div>
+      <Link to={"register-user"}>
+      <Button>Register User</Button>
+      </Link>
+      
+    </div>
   )
 }
 
