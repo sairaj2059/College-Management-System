@@ -30,12 +30,28 @@ public class SemResultService {
             semesterMap.put(sem.getSemesterNumber(), sem);
         }
 
-        for (Semester newSem : request.getSemesters()) {
-            semesterMap.merge(newSem.getSemesterNumber(), newSem, (existingSem, newSemData) -> {
-                existingSem.setSubjects(newSemData.getSubjects());
-                return existingSem;
-            });
-        }
+        // for (Semester newSem : request.getSemesters()) {
+        //     if (semesterMap.containsKey(newSem.getSemesterNumber())) {
+               
+        //         Semester existingSem = semesterMap.get(newSem.getSemesterNumber());
+              
+        //         Map<String, Semester.Subject> subjectMap = new HashMap<>();
+
+        //         for (Semester.Subject subject : existingSem.getSubjects()) {
+        //             subjectMap.put(subject.getSubjectCode(), subject);
+        //         }
+               
+        //         for (Semester.Subject newSubject : newSem.getSubjects()) {
+        //             if (!subjectMap.containsKey(newSubject.getSubjectCode())) {
+        //                 subjectMap.put(newSubject.getSubjectCode(), newSubject);
+        //             }
+        //         }
+                
+        //         existingSem.setSubjects(new ArrayList<>(subjectMap.values()));
+        //     } else {
+        //         semesterMap.put(newSem.getSemesterNumber(), newSem);
+        //     }
+        // }
 
         semesterResults.setSemesters(new ArrayList<>(semesterMap.values()));
         return resultsRepository.save(semesterResults);

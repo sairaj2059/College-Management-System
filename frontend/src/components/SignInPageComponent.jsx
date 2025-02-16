@@ -10,8 +10,7 @@ import {
   InputAdornment,
   IconButton,
   Box,
-  FormHelperText, 
-  Alert,
+  FormHelperText,
 } from "@mui/material";
 import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
@@ -19,17 +18,22 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import login_logo from "../resources/images/Llogo.png";
 import { Typography } from "@mui/material";
-//import axios from "axios";
 //import { useDispatch } from "react-redux";
-//import { URL } from "../resources/Constants";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";
-//import ProtectedRoute from "./ProtectedRoute";
-import { useState,useEffect } from "react";
+import { useState } from "react";
 
 const providers = [{ id: "credentials", name: "Password and Username" }]; //name creates two fields in the ui
 
-function CustomPasswordField({error,setError}) {
+function CustomPasswordField({
+  error,
+  setError,
+  setPassword,
+  password,
+  isFocusedP,
+  setIsFocusedP,
+  setIsFocusedU,
+}) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -38,10 +42,9 @@ function CustomPasswordField({error,setError}) {
     event.preventDefault();
   };
 
-  const handleError = () =>{
-    if(error === true)
-      setError(false)
-  }
+  const handleError = () => {
+    if (error) setError(false);
+  };
 
   return (
     <FormControl sx={{ my: 2 }} fullWidth variant="outlined" error={error}>
@@ -54,7 +57,20 @@ function CustomPasswordField({error,setError}) {
         name="password"
         size="small"
         required
-        onClick={handleError}
+        onClick={() => {
+          setIsFocusedP(true);
+          setIsFocusedU(false);
+        }}
+        onKeyDown={() => {
+          setIsFocusedP(true);
+          setIsFocusedU(false);
+        }}
+        value={password}
+        autoFocus={isFocusedP}
+        onChange={(e) => {
+          setPassword(e.target.value);
+          handleError();
+        }}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
@@ -84,12 +100,18 @@ function CustomPasswordField({error,setError}) {
   );
 }
 
-const CustomUserName = ({error,setError}) => {
-
-  const handleError = () =>{
-    if(error === true )
-      setError(false)
-  }
+const CustomUserName = ({
+  error,
+  setError,
+  username,
+  setUsername,
+  isFocusedU,
+  setIsFocusedU,
+  setIsFocusedP,
+}) => {
+  const handleError = () => {
+    if (error) setError(false);
+  };
 
   return (
     <FormControl sx={{ my: 2 }} fullWidth variant="outlined" error={error}>
@@ -104,8 +126,20 @@ const CustomUserName = ({error,setError}) => {
         label="Username"
         autoComplete="off"
         required
-        onClick={handleError}
-        autoFocus = {!error}
+        onClick={() => {
+          setIsFocusedU(true);
+          setIsFocusedP(false);
+        }}
+        onKeyDown={() => {
+          setIsFocusedU(true);
+          setIsFocusedP(false);
+        }}
+        value={username}
+        onChange={(e) => {
+          setUsername(e.target.value);
+          handleError();
+        }}
+        autoFocus={isFocusedU}
         startAdornment={
           <InputAdornment position="start">
             <PersonIcon sx={{ fontSize: 20 }} />
@@ -124,7 +158,7 @@ function CustomWelcomeText() {
         marginBottom: 2,
         marginTop: 2,
         fontFamily: "LoginFont, sans-serif",
-        fontSize: 'clamp(1.8rem, 2.5vw, 3.5rem)',
+        fontSize: "clamp(1.8rem, 2.5vw, 3.5rem)",
       }}
     >
       Login
@@ -143,8 +177,8 @@ function ForgotPasswordLink() {
           "&:hover": {
             color: "blue",
           },
-          fontWeight:'500',
-          fontSize:'clamp(0.7rem,1vw,2.5rem)',
+          fontWeight: "500",
+          fontSize: "clamp(0.7rem,1vw,2.5rem)",
         }}
       >
         Forgot password?
@@ -168,11 +202,15 @@ const BRANDING = {
   ),
 };
 
-export default function SignInPageComponent({serverError,setServerError}) {
+export default function SignInPageComponent({ serverError, setServerError }) {
   const Theme = useTheme();
   const Noop = () => null;
   const navigate = useNavigate();
   const [error, setError] = useState(false);
+  const [username, setUsername] = useState("");
+  const [isFocusedP, setIsFocusedP] = useState(false);//for handling focus between two fields
+  const [isFocusedU, setIsFocusedU] = useState(false);
+  const [password, setPassword] = useState("");
 
   const SignIn = async (provider, formData) => {
     const { username, password } = Object.fromEntries(formData);
@@ -183,29 +221,27 @@ export default function SignInPageComponent({serverError,setServerError}) {
       console.log(userData);
 
       if (userData.success) {
-        localStorage.setItem('token', userData.token);
-        localStorage.setItem('role', userData.role);
+        localStorage.setItem("token", userData.token);
+        localStorage.setItem("role", userData.role);
 
         if (userData.role === "ADMIN") {
           navigate("/admin");
-        }else if (userData.role === "TEACHER") {
+        } else if (userData.role === "TEACHER") {
           navigate("/teacher");
-        }else if(userData.role === "STUDENT"){
+        } else if (userData.role === "STUDENT") {
           navigate("/student");
-        }else{
+        } else {
           alert("Invalid Login Credentials");
         }
-      }
-      else {
+      } else {
         console.log("error password");
-        setError(true);      
+        setError(true);
       }
-
     } catch (error) {
       console.error("Login failed", error);
       setServerError(true);
       console.log("sairam");
-      }
+    }
   };
 
   return (
@@ -224,10 +260,29 @@ export default function SignInPageComponent({serverError,setServerError}) {
       >
         <SignInPage
           signIn={SignIn}
-
           slots={{
-            emailField: () => <CustomUserName error={error} setError={setError}/>,
-            passwordField: () => <CustomPasswordField error={error} setError={setError}/>,
+            emailField: () => (
+              <CustomUserName
+                error={error}
+                setError={setError}
+                username={username}
+                setUsername={setUsername}
+                isFocusedU={isFocusedU}
+                setIsFocusedU={setIsFocusedU}
+                setIsFocusedP={setIsFocusedP}
+              />
+            ),
+            passwordField: () => (
+              <CustomPasswordField
+                error={error}
+                setError={setError}
+                password={password}
+                setPassword={setPassword}
+                isFocusedP={isFocusedP}
+                setIsFocusedP={setIsFocusedP}
+                setIsFocusedU={setIsFocusedU}
+              />
+            ),
             subtitle: Noop,
             rememberMe: Noop,
             title: CustomWelcomeText,
@@ -235,7 +290,6 @@ export default function SignInPageComponent({serverError,setServerError}) {
           }}
           providers={providers}
         />
-        
       </Box>
     </AppProvider>
   );

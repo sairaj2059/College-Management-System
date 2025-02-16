@@ -99,7 +99,7 @@ public class AdminController {
         } else {
             response.put("success", false);
             response.put("token", "Invalid Credentials");
-            return ResponseEntity.status(404).body(response);
+            return ResponseEntity.ok(response);
         }
     }
 }
