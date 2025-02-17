@@ -223,12 +223,13 @@ export default function SignInPageComponent({ serverError, setServerError }) {
       if (userData.success) {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role);
+        localStorage.setItem("username", username);
 
-        if (userData.role === "ADMIN") {
+        if (userData.role === "ROLE_ADMIN") {
           navigate("/admin");
-        } else if (userData.role === "TEACHER") {
+        } else if (userData.role === "ROLE_TEACHER") {
           navigate("/teacher");
-        } else if (userData.role === "STUDENT") {
+        } else if (userData.role === "ROLE_STUDENT") {
           navigate("/student");
         } else {
           alert("Invalid Login Credentials");

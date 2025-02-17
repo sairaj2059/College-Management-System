@@ -8,13 +8,13 @@ function ProtectedRoute({ roleRequired = null }) {
 
   if(roleRequired){
     switch(roleRequired){
-        case "ADMIN":
+        case "ROLE_ADMIN":
             return UserService.isAdmin()? <Outlet/> :<Navigate to={"/"}/>;
         
-        case "STUDENT":
+        case "ROLE_STUDENT":
             return UserService.isStudent()? <Outlet/> : <Navigate to={"/"}/>;
             
-        case "TEACHER":
+        case "ROLE_TEACHER":
             return UserService.isTeacher()? <Outlet/> : <Navigate to={"/"}/>;
 
         default:

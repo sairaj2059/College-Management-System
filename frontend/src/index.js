@@ -9,7 +9,7 @@ import { StyledEngineProvider } from "@mui/material/styles";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+
     <StyledEngineProvider injectFirst>
       <BrowserRouter>
         <Provider store={store}>
@@ -17,5 +17,4 @@ root.render(
         </Provider>
       </BrowserRouter>
     </StyledEngineProvider>
-  </React.StrictMode>
 );

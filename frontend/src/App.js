@@ -22,17 +22,17 @@ function App() {
       <Route path="/" element={<Login />} />
 
       {/* Admin Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"ADMIN"} />}>
+      <Route element={<ProtectedRoute roleRequired={"ROLE_ADMIN"} />}>
         <Route path="/admin/*" element={<AdminDasboard />} />
       </Route>
 
       {/* Student Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"STUDENT"} />}>
+      <Route element={<ProtectedRoute roleRequired={"ROLE_STUDENT"} />}>
         <Route path="/student/*" element={<StudentDashboard />} />
       </Route>
 
       {/* Teacher Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
+      <Route element={<ProtectedRoute roleRequired={"ROLE_TEACHER"} />}>
         <Route path="/teacher/*" element={<TeacherDashboard />} />
       </Route>
 

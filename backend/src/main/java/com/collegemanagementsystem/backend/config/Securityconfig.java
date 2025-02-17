@@ -27,14 +27,16 @@ public class Securityconfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.csrf(customizer -> customizer.disable());
+        http.csrf(customizer -> customizer.disable())
+        .cors(Customizer.withDefaults());
 
         http.authorizeHttpRequests(request -> request
-                .requestMatchers("/login", "/register").permitAll() // Allow registration and login
-                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN") // ✅ Use hasAuthority
+                .requestMatchers("/login", "/register").permitAll()
+                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                 .requestMatchers("/teacher/**").hasAuthority("ROLE_TEACHER")
                 .requestMatchers("/student/**").hasAuthority("ROLE_STUDENT")
-                .anyRequest().authenticated()); // All other requests require authentication
+                .requestMatchers("/chat/**").permitAll()
+                .anyRequest().authenticated());
 
         http.httpBasic(Customizer.withDefaults());
 

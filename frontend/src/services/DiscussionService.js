@@ -7,16 +7,14 @@ class DiscussionService {
     const token = localStorage.getItem("token");
     try {
       const response = await axios.get(
-        `${DiscussionService.BASE_URL}/discussion/${groupId}/messages`,
+        `${DiscussionService.BASE_URL}/getMessages/${groupId}?regdNo=CS2021001`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-
         }
       );
-      console.log(response.data);
       return response.data
     } catch (error) {
       console.log(error);

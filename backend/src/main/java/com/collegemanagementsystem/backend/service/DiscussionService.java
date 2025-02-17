@@ -12,6 +12,7 @@ import com.collegemanagementsystem.backend.dto.AddMember;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student;
 import com.collegemanagementsystem.backend.model.ClasswiseStudent;
 import com.collegemanagementsystem.backend.model.Discussion;
+import com.collegemanagementsystem.backend.model.Discussion.Message;
 import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.repository.ClasswiseStudentRepository;
 import com.collegemanagementsystem.backend.repository.DiscussionRepository;
@@ -104,6 +105,17 @@ public class DiscussionService {
         discussionRepository.save(group);
 
         return ResponseEntity.ok().body("Added");
+    }
+
+    public ResponseEntity<List<Message>> getMessageByGroupId( String groupId, String regdNo) {
+        Discussion discussion = discussionRepository.findByGroupId(groupId);
+        if (discussion.getParticipants().stream()
+        .anyMatch(p->p.getRegdNo().equals(regdNo))) {
+            return ResponseEntity.ok().body(discussion.getMessages());
+        }
+        else{
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
 }
