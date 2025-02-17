@@ -310,13 +310,12 @@
 //   );
 // }
 
-// export default StudentDashboard;
 import React from "react";
 import { Box, Stack } from "@mui/material";
 import SAttendance from "../components/SAttendance";
 import StudentProfile from "../components/StudentProfile";
 import PerformanceChart from "../components/PerformanceChart";
-import Calendar from "../components/Calendar";
+import Calendar from "../components/Calendars";
 import ExamResultCard from "../components/ExamResultCard";
 import Faculty from "../components/Faculty";
 
@@ -330,48 +329,87 @@ function StudentDashboard() {
         gap: 4,
         p: 3,
         width: "100%",
+        maxWidth: "1200px",
+        margin: "0 auto"
       }}
-      
     >
-      {/* Top Stack - Profile, Attendance, Calendar */}
-      <Stack
-        direction={{ xs: "column", md: "row" }}
-        spacing={3}
-        sx={{ width: "100%", justifyContent: "center", flexWrap: "wrap" }}
-      >
-        <Box sx={{ width: { xs: "100%", md: "30%" } }}>
-          <StudentProfile />
-        </Box>
-        <Box sx={{ width: { xs: "100%", md: "30%" }, display: "flex", justifyContent: "center" }}>
-          <SAttendance />
-        </Box>
-        <Box sx={{ width: { xs: "100%", md: "30%" } }}>
-          <Calendar />
-        </Box>
-      </Stack>
-
-      {/* Bottom Stack - Performance Chart & Exam Result */}
+      {/* Top Stack - Student Info */}
       <Stack
         direction={{ xs: "column", md: "row" }}
         spacing={3}
         sx={{
           width: "100%",
           justifyContent: "space-between",
-          alignItems: "center",
           flexWrap: "wrap",
         }}
       >
-        {/* Performance Chart */}
-        <Box sx={{ width: { xs: "100%", md: "65%" } }}>
-          <PerformanceChart />
+        <Box
+          sx={{
+            width: { xs: "100%", md: "32%" },
+            minHeight: "400px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <StudentProfile />
         </Box>
-
-        {/* Exam Result Card */}
-        <Box sx={{ width: { xs: "100%", md: "30%" }, display: "flex", justifyContent: "center" }}>
-          <ExamResultCard />
+        <Box
+          sx={{
+            width: { xs: "100%", md: "32%" },
+            minHeight: "400px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <SAttendance />
+        </Box>
+        <Box
+          sx={{
+            width: { xs: "100%", md: "32%" },
+            minHeight: "400px",
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <Calendar />
         </Box>
       </Stack>
-      <Box sx={{ width: "100%", mt: 3 }}>
+
+      {/* Bottom Stack - Performance & Exam Result */}
+      <Stack
+        direction={{ xs: "column", md: "row" }}
+        spacing={3}
+        sx={{
+          width: "100%",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+        }}
+      >
+        <Box
+          sx={{
+            width: "100%",
+            maxWidth: "1200px",
+            margin: "0 auto",
+            mt: 4,
+            mb: 4,
+          }}
+        >
+          <PerformanceChart />
+        </Box>
+      </Stack>
+
+      {/* Faculty Section */}
+      <Box
+        sx={{
+          width: "100%",
+          mt: 3,
+          maxWidth: "1200px",
+          margin: "0 auto",
+        }}
+      >
         <Faculty />
       </Box>
     </Box>
@@ -379,3 +417,4 @@ function StudentDashboard() {
 }
 
 export default StudentDashboard;
+

@@ -9,7 +9,7 @@ const data = [
 
 const Attendance = () => {
   return (
-    <Card>
+    <Card >
       <CardContent>
         <Typography variant="h6">Attendance</Typography>
         <PieChart width={200} height={200}>
