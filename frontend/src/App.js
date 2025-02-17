@@ -14,6 +14,8 @@ import RegisterUser from "./pages/RegisterUser";
 import ExamResults from "./components/ExamResults";
 import Discussion from "./pages/Discussion";
 
+import { NavigationBar } from "./pages/NavigationBar";
+
 function App() {
   return (
     <Routes>
@@ -42,6 +44,7 @@ function App() {
       <Route path="/test1" element={<Discussion />}></Route>
     
       <Route path="/exam" element={<ExamResults/>}/>
+      <Route path="/nav" element={<NavigationBar/>}/>
     </Routes>
   );
 }

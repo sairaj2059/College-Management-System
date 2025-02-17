@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Stack, Typography, Card, CardContent, Divider } from "@mui/material";
-import Calendar from "../components/Calendar";
+import Calendar from "../components/Calendars";
 import TodayClasses from "../components/TodayClasses";
 import LessonPlan from "../components/LessonPlan";
 import StudentProgress from "../components/StudentProgress";
