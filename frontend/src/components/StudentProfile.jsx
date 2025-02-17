@@ -21,7 +21,11 @@ function StudentProfile() {
         overflow: { xs: "auto", sm: "initial" },
       }}
     >
+
+
       <Card orientation="horizontal" sx={{ width: "100%" }}>
+
+
         <AspectRatio flex ratio="1" maxHeight={182} sx={{ minWidth: 182 }}>
           <img src={profileImage} loading="lazy" alt="Jai sairam" />
         </AspectRatio>
@@ -65,6 +69,7 @@ function StudentProfile() {
               <Typography sx={{ fontWeight: "lg" }}>{UserData.year}</Typography>
             </div>
             <div>
+
               <Typography level="body-xs" sx={{ fontWeight: "lg" }}>
                 Semester
               </Typography>
