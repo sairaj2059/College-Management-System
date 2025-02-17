@@ -2,11 +2,12 @@ import * as React from "react";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { DropdownComponent } from "./DropdownComponent";
-import PersonPinIcon from "@mui/icons-material/PersonPin";
 import { Avatar, Box, Typography } from "@mui/material";
 import home from "../resources/images/home.png";
-import examIcon from "../resources/images/exam.png"
+import examIcon from "../resources/images/exam.png";
 import SchoolSharpIcon from "@mui/icons-material/SchoolSharp";
+import Divider from "@mui/material/Divider";
+import { MessageOutlined } from "@ant-design/icons";
 
 export default function NavBarComponent() {
   const [value, setValue] = React.useState(0);
@@ -37,7 +38,7 @@ export default function NavBarComponent() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          marginTop:'5px'
+          marginTop: "5px",
         }}
       >
         <SchoolSharpIcon fontSize="large" />
@@ -51,18 +52,29 @@ export default function NavBarComponent() {
             }
             aria-label="home"
           />
-          <Tab icon={
-              <img src={examIcon} alt="exam" style={{ width: 25, height: 25,fontWeight: '500' }} />
+          <Tab
+            icon={
+              <img
+                src={examIcon}
+                alt="exam"
+                style={{ width: 25, height: 25, fontWeight: "500" }}
+              />
             }
-            aria-label="exam" />
-          <Tab icon={<PersonPinIcon />} aria-label="person" />
+            aria-label="exam"
+          />
+          <Tab
+            icon={
+              <MessageOutlined style={{ fontSize: "24px", color: "rgb(40, 40, 40)" }} />
+            }
+            aria-label="mesaages"
+          />
         </Tabs>
       </Box>
       <Box
         sx={{
           display: "flex",
           alignItems: "center",
-          width: "18%",
+          width: "20%",
           height: "100%",
           justifyContent: "space-around",
           backgroundColor: "transparent",
@@ -78,8 +90,11 @@ export default function NavBarComponent() {
             gap: { xs: "4px", sm: "6px", md: "10px", lg: "14px" },
           }}
         >
+          <Box sx={{ display: "flex", alignItems: "center" }}>
+            <Divider orientation="vertical" flexItem sx={{ height: "5vh" }} />
+          </Box>
           <Box>
-            <Avatar src="/broken-image.jpg" sx={{ width: 48, height: 48 }} />
+            <Avatar src="/broken-image.jpg" sx={{ width: 47, height: 47 }} />
           </Box>
           <Box
             sx={{

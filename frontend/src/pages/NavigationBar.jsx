@@ -10,10 +10,11 @@ export const NavigationBar = () => {
         flexDirection: "column",
         height: "100vh",
         width: "100vw",
-        backgroundColor: "#74c0fc",
+        background:' linear-gradient(to bottom, #74c0fc, #4263eb)',//linear-gradient(to right, #74c0fc, #ff758f); optional
         alignItems: "center",
         justifyContent: "center",
         //gap: "clamp(2px, 1vw, 4px)",
+        paddingTop:{ xs: "4px", sm: "10px" },
       }}
     >
       <Box sx={{ width: "100%", height: "8%", backgroundColor: "transparent" }}>

@@ -316,7 +316,6 @@ import SAttendance from "../components/SAttendance";
 import StudentProfile from "../components/StudentProfile";
 import PerformanceChart from "../components/PerformanceChart";
 import Calendar from "../components/Calendars";
-import ExamResultCard from "../components/ExamResultCard";
 import Faculty from "../components/Faculty";
 
 function StudentDashboard() {
@@ -402,7 +401,7 @@ function StudentDashboard() {
 
         {/* Exam Result Card */}
         <Box sx={{ width: { xs: "100%", md: "30%" }, display: "flex", justifyContent: "center" }}>
-          <ExamResultCard />
+          {/* <ExamResultCard /> */}
         </Box>
       </Stack>
 
