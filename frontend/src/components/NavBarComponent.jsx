@@ -1,0 +1,122 @@
+import * as React from "react";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
+import { DropdownComponent } from "./DropdownComponent";
+import PersonPinIcon from "@mui/icons-material/PersonPin";
+import { Avatar, Box, Typography } from "@mui/material";
+import home from "../resources/images/home.png";
+import examIcon from "../resources/images/exam.png"
+import SchoolSharpIcon from "@mui/icons-material/SchoolSharp";
+
+export default function NavBarComponent() {
+  const [value, setValue] = React.useState(0);
+  const Username = "kokonda Shree Shyam sundar";
+  const EmailId = "keshav@123";
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
+
+  return (
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        justifyContent: "space-between",
+        alignItems: "center",
+        height: "100%",
+        width: "100%",
+      }}
+    >
+      <Box
+        sx={{
+          width: "10%",
+          height: "100%",
+          // backgroundColor: "red",
+          margin: "4px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginTop:'5px'
+        }}
+      >
+        <SchoolSharpIcon fontSize="large" />
+      </Box>
+
+      <Box>
+        <Tabs value={value} onChange={handleChange} aria-label="navigation">
+          <Tab
+            icon={
+              <img src={home} alt="home" style={{ width: 24, height: 24 }} />
+            }
+            aria-label="home"
+          />
+          <Tab icon={
+              <img src={examIcon} alt="exam" style={{ width: 25, height: 25,fontWeight: '500' }} />
+            }
+            aria-label="exam" />
+          <Tab icon={<PersonPinIcon />} aria-label="person" />
+        </Tabs>
+      </Box>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          width: "18%",
+          height: "100%",
+          justifyContent: "space-around",
+          backgroundColor: "transparent",
+          paddingRight: { xs: "3px", sm: "7px" },
+        }}
+      >
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            // justifyContent: "space-evenly",
+            width: "80%",
+            gap: { xs: "4px", sm: "6px", md: "10px", lg: "14px" },
+          }}
+        >
+          <Box>
+            <Avatar src="/broken-image.jpg" sx={{ width: 48, height: 48 }} />
+          </Box>
+          <Box
+            sx={{
+              fontFamily: "sans-serif",
+              marginTop: { xs: "2px", sm: "4px", md: "6px", lg: "8px" },
+            }}
+          >
+            <Typography
+              sx={{
+                fontSize: { xs: "10px", sm: "12px", md: "14px" },
+                fontWeight: 500,
+              }}
+            >
+              {Username}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: { xs: "8px", sm: "10px", md: "12px" },
+                color: "text.secondary",
+                fontWeight: 400,
+              }}
+            >
+              {EmailId}
+            </Typography>
+          </Box>
+        </Box>
+        <Box
+          sx={{
+            width: "10%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <DropdownComponent />
+        </Box>
+      </Box>
+    </Box>
+  );
+}
