@@ -32,9 +32,9 @@ public class Securityconfig {
 
         http.authorizeHttpRequests(request -> request
                 .requestMatchers("/login", "/register").permitAll()
-                .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
-                .requestMatchers("/teacher/**").hasAuthority("ROLE_TEACHER")
-                .requestMatchers("/student/**").hasAuthority("ROLE_STUDENT")
+                .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/teacher/**").hasRole("TEACHER")
+                .requestMatchers("/student/**").hasRole("STUDENT")
                 .requestMatchers("/chat/**").permitAll()
                 .anyRequest().authenticated());
 

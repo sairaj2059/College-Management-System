@@ -48,7 +48,7 @@ public String verify(UserAuth student) {
 
         if (authentication.isAuthenticated()) {
             logger.info("User authenticated successfully: " + user.getUsername() + " with role: " + user.getRole());
-            return jwtService.generateToken(user.getUsername(), "ROLE_"+ user.getRole());
+            return jwtService.generateToken(user.getUsername(), user.getRole());
         } else {
             logger.warn("Authentication failed for user: " + student.getUsername());
             return "fail";

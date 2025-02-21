@@ -3,8 +3,6 @@ import { Routes, Route } from "react-router-dom";
 // import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 // import Home from "./pages/Home";
- import PageNotFound from "./pages/PageNotFound";
-import ResetPassword from "./pages/ResetPassword";
 import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
@@ -15,6 +13,7 @@ import ExamResults from "./components/ExamResults";
 import Discussion from "./pages/Discussion";
 
 import { NavigationBar } from "./pages/NavigationBar";
+import AddSubject from "./components/AddSubject";
 
 function App() {
   return (
@@ -24,17 +23,17 @@ function App() {
       <Route path="/" element={<Login />} />
 
       {/* Admin Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"ROLE_ADMIN"} />}>
+      <Route element={<ProtectedRoute roleRequired={"ADMIN"} />}>
         <Route path="/admin/*" element={<AdminDasboard />} />
       </Route>
 
       {/* Student Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"ROLE_STUDENT"} />}>
+      <Route element={<ProtectedRoute roleRequired={"STUDENT"} />}>
         <Route path="/student/*" element={<StudentDashboard />} />
       </Route>
 
       {/* Teacher Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"ROLE_TEACHER"} />}>
+      <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
         <Route path="/teacher/*" element={<TeacherDashboard />} />
       </Route>
 
@@ -45,6 +44,7 @@ function App() {
     
       <Route path="/exam" element={<ExamResults/>}/>
       <Route path="/nav" element={<NavigationBar/>}/>
+      <Route path="/addsubject" element={<AddSubject/>}/>
     </Routes>
   );
 }

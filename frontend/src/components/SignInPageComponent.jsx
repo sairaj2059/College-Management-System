@@ -225,11 +225,11 @@ export default function SignInPageComponent({ serverError, setServerError }) {
         localStorage.setItem("role", userData.role);
         localStorage.setItem("username", username);
 
-        if (userData.role === "ROLE_ADMIN") {
+        if (userData.role === "ADMIN") {
           navigate("/admin");
-        } else if (userData.role === "ROLE_TEACHER") {
+        } else if (userData.role === "TEACHER") {
           navigate("/teacher");
-        } else if (userData.role === "ROLE_STUDENT") {
+        } else if (userData.role === "STUDENT") {
           navigate("/student");
         } else {
           alert("Invalid Login Credentials");

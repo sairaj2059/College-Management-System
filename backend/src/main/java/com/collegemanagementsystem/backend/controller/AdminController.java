@@ -1,7 +1,9 @@
 package com.collegemanagementsystem.backend.controller;
 
+import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.model.UserAuth;
 import com.collegemanagementsystem.backend.service.AdminService;
+import com.collegemanagementsystem.backend.service.AdministratorService;
 import com.collegemanagementsystem.backend.service.JWTService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "*")
 public class AdminController {
     
     @Autowired
@@ -21,6 +22,9 @@ public class AdminController {
 
     @Autowired
     private JWTService jwtService;
+
+    @Autowired
+    private AdministratorService administratorService;
 
     @PreAuthorize("hasAuthority('ADMIN')")
     @GetMapping("/dashboard")
@@ -51,5 +55,10 @@ public class AdminController {
             response.put("token", "Invalid Credentials");
             return ResponseEntity.ok(response);
         }
+    }
+
+    @PostMapping("/addStudent")
+    public ResponseEntity<?> addStudentByForm(@RequestBody StudentDetails studentDetails) {
+        return administratorService.addStudentByForm(studentDetails);
     }
 }
