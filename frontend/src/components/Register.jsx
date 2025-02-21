@@ -17,12 +17,8 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import login_logo from "../resources/images/Llogo.png";
 import { Typography } from "@mui/material";
-import axios from "axios";
-//import { useDispatch } from "react-redux";
-import { URL } from "../resources/Constants";
-import { data, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";
-import ProtectedRoute from "./ProtectedRoute";
 
 const providers = [{ id: "credentials", name: "Password and Username" }]; //name creates two fields in the ui
 

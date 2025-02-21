@@ -225,6 +225,7 @@ export default function SignInPageComponent({ serverError, setServerError }) {
       if (userData.success) {
         localStorage.setItem("token", userData.token);
         localStorage.setItem("role", userData.role);
+        localStorage.setItem("username", username);
 
         if (userData.role === "ADMIN") {
           navigate("/admin");

@@ -9,7 +9,6 @@ import {
   courses,
   tempDiscussionSidebar,
   tempMessages,
-  UserData,
 } from "../resources/DataList";
 import Textarea from "@mui/joy/Textarea";
 import SendIcon from "@mui/icons-material/Send";
@@ -24,20 +23,13 @@ import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownR
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import FileDownloadRounded from "@mui/icons-material/FileDownloadRounded";
 import PreviewRounded from "@mui/icons-material/VisibilityOutlined";
+import SockJS from "sockjs-client";
+import { Stomp } from "@stomp/stompjs";
 
 import Avatar from "@mui/joy/Avatar";
 import AvatarGroup from "@mui/joy/AvatarGroup";
-import {
-  CardHeader,
-  CardMedia,
-  Collapse,
-  FormControl,
-  FormLabel,
-  List,
-  ListItem,
-} from "@mui/material";
+import { Collapse, FormControl, FormLabel } from "@mui/material";
 
-import CardCover from "@mui/joy/CardCover";
 import DiscussionService from "../services/DiscussionService";
 import Button from "@mui/joy/Button";
 import UserService from "../services/UserService";
@@ -50,8 +42,28 @@ function Discussion() {
   const [toggleInfoWindow, setToggleInfoWindow] = useState(false);
   const [toggleMemberIcon, setToggleMemberIcon] = useState(false);
   const [toggleAttachmentIcon, setToggleAttachmentIcon] = useState(false);
+  const [groupId, setgroupId] = useState("cs_discussion_01");
+  const [stompClient, setStompClient] = useState(null);
+  const [input, setInput] = useState("");
+  const [messages, setMessages] = useState([
+    {
+      id: "msg01",
+      sender: "Prof. Sita Sharma",
+      message:
+        "Welcome to the Computer Science discussion group. Let's start with the basics of algorithms.",
+      timestamp: "2025-02-11T09:00:00Z",
+      avatar: "SS",
+    },
+    {
+      id: "msg02",
+      sender: "raj1",
+      message: "Professor, could you explain the concept of time complexity?",
+      timestamp: "2025-02-11T09:05:00Z",
+      avatar: "RG",
+    },
+  ]);
 
-  const user = "Raj Guragain";
+  const currentUser = localStorage.getItem("username");
   // const groupId = "67a9d177de4a6b84a7c86873";
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -72,8 +84,49 @@ function Discussion() {
   };
 
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [toggleSmallWindow]);
+    const connectWebSocket = () => {
+      const token = localStorage.getItem("token");
+      const sock = new SockJS(`${UserService.BASE_URL}/chat?token=${token}`);
+      const client = Stomp.over(sock);
+
+      client.connect({}, () => {
+        setStompClient(client);
+        client.subscribe(`/topic/group/${groupId}`, (message) => {
+          const newMessage = JSON.parse(message.body);
+          console.log(newMessage);
+          setMessages((prev) => [...prev, newMessage]);
+        });
+      });
+    };
+
+    connectWebSocket();
+  }, [groupId]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response = await DiscussionService.getMessages(groupId);
+      setMessages(response);
+    }
+    fetchData();
+  }, [groupId]);
+  const sendMessage = async()=>{
+    if (stompClient) {
+      console.log(input);
+      
+      const message = {
+        sender: currentUser,
+        message : input,
+        groupId : groupId
+      }
+
+      stompClient.send(`/app/sendMessage/${groupId}`, {}, JSON.stringify(message), {});
+      console.log(JSON.stringify(message));
+      setInput("");
+    }
+  }
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
+  }, [messages, toggleSmallWindow]);
 
   return (
     <Box
@@ -240,7 +293,7 @@ function Discussion() {
                       endDecorator={
                         <Button
                           sx={{
-                            marginRight:1,
+                            marginRight: 1,
                             backgroundColor: "#e0e0e0",
                             color: "black",
                             ":hover": { background: "white" },
@@ -279,7 +332,7 @@ function Discussion() {
                 height: "100%",
               }}
             >
-              <Card sx={{ m: "10%", height: "30vh", gap: 2 }}>
+              <Card sx={{ m: "10%", width: "30vw", height: "30vh", gap: 2 }}>
                 <Box
                   sx={{
                     display: "flex",
@@ -309,7 +362,11 @@ function Discussion() {
 
                 <Button
                   onClick={handleSmallWindow}
-                  sx={{ width: 200, alignSelf: "center" }}
+                  sx={{
+                    width: 200,
+                    alignSelf: "center",
+                    justifySelf: "center",
+                  }}
                 >
                   Join Room
                 </Button>
@@ -324,7 +381,7 @@ function Discussion() {
               display: "flex",
               flexDirection: "column",
               height: "100%",
-              width:'auto'
+              width: "auto",
             }}
           >
             <Box
@@ -365,18 +422,18 @@ function Discussion() {
                 gap: 2,
               }}
             >
-              {tempMessages.map((msg) => (
+              {messages.map((msg) => (
                 <Box
                   key={msg.id}
                   sx={{
-                    alignSelf: msg.sender === user ? "flex-end" : "flex-start",
+                    alignSelf: msg.sender === currentUser ? "flex-end" : "flex-start",
                     display: "flex",
                     alignItems: "flex-end",
-                    flexDirection: msg.sender === user ? "row-reverse" : "row",
+                    flexDirection: msg.sender === currentUser ? "row-reverse" : "row",
                   }}
                 >
                   <Stack
-                    direction={msg.sender === user ? "row-reverse" : "row"}
+                    direction={msg.sender === currentUser ? "row-reverse" : "row"}
                     alignItems={"flex-end"}
                   >
                     <Avatar
@@ -384,7 +441,7 @@ function Discussion() {
                       variant="solid"
                       sx={{
                         bgcolor:
-                          msg.sender === user ? "primary.500" : "neutral.500",
+                          msg.sender === currentUser ? "primary.500" : "neutral.500",
                       }}
                     >
                       {msg.avatar}
@@ -397,12 +454,12 @@ function Discussion() {
                         {msg.sender}
                       </Typography>
                       <Card
-                        variant={msg.sender === user ? "solid" : "soft"}
-                        color={msg.sender === user ? "primary" : "neutral"}
+                        variant={msg.sender === currentUser ? "solid" : "soft"}
+                        color={msg.sender === currentUser ? "primary" : "neutral"}
                         sx={{
                           p: 1,
                           "--Card-radius":
-                            msg.sender === user
+                            msg.sender === currentUser
                               ? "16px 16px 0 16px"
                               : "16px 16px 16px 0",
                           boxShadow: "sm",
@@ -431,6 +488,8 @@ function Discussion() {
             >
               <Textarea
                 placeholder="Type a message..."
+                value={input}
+                onChange={(e)=>{setInput(e.target.value)}}
                 minRows={1}
                 maxRows={4}
                 sx={{ flex: 1 }}
@@ -451,7 +510,7 @@ function Discussion() {
               <IconButton size="lg" variant="plain">
                 <MicIcon />
               </IconButton>
-              <IconButton size="lg" variant="solid" color="primary">
+              <IconButton onClick={sendMessage} size="lg" variant="solid" color="primary">
                 <SendIcon />
               </IconButton>
             </Box>

@@ -11,7 +11,7 @@ import "antd/dist/reset.css";  // For Ant Design v5+
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <React.StrictMode>
+
     <StyledEngineProvider injectFirst>
       <BrowserRouter>
         <Provider store={store}>
@@ -19,5 +19,4 @@ root.render(
         </Provider>
       </BrowserRouter>
     </StyledEngineProvider>
-  </React.StrictMode>
 );

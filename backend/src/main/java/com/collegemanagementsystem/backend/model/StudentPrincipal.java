@@ -18,7 +18,7 @@ public class StudentPrincipal implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         // Use student.getRole() which is a String, not Set<String>
-        return List.of(new SimpleGrantedAuthority("ROLE_" + student.getRole()));
+        return List.of(new SimpleGrantedAuthority( "ROLE_"+student.getRole()));
     }
 
     @Override

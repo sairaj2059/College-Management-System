@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Stack, Typography, Card, CardContent, Divider } from "@mui/material";
+import { Box, Stack, Typography, Card, CardContent } from "@mui/material";
 import Calendar from "../components/Calendars";
 import TodayClasses from "../components/TodayClasses";
 import LessonPlan from "../components/LessonPlan";
@@ -7,7 +7,6 @@ import StudentProgress from "../components/StudentProgress";
 import Attendance from "../components/Attendance";
 import StudentMarks from "../components/StudentMarks";
 import UpcomingEvents from "../components/UpcomingEvents";
-import SidebarTech from "../components/SidebarTech";
 import TeacherProfile from "../components/TeacherProfile";
 const TeacherDashboard = () => {
   return (

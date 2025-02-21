@@ -39,9 +39,9 @@ public class JWTService {
         return Jwts.builder()
                 .claims(claims)
                 .subject(username)
-                .claim("role", role) // Add roles to the token
+                .claim("role", role)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000)) // Set expiration (1 hour)
+                .expiration(new Date(System.currentTimeMillis() + 60 * 60 * 1000))
                 .signWith(getKey())
                 .compact();
 
@@ -70,7 +70,7 @@ public class JWTService {
         return (userName.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
     public String extractRole(String token) {
-        return extractClaim(token, claims -> claims.get("role", String.class));  // Extract the role claim
+        return extractClaim(token, claims -> claims.get("role", String.class)); 
     }
     private boolean isTokenExpired(String token) {
         return extractExpiration(token).before(new Date());

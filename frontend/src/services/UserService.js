@@ -17,22 +17,20 @@ class UserService{
     }
   }
 
-  static async registerUser(formData) {
+  static async addStudent(formData) {
+    const token = localStorage.getItem("token");
+    console.log(token);
+    
     try {
-      const response = await axios.post(
-        `${UserService.BASE_URL}/register`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      return response.status
+      const response = await axios.post(`${UserService.BASE_URL}/addStudent`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+      return response.data;
     } catch (error) {
-        console.error(error)
-        throw error;
-        
+        console.log(error);
     }
   }
 
