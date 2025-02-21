@@ -16,7 +16,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
-import login_logo from "../resources/images/Llogo.png";
+import login_logo from "../resources/images/Llogo.webp";
 import { Typography } from "@mui/material";
 //import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -33,9 +33,9 @@ function CustomPasswordField({
   isFocusedP,
   setIsFocusedP,
   setIsFocusedU,
+  showPassword,
+  setShowPassword
 }) {
-  const [showPassword, setShowPassword] = React.useState(false);
-
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   const handleMouseDownPassword = (event) => {
@@ -193,9 +193,10 @@ const BRANDING = {
       src={login_logo}
       alt="sssihl logo"
       style={{
-        height: "14vh",
-        maxWidth: "100%",
-        maxHeight: "120px",
+        height: "24%",
+        //maxWidth: "100",
+        //maxHeight: "120",
+        //aspectRatio:'1/1',
         width: "auto",
       }}
     />
@@ -211,6 +212,7 @@ export default function SignInPageComponent({ serverError, setServerError }) {
   const [isFocusedP, setIsFocusedP] = useState(false);//for handling focus between two fields
   const [isFocusedU, setIsFocusedU] = useState(false);
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const SignIn = async (provider, formData) => {
     const { username, password } = Object.fromEntries(formData);
@@ -281,6 +283,8 @@ export default function SignInPageComponent({ serverError, setServerError }) {
                 isFocusedP={isFocusedP}
                 setIsFocusedP={setIsFocusedP}
                 setIsFocusedU={setIsFocusedU}
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
               />
             ),
             subtitle: Noop,

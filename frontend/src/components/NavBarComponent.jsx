@@ -8,6 +8,7 @@ import examIcon from "../resources/images/exam.png";
 import SchoolSharpIcon from "@mui/icons-material/SchoolSharp";
 import Divider from "@mui/material/Divider";
 import { MessageOutlined } from "@ant-design/icons";
+import Tooltip from '@mui/material/Tooltip';
 
 export default function NavBarComponent() {
   const [value, setValue] = React.useState(0);
@@ -45,13 +46,18 @@ export default function NavBarComponent() {
       </Box>
 
       <Box>
+
         <Tabs value={value} onChange={handleChange} aria-label="navigation">
+
+          <Tooltip title="Home">
           <Tab
             icon={
               <img src={home} alt="home" style={{ width: 24, height: 24 }} />
             }
             aria-label="home"
-          />
+          /></Tooltip>
+
+          <Tooltip title="Exam">
           <Tab
             icon={
               <img
@@ -62,12 +68,17 @@ export default function NavBarComponent() {
             }
             aria-label="exam"
           />
+          </Tooltip>
+
+          <Tooltip title="Messages">
           <Tab
             icon={
               <MessageOutlined style={{ fontSize: "24px", color: "rgb(40, 40, 40)" }} />
             }
             aria-label="mesaages"
           />
+          </Tooltip>
+
         </Tabs>
       </Box>
       <Box
