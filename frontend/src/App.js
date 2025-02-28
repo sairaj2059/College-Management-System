@@ -8,12 +8,12 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 //import ResetPasswordComponent from "./components/ResetPasswordComponent";
-import RegisterUser from "./pages/RegisterUser";
 import ExamResults from "./components/ExamResults";
 import Discussion from "./pages/Discussion";
 
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
+import Students from "./pages/Students";
 
 function App() {
   return (
@@ -38,7 +38,7 @@ function App() {
       </Route>
 
 
-      <Route path="/register-user" element={<RegisterUser />} />
+      <Route path="/register-user" element={<Students />} />
       <Route path="/test" element={<StudentDashboard />}></Route>
       <Route path="/test1" element={<Discussion />}></Route>
     
