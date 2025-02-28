@@ -3,53 +3,107 @@ import { Card, CardContent, Typography, Stack, Box, useMediaQuery } from "@mui/m
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 
 const data = [
-  { name: "Present", value: 25, color: "#4caf50" },
-  { name: "Absent", value: 2, color: "#f44336" },
-  { name: "Late", value: 3, color: "#ff9800" },
+  { name: "Present", value: 25, color: "#2563eb" }, // Blue
+  { name: "Absent", value: 2, color: "#dc2626" }, // Red
+  { name: "Late", value: 3, color: "#eab308" }, // Yellow
 ];
 
 const SAttendance = () => {
   const isSmallScreen = useMediaQuery("(max-width:500px)");
 
   return (
-    <Card sx={{ width: "100%", maxWidth: 300, mx: "auto", boxShadow: 3, height: "auto" }}>
-
-
-      <CardContent sx={{ p: 1 }}> {/* Reduced padding */}
-        <Typography variant="h6" align="center" sx={{ mb: 1 }}> {/* Reduced font size and margin */}
+    <Card 
+      sx={{ 
+        width: "100%", 
+        boxShadow: 3, 
+        height: "100%",
+        bgcolor: "white",
+        borderRadius: 2,
+      }}
+    >
+      <CardContent>
+        <Typography 
+          variant="h6" 
+          align="center" 
+          gutterBottom
+          sx={{ 
+            color: "#1e40af",
+            fontWeight: "bold",
+            mb: 3
+          }}
+        >
           Attendance
         </Typography>
 
-        {/* Legend Section */}
         <Stack
           direction={isSmallScreen ? "column" : "row"}
-          spacing={1}  // Reduced spacing
+          spacing={2}
           alignItems="center"
           justifyContent="center"
-          sx={{ mt: 1 }}
+          sx={{ mb: 2 }}
         >
           {data.map((entry, index) => (
-            <Stack key={index} direction="row" alignItems="center" spacing={0.5}>
-              <Box sx={{ width: 6, height: 6, bgcolor: entry.color, borderRadius: "50%" }} />
-              <Typography variant="caption">{entry.name}</Typography> {/* Smaller text */}
+            <Stack 
+              key={index} 
+              direction="row" 
+              alignItems="center" 
+              spacing={1}
+              sx={{
+                bgcolor: "#f0f9ff",
+                px: 2,
+                py: 0.5,
+                borderRadius: "20px",
+              }}
+            >
+              <Box 
+                sx={{ 
+                  width: 12, 
+                  height: 12, 
+                  bgcolor: entry.color, 
+                  borderRadius: "50%",
+                  border: "2px solid white"
+                }} 
+              />
+              <Typography 
+                variant="body2"
+                sx={{ 
+                  color: "#1e40af",
+                  fontWeight: "medium"
+                }}
+              >
+                {`${entry.name} (${entry.value})`}
+              </Typography>
             </Stack>
           ))}
         </Stack>
 
-        {/* Responsive Pie Chart */}
-        <Box sx={{ width: "100%", maxWidth: 150, height: isSmallScreen ? 100 : 150, mx: "auto", mt: 1 }}>
-
-
-          <ResponsiveContainer width="100%" height="100%">
+        <Box sx={{ width: "100%", height: 200 }}>
+          <ResponsiveContainer>
             <PieChart>
-              <Pie data={data} dataKey="value" outerRadius={60}> {/* Reduced size */}
-
-
+              <Pie
+                data={data}
+                dataKey="value"
+                innerRadius={60}
+                outerRadius={80}
+                paddingAngle={2}
+              >
                 {data.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={entry.color} />
+                  <Cell 
+                    key={`cell-${index}`} 
+                    fill={entry.color}
+                    stroke="white"
+                    strokeWidth={2}
+                  />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip 
+                contentStyle={{
+                  backgroundColor: "white",
+                  border: "none",
+                  borderRadius: "8px",
+                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+                }}
+              />
             </PieChart>
           </ResponsiveContainer>
         </Box>
@@ -59,32 +113,3 @@ const SAttendance = () => {
 };
 
 export default SAttendance;
-
-// import React from "react";
-// import { Card, CardContent, Typography } from "@mui/material";
-// import { PieChart, Pie, Cell, Tooltip } from "recharts";
-
-// const data = [
-//   { name: "Present", value: 25, color: "#4caf50" },
-//   { name: "Absent", value: 2, color: "#f44336" },
-// ];
-
-// const SAttendance = () => {
-//   return (
-//     <Card>
-//       <CardContent>
-//         <Typography variant="h6">Attendance</Typography>
-//         <PieChart width={200} height={200}>
-//           <Pie data={data} dataKey="value" outerRadius={80}>
-//             {data.map((entry, index) => (
-//               <Cell key={`cell-${index}`} fill={entry.color} />
-//             ))}
-//           </Pie>
-//           <Tooltip />
-//         </PieChart>
-//       </CardContent>
-//     </Card>
-//   );
-// };
-
-// export default SAttendance;

@@ -1,0 +1,57 @@
+.performance-card {
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  background-color: white;
+}
+
+.performance-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.performance-title {
+  color: #1e40af;
+  font-weight: bold;
+}
+
+.calendar-button {
+  background-color: #f0f9ff;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+}
+
+.calendar-button:hover {
+  background-color: #dbeafe;
+}
+
+.calendar-icon {
+  color: #2563eb;
+}
+
+.calendar-text {
+  margin-left: 0.5rem;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.chart-grid {
+  stroke: #e5e7eb;
+}
+
+.chart-axis {
+  stroke: #64748b;
+}
+
+.chart-tooltip {
+  background-color: white;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.chart-legend {
+  padding-top: 1.25rem;
+}

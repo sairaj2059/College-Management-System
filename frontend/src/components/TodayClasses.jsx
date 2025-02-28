@@ -1,5 +1,5 @@
-import React from "react";
-import { Card, CardContent, Typography, Stack, Chip, IconButton } from "@mui/material";
+import React, { useState } from "react";
+import { Card, CardContent, Typography, Stack, IconButton } from "@mui/material";
 import { AccessTime, ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 const classes = [
@@ -7,29 +7,43 @@ const classes = [
   { time: "09:00 - 09:45", name: "2Bsc", color: "error" },
   { time: "11:30 - 12:15", name: "3Bsc", color: "primary" },
   { time: "01:30 - 02:15", name: "1Msc", color: "secondary" },
+  { time: "01:30 - 02:15", name: "1Msc", color: "secondary" }
 ];
 
 const TodayClasses = () => {
+  const [startIndex, setStartIndex] = useState(0);
+  const visibleCount = 4;
+
+  const handleNext = () => {
+    if (startIndex + visibleCount < classes.length) {
+      setStartIndex(startIndex + 1);
+    }
+  };
+
+  const handlePrev = () => {
+    if (startIndex > 0) {
+      setStartIndex(startIndex - 1);
+    }
+  };
+
   return (
     <Card sx={{ p: 2 }}>
-      {/* Header with Navigation Arrows */}
       <Stack direction="row" justifyContent="space-between" alignItems="center">
         <Typography variant="h6" fontWeight="bold">
-          Today's Class
+          Today's Classes
         </Typography>
         <Stack direction="row" spacing={1}>
-          <IconButton>
+          <IconButton onClick={handlePrev}>
             <ArrowBackIos fontSize="small" />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={handleNext}>
             <ArrowForwardIos fontSize="small" />
           </IconButton>
         </Stack>
       </Stack>
 
-      {/* Class List */}
       <Stack direction="row" spacing={2} sx={{ mt: 2 }} flexWrap="wrap">
-        {classes.map((item, index) => (
+        {classes.slice(startIndex, startIndex + visibleCount).map((item, index) => (
           <Card key={index} sx={{ p: 2, backgroundColor: "#f5f5f5", minWidth: 180 }}>
             <Typography
               variant="body1"
@@ -47,7 +61,7 @@ const TodayClasses = () => {
               {item.time}
             </Typography>
             <Typography variant="body2" sx={{ mt: 1 }}>
-              {item.name} {/* Fixed Incorrect Property */}
+              {item.name}
             </Typography>
           </Card>
         ))}

@@ -1,0 +1,45 @@
+.faculty-section {
+  width: 100%;
+  padding: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+  background-color: white;
+}
+
+.faculty-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.faculty-title {
+  color: #1e40af;
+  font-weight: bold;
+}
+
+.navigation-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.nav-button {
+  color: #2563eb;
+  opacity: 1;
+}
+
+.nav-button:disabled {
+  opacity: 0.3;
+}
+
+.faculty-cards-container {
+  display: flex;
+  gap: 1rem;
+  overflow: hidden;
+  transition: transform 0.3s ease-in-out;
+}
+
+.faculty-card-wrapper {
+  flex-shrink: 0;
+  transition: opacity 0.3s ease-in-out;
+}

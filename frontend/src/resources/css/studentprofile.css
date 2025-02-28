@@ -1,11 +1,64 @@
-/* .sidebar-container{
-    background-color: #cbcbcb;
-} */
+.profile-card {
+  width: 100%;
+  overflow: hidden;
+  background-color: white;
+  --Card-radius: 16px;
+}
 
-.css-1vmkb7f-JoyButton-root{
-    border: 1px solid #fbe855;
-    background-color:#e2e1e1 ;
-    color: black;
-    padding: 1%;
-    width: 10vw;
+.profile-image {
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.profile-name {
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #1e40af;
+  margin-bottom: 0.5rem;
+}
+
+.profile-id {
+  color: #2563eb;
+  background-color: #f0f9ff;
+  padding: 0.375rem 0.75rem;
+  border-radius: 20px;
+  display: inline-block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 1rem;
+}
+
+.info-sheet {
+  background-color: #f8fafc;
+  border-radius: 12px;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.info-label {
+  color: #64748b;
+  margin-bottom: 0.25rem;
+  font-weight: 500;
+  font-size: 0.75rem;
+}
+
+.info-value {
+  color: #1e40af;
+  font-weight: bold;
+}
+
+.edit-button {
+  background-color: #2563eb;
+  color: white;
+  border-radius: 8px;
+  text-transform: none;
+  font-weight: 500;
+  padding: 0.5rem 0;
+  width: 100%;
+}
+
+.edit-button:hover {
+  background-color: #1e40af;
 }
