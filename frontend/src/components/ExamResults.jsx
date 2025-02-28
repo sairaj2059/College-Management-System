@@ -30,6 +30,10 @@ const ExamResults = () => {
   useEffect(() => {
     const fetchData = async () => {
       const token = localStorage.getItem("token");
+      if (!token) {
+        console.error("No token found");
+        return;
+      }
       try {
         console.log(token);
         const response = await axios.get(
@@ -42,6 +46,7 @@ const ExamResults = () => {
           }
         );
         setData(response.data);
+        console.log(response.data)
       } catch (error) {
         setData({ id: null, semesters: [] });
         console.error("data not transmitted", error);
@@ -69,13 +74,16 @@ const ExamResults = () => {
   //   ) / semesters.length;
 
   // Filter semesters based on search input
-  const filteredSemesters = data.semesters.filter((semester) =>
-    semester.subjects.some(
-      (subject) =>
-        subject.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        subject.code.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  const filteredSemesters =
+  searchTerm.trim() === ""
+    ? data.semesters
+    : data.semesters?.filter((semester) =>
+        semester.subjects.some(
+          (subject) =>
+            subject.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+            subject.code?.toLowerCase().includes(searchTerm.toLowerCase())
+        )
+      ) || [];
 
   return (
     <Box
@@ -212,7 +220,7 @@ const ExamResults = () => {
                       onToggle={() => toggleSemester(semester.semesterNumber)}
                     />
                   ))}
-                </ThemeProvider>
+                </ThemeProvider> 
               </Stack>
             </Stack>
           </Box>
