@@ -1,10 +1,23 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { Box } from "@mui/material";
 import NavBarComponent from "../components/NavBarComponent";
-// import StudentDashboard from "./StudentDashboard";
-// import TeacherDashboard from "./TeacherDashboard";
+import StudentDashboard from "./StudentDashboard";
+import Discussion from "../pages/Discussion.jsx";
+import ExamResults from "../components/ExamResults.jsx"
+import { useSelector } from "react-redux";
+
+
+const tabComponents = {
+  0 : StudentDashboard,
+  1 : ExamResults,
+  2 : Discussion,
+}
+
 
 export const NavigationBar = () => {
+  const tabValue = useSelector((state) => state.tabs.tabValue);
+  const SelectedComponent = useMemo(() => tabComponents[tabValue], [tabValue]);
+
   return (
     <Box
       sx={{
@@ -35,8 +48,7 @@ export const NavigationBar = () => {
           },
         }}
       >
-        {/* <StudentDashboard /> */}
-        {/* <TeacherDashboard /> */}
+        <SelectedComponent/>
       </Box>
     </Box>
   );

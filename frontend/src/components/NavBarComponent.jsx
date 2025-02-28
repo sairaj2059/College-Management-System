@@ -9,14 +9,20 @@ import SchoolSharpIcon from "@mui/icons-material/SchoolSharp";
 import Divider from "@mui/material/Divider";
 import { MessageOutlined } from "@ant-design/icons";
 import Tooltip from '@mui/material/Tooltip';
+import { useDispatch,useSelector } from "react-redux";
+import { setTab } from "../redux/slices/navSlice";
+
 
 export default function NavBarComponent() {
-  const [value, setValue] = React.useState(0);
+  //const [value, setValue] = React.useState(0);
+  const dispatch = useDispatch();
+  const value = useSelector((state) => state.tabs.tabValue);
   const Username = "kokonda Shree Shyam sundar";
   const EmailId = "keshav@123";
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    console.log(newValue);  
+    dispatch(setTab(newValue));
   };
 
   return (
