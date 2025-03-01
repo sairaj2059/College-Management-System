@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AspectRatio from "@mui/joy/AspectRatio";
 import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
@@ -27,11 +27,13 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 import Autocomplete from "@mui/joy/Autocomplete";
 import Avatar from "@mui/joy/Avatar";
-import { countries, departments, courses } from "../resources/DataList";
+import { countries, departments} from "../resources/DataList";
 import UserService from "../services/UserService";
+import CourseService from "../services/CourseService";
 
 function RegisterUser() {
   const [selectedImage, setSelectedImage] = useState(null);
+  const [courses, setCourses] = useState([]);
 
   const getOptionLabel = (option) => (option ? option.label : "");
 
@@ -44,12 +46,13 @@ function RegisterUser() {
     firstName: "",
     lastName: "",
     dateOfBirth: "",
-    applicationNumber:"",
+    applicationNumber: "",
     regdNo: "",
     department: null,
     course: null,
     caste: "",
     nationalIdNumber: "",
+    year:"",
     addressLine: "",
     city: "",
     district: "",
@@ -79,7 +82,7 @@ function RegisterUser() {
   const handleAutocompleteChange = (fieldName) => (event, newValue) => {
     setFormData((prevData) => ({
       ...prevData,
-      [fieldName]: newValue || null,
+      [fieldName]: newValue ? newValue.label : null,
     }));
   };
 
@@ -106,6 +109,19 @@ function RegisterUser() {
       const result = await UserService.addStudent(formData);
     } catch (error) {}
   };
+
+  useEffect(() => {
+    async function getCourses() {
+      const response = await CourseService.getCourses();      
+      setCourses(
+        response.map((course) => ({
+          label : course,
+        }))
+      );
+    }
+    getCourses();
+    
+  }, []);
   return (
     <Card sx={{ width: "100%", height: "100%", m: 2, p: 5 }}>
       <Box
@@ -318,10 +334,10 @@ function RegisterUser() {
                 </FormControl>
 
                 <FormControl sx={{ display: "flex" }}>
-                  <FormLabel> Year</FormLabel>
+                  <FormLabel>Year</FormLabel>
                   <Input
                     name="year"
-                    value={formData.joinYear}
+                    value={formData.year}
                     onChange={handleInput}
                     size="sm"
                     placeholder="Enter Year"
@@ -457,7 +473,6 @@ function RegisterUser() {
                     sx={{ minWidth: 230 }}
                   />
                 </FormControl>
-                
               </Stack>
             </Stack>
           </Box>

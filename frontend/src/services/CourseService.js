@@ -12,7 +12,6 @@ class CourseService {
           "Content-Type": "application/json",
         },
       });
-      console.log("Sairam " + response.data);
     
       return response.data;
     } catch (error) {

@@ -27,6 +27,8 @@ function App() {
       {/* Admin Ony Pages */}
       <Route element={<ProtectedRoute roleRequired={"ADMIN"} />}>
         <Route path="/admin/*" element={<AdminDasboard />} />
+        <Route path="/admin/studentsList" element={<Students />} />
+        <Route path="/admin/addStudent" element={<AddStudent />} />
       </Route>
 
       {/* Student Ony Pages */}
@@ -40,7 +42,7 @@ function App() {
       </Route>
 
 
-      <Route path="/register-user" element={<Students />} />
+      
       <Route path="/test" element={<StudentDashboard />}></Route>
       <Route path="/test1" element={<AddStudent />}></Route>
     

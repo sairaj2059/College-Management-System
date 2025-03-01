@@ -19,8 +19,6 @@ class UserService{
 
   static async addStudent(formData) {
     const token = localStorage.getItem("token");
-    console.log(token);
-    
     try {
       const response = await axios.post(`${UserService.BASE_URL}/addStudent`, formData, {
         headers: {
@@ -28,6 +26,8 @@ class UserService{
           "Content-Type": "application/json",
         },
       });
+      console.log(response.data);
+      
       return response.data;
     } catch (error) {
         console.log(error);
