@@ -79,9 +79,10 @@ const getScoreColor = (score) => {
 };
 
 const SemesterCard = ({ semester, isExpanded, onToggle }) => {
-  const semesterAverage =
-    semester.subjects.reduce((acc, subject) => acc + subject.average, 0) /
-    semester.subjects.length;
+  const semesterAverage = 
+    semester.subjects.length > 0 ?
+    semester.subjects.reduce((acc, subject) => acc + (subject.subAverage || 0), 0) /
+    semester.subjects.length : 0;
   // const excellentSubjects = semester.subjects.filter(
   //   (subject) => subject.average >= 45
   // ).length;
@@ -101,7 +102,7 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
         "&:hover": { boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)" },
       }}
     >
-      <Button onClick={onToggle} className="SButton">
+      <Button onClick={ onToggle } className="SButton">
         <Box sx={{ display: "flex", alignItems: "center", gap: "100px" }}>
           <Box sx={{ display: "flex", alignItems: "center", gap: "12px" }}>
             <Box className="custom-box">
@@ -113,7 +114,7 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                 variant="h6"
                 sx={{ fontWeight: 600, color: "grey.900" }}
               >
-                Semester {semester.number}
+                Semester {semester.semesterNumber}
               </Typography>
 
               <Stack
@@ -154,9 +155,10 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
           {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </Box>
       </Button>
+
       {isExpanded && (
         <Box sx={{ borderTop: 1, borderColor: "grey.200" }}>
-          <Box sx={{ p: 3 }}>
+          <Box sx={{ p: 4 }}>
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -188,10 +190,10 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                       <TableCell>
                         <Stack>
                           <Typography fontWeight="medium" color="text.primary">
-                            {subject.name}
+                            {subject.subject}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            {subject.code}
+                            {subject.subjectCode}
                           </Typography>
                         </Stack>
                       </TableCell>
@@ -237,7 +239,7 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                                     : "error.main"
                               }
                             >
-                              {subject.average.toFixed(2)}
+                              {subject.subAverage}
                             </Typography>
                             {getPerformanceIcon(subject.average)}
                           </Stack>

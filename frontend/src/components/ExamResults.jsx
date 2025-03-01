@@ -22,7 +22,7 @@ const theme = createTheme({
 });
 
 const ExamResults = () => {
-  const [expandedSemesters, setExpandedSemesters] = useState([0]);
+  const [expandedSemesters, setExpandedSemesters] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [data, setData] = useState({ id: null, semesters: [] });
   const id = 224209;
@@ -45,8 +45,8 @@ const ExamResults = () => {
             },
           }
         );
-        setData(response.data);
-        console.log(response.data)
+        setData(response.data || { id: null, semesters: [] });
+        console.log(response.data);
       } catch (error) {
         setData({ id: null, semesters: [] });
         console.error("data not transmitted", error);
@@ -75,15 +75,15 @@ const ExamResults = () => {
 
   // Filter semesters based on search input
   const filteredSemesters =
-  searchTerm.trim() === ""
-    ? data.semesters
-    : data.semesters?.filter((semester) =>
-        semester.subjects.some(
-          (subject) =>
-            subject.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            subject.code?.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      ) || [];
+    searchTerm.trim() === ""
+      ? data.semesters
+      : data.semesters?.filter((semester) =>
+          semester.subjects?.some(
+            (subject) =>
+              subject.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              subject.code?.toLowerCase().includes(searchTerm.toLowerCase())
+          )
+        ) || [];
 
   return (
     <Box
@@ -142,7 +142,7 @@ const ExamResults = () => {
           </Container>
         </Box>
 
-        <Box sx={{ maxWidth: "80rem", mx: "auto", px: 4, mt: -6 }}>
+        <Box sx={{ maxWidth: "90rem", mx: "auto", px: 4, mt: -6,pb: 2}}>
           <Box
             sx={{
               backgroundColor: "white",
@@ -150,7 +150,7 @@ const ExamResults = () => {
               boxShadow: 6,
               p: 6,
               pt: 3,
-              mb: 6,
+              mb: 2,
             }}
           >
             <Stack spacing={3}>
@@ -212,15 +212,15 @@ const ExamResults = () => {
                 <ThemeProvider theme={theme}>
                   {filteredSemesters.map((semester) => (
                     <SemesterCard
-                      key={semester.semesterNumber}
-                      semester={semester}
-                      isExpanded={expandedSemesters.includes(
+                      key = {semester.semesterNumber}
+                      semester = {semester}
+                      isExpanded = {expandedSemesters.includes(
                         semester.semesterNumber
                       )}
                       onToggle={() => toggleSemester(semester.semesterNumber)}
                     />
                   ))}
-                </ThemeProvider> 
+                </ThemeProvider>
               </Stack>
             </Stack>
           </Box>

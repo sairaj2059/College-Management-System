@@ -7,13 +7,21 @@ import {
   LogoutOutlined,
 } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
+import { logout } from "../redux/slices/authSlice";
+import { useDispatch } from "react-redux";
 
 export const DropdownComponent = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleNavigation = (path) => {
     navigate(path);
   };
+
+  const logOut = () => {
+    dispatch(logout());
+    navigate("/login");
+  }
 
   const items = [
     {
@@ -56,7 +64,7 @@ export const DropdownComponent = () => {
     {
       label: (
         <div
-          onClick={() => handleNavigation("/")}
+          onClick={logOut}
           style={{
             display: "flex",
             alignItems: "center",
@@ -80,11 +88,11 @@ export const DropdownComponent = () => {
       trigger={["click"]}
       overlayStyle={{ minWidth: 130, minHeigh: 160, textAlign: "right" }}
     >
-      <a onClick={(e) => e.preventDefault()} style={{ cursor: "pointer" }}>
+      <span style={{ cursor: "pointer" }}>
         <Space>
           <ExpandMoreIcon />
         </Space>
-      </a>
+      </span>
     </Dropdown>
   );
 };

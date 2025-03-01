@@ -1,50 +1,68 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-// import { useSelector } from "react-redux";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Login from "./pages/Login";
-// import Home from "./pages/Home";
 import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AdminDasboard from "./pages/AdminDasboard";
-import TeacherDashboard from "./pages/TeacherDashboard";
+//import AdminDasboard from "./pages/AdminDasboard";
+//import TeacherDashboard from "./pages/TeacherDashboard";
 //import ResetPasswordComponent from "./components/ResetPasswordComponent";
-import ExamResults from "./components/ExamResults";
 import Discussion from "./pages/Discussion";
-
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
 
 function App() {
+  const { isLoggedIn } = useSelector((state) => state.auth || {});
+
   return (
     <Routes>
       {/* Public Routes */}
+      <Route path="/" element={isLoggedIn ? <Navigate to = "/dashboard"/> : <Login/>} />
       <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Login />} />
 
-      {/* Admin Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"ADMIN"} />}>
-        <Route path="/admin/*" element={<AdminDasboard />} />
-      </Route>
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={["STUDENT", "TEACHER", "ADMIN"]}>
+              <NavigationBar /> 
+          </ProtectedRoute>
+        }
+      />
 
-      {/* Student Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"STUDENT"} />}>
-        <Route path="/student/*" element={<StudentDashboard />} />
-      </Route>
+   
+      {/* <Route
+        path="/admin"
+        element={
+          <ProtectedRoute allowedRoles={["ADMIN"]}>
+            <AdminDasboard />
+          </ProtectedRoute>
+        }
+      />
+ 
+      <Route
+        path="/student"
+        element={ 
+          <ProtectedRoute  allowedRoles={["STUDENT"]}>
+            <StudentDashboard />
+          </ProtectedRoute>
+        }
+      />
 
-      {/* Teacher Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
-        <Route path="/teacher/*" element={<TeacherDashboard />} />
-      </Route>
-
+     
+      <Route
+        path="/teacher/*"
+        element={ 
+          <ProtectedRoute  allowedRoles={["TEACHER"]}>
+            <TeacherDashboard />
+          </ProtectedRoute>
+        }
+      /> */}
 
       <Route path="/register-user" element={<Students />} />
       <Route path="/test" element={<StudentDashboard />}></Route>
       <Route path="/test1" element={<Discussion />}></Route>
-    
-      <Route path="/exam" element={<ExamResults/>}/>
-      <Route path="/nav" element={<NavigationBar/>}/>
-      <Route path="/addsubject" element={<AddSubject/>}/>
+      <Route path="/addsubject" element={<AddSubject />} />
     </Routes>
   );
 }

@@ -18,10 +18,6 @@ public class StudentService{
         ClasswiseAttendance studentAttendance = attendaceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(className, regdNo, month);
         System.out.println(studentAttendance.toString());
        return studentAttendance;
-    }
-
-
-
-    
+    } 
 
 }
