@@ -1,5 +1,7 @@
 package com.collegemanagementsystem.backend.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -22,5 +24,9 @@ public class AdministratorService {
             return ResponseEntity.badRequest().body("Student Already Exists");
         }
 
+    }
+
+    public ResponseEntity<List<StudentDetails>> getStudentDetails() {
+        return ResponseEntity.ok().body(studentDetailsRepository.findAll());
     }
 }

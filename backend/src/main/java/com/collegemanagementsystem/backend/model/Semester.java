@@ -9,6 +9,6 @@ import lombok.*;
 @Getter 
 @Setter
 public class Semester {
-    private int semesterNumber;
+    private String semesterNumber;
     private List<Subject> subjects;
 }

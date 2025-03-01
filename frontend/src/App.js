@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 //import TeacherDashboard from "./pages/TeacherDashboard";
 //import ResetPasswordComponent from "./components/ResetPasswordComponent";
 import Discussion from "./pages/Discussion";
+
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
@@ -62,7 +63,10 @@ function App() {
       <Route path="/register-user" element={<Students />} />
       <Route path="/test" element={<StudentDashboard />}></Route>
       <Route path="/test1" element={<Discussion />}></Route>
-      <Route path="/addsubject" element={<AddSubject />} />
+    
+      <Route path="/exam" element={<ExamResults/>}/>
+      <Route path="/nav" element={<NavigationBar/>}/>
+      <Route path="/addsubject" element={<AddSubject/>}/>
     </Routes>
   );
 }

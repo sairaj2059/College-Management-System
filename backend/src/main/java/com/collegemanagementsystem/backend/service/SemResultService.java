@@ -24,7 +24,7 @@ public class SemResultService {
         SemesterResults semesterResults = resultsRepository.findById(request.getId())
                 .orElse(new SemesterResults(request.getId(), request.getSemesters()));
 
-        Map<Integer, Semester> semesterMap = new HashMap<>();
+        Map<String, Semester> semesterMap = new HashMap<>();
         
         for (Semester sem : semesterResults.getSemesters()) {
             semesterMap.put(sem.getSemesterNumber(), sem);

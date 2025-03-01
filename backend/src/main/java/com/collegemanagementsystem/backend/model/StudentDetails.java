@@ -19,10 +19,11 @@ public class StudentDetails {
     private String firstName;
     private String lastName;
     private String dateOfBirth;
-    private String admissionNumber;
+    private String applicationNumber;
     private String regdNo;
     private String department;
     private String course;
+    private String year;
     private String caste;
     private String nationalIdNumber;
     private String addressLine;
@@ -33,6 +34,7 @@ public class StudentDetails {
     private String pinCode;
     private String mobileNo;
     private String emailAddress;
+    private String joinYear;
     private String fathersName;
     private String fathersOccupation;
     private String fathersMobileNo;

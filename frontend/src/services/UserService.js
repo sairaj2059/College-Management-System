@@ -34,6 +34,18 @@ class UserService{
     }
   }
 
+  static async getStudentsDetails(){
+    const token = localStorage.getItem("token");
+
+    const response = await axios.get(`${this.BASE_URL}/getStudentsDetails`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+    });
+    return response.data;
+  }
+
   /*Authentication checker */
 
   static logout() {

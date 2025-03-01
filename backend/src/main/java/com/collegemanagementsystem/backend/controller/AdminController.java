@@ -12,7 +12,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class AdminController {
@@ -61,4 +65,10 @@ public class AdminController {
     public ResponseEntity<?> addStudentByForm(@RequestBody StudentDetails studentDetails) {
         return administratorService.addStudentByForm(studentDetails);
     }
+
+    @GetMapping("/getStudentsDetails")
+    public ResponseEntity<List<StudentDetails>> getStudentDetails() {
+        return administratorService.getStudentDetails();
+    }
+    
 }
