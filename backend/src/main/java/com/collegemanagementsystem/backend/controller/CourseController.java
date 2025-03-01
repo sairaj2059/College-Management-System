@@ -11,10 +11,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-
-
 
 @RestController
 @RequestMapping("/courses")
@@ -34,13 +32,13 @@ public class CourseController {
         return courseService.getCoursesAndSemesters();
     }
 
-    @GetMapping("/getCourseDetails/")
-    public ResponseEntity<Course> getCourseDetails(@RequestParam String courseName) {
+    @GetMapping("/getCourseDetails/{courseName}")
+    public ResponseEntity<Course> getCourseDetails(@PathVariable String courseName) {
         return courseService.getCourseDetails(courseName);
     }
 
-    @GetMapping("/getSemesterData")
-    public ResponseEntity<Semester> getSemesterData(@RequestParam String courseName, @RequestParam String semesterNumber) {
+    @GetMapping("/getSemesterData/{courseName}/{semesterNumber}")
+    public ResponseEntity<Semester> getSemesterData(@PathVariable String courseName, @PathVariable String semesterNumber) {
         return courseService.getSemesterData(courseName, semesterNumber);
     }
 

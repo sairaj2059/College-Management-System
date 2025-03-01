@@ -12,41 +12,67 @@ class CourseService {
           "Content-Type": "application/json",
         },
       });
-      return response.data
+      console.log("Sairam " + response.data);
+    
+      return response.data;
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
   }
 
   static async getCoursesAndSemesters() {
     const token = localStorage.getItem("token");
     try {
-        const response = await axios.get(`${this.BASE_URL}/getCoursesAndSemesters`, {
-            headers:{
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            }
-        });
-        return response.data;
-
+      const response = await axios.get(
+        `${this.BASE_URL}/getCoursesAndSemesters`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
     } catch (error) {
-        console.error(error);
+      console.error(error);
     }
   }
 
-  static async getCourseDetails(course) {
+  static async getCourseDetails(courseName) {
     const token = localStorage.getItem("token");
     try {
-        const response = await axios.get(`${this.BASE_URL}/getCoursesAndSemesters`, {
-            headers:{
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-            }
-        });
-        return response.data;
-
+      const response = await axios.get(
+        `${this.BASE_URL}/getCourseDetails/${courseName}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
     } catch (error) {
-        console.error(error);
+      console.error(error);
+    }
+  }
+
+  static async getSemesterData(courseName, semesterNumber) {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        `${this.BASE_URL}/getCourseDetails/${courseName}/${semesterNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
     }
   }
 }
+
+export default CourseService;

@@ -19,7 +19,7 @@ public class StudentDetails {
     private String firstName;
     private String lastName;
     private String dateOfBirth;
-    private String admissionNumber;
+    private String applicationNumber;
     private String regdNo;
     private String department;
     private String course;

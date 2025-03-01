@@ -44,7 +44,7 @@ function RegisterUser() {
     firstName: "",
     lastName: "",
     dateOfBirth: "",
-    admissionNumber: "",
+    applicationNumber:"",
     regdNo: "",
     department: null,
     course: null,
@@ -235,14 +235,14 @@ function RegisterUser() {
                   />
                 </FormControl>
                 <FormControl sx={{ display: "flex" }}>
-                  <FormLabel>Admission Number</FormLabel>
+                  <FormLabel>Application Number</FormLabel>
                   <Input
-                    name="admissionNumber"
-                    value={formData.admissionNumber}
+                    name="applicationNumber"
+                    value={formData.applicationNumber}
                     onChange={handleInput}
                     size="sm"
                     type="text"
-                    placeholder="Enter Admission No."
+                    placeholder="Enter Application No."
                     sx={{ minWidth: 230 }}
                   />
                 </FormControl>

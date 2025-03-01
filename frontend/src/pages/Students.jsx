@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Button from "@mui/joy/Button";
 import Card from "@mui/joy/Card";
 import Box from "@mui/joy/Box";
@@ -21,178 +21,193 @@ import MenuItem from "@mui/joy/MenuItem";
 import ArrowDropDown from "@mui/icons-material/ArrowDropDown";
 import Dropdown from "@mui/joy/Dropdown";
 
+import CourseService from "../services/CourseService";
 import { Table } from "antd";
+import UserService from "../services/UserService";
 
-const columns = [
-  {
-    title: "Application Number",
-    dataIndex: "applicationNumber",
-    defaultSortOrder: "descend",
-    sorter: (a, b) => a.age - b.age,
-  },
 
-  {
-    title: "Regd No",
-    dataIndex: "regdNo",
-    defaultSortOrder: "ascend",
-    sorter: (a, b) => a.regdNo - b.regdNo,
-  },
-
-  {
-    title: "Name",
-    dataIndex: "name",
-    showSorterTooltip: {
-      target: "full-header",
-    },
-    filters: [
-      {
-        text: "Joe",
-        value: "Joe",
-      },
-      {
-        text: "Jim",
-        value: "Jim",
-      },
-      {
-        text: "Submenu",
-        value: "Submenu",
-        children: [
-          {
-            text: "Green",
-            value: "Green",
-          },
-          {
-            text: "Black",
-            value: "Black",
-          },
-        ],
-      },
-    ],
-
-    onFilter: (value, record) => record.name.indexOf(value) === 0,
-    sorter: (a, b) => a.name.length - b.name.length,
-    sortDirections: ["descend"],
-  },
-
-  {
-    title: "Course",
-    dataIndex: "course",
-    filters: [
-      {
-        text: "London",
-        value: "London",
-      },
-      {
-        text: "New York",
-        value: "New York",
-      },
-    ],
-    onFilter: (value, record) => record.address.indexOf(value) === 0,
-  },
-  {
-    title: "Year",
-    dataIndex: "year",
-    filters: [
-      {
-        text: "London",
-        value: "London",
-      },
-      {
-        text: "New York",
-        value: "New York",
-      },
-    ],
-    onFilter: (value, record) => record.address.indexOf(value) === 0,
-  },
-  {
-    title: "Join Year",
-    dataIndex: "joinYear",
-    filters: [
-      {
-        text: "London",
-        value: "London",
-      },
-      {
-        text: "New York",
-        value: "New York",
-      },
-    ],
-    onFilter: (value, record) => record.address.indexOf(value) === 0,
-  },
-];
-
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-    regdNo: "24252413",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-    regdNo: "2421534523",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-    regdNo: "1",
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-    regdNo: "24265413",
-  },
-  {
-    key: "5",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-    regdNo: "242112343",
-  },
-  {
-    key: "6",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-    regdNo: "242134213",
-  },
-  {
-    key: "7",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-    regdNo: "2421134",
-  },
-  {
-    key: "8",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-    regdNo: "2",
-  },
-  {
-    key: "9",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-    regdNo: "242325213",
-  },
-];
-const onChange = (pagination, filters, sorter, extra) => {
-  console.log("params", pagination, filters, sorter, extra);
-};
 
 function Students() {
   const ExportAs = ["Export as PDF", "Export as Excel"];
   const [size, setSize] = useState("Medium");
+
+  const [courseFilters, setCourseFilters] = useState([]);
+  const [studentDetails, setStudentDetails] = useState([]);
+
+  useEffect(()=>{
+    async function getStudentDetails(){
+      const response = await UserService.getStudentsDetails();
+      setStudentDetails(response.map(student=>({
+        applicationNumber: student.applicationNumber,
+        regdNo: student.regdNo,
+        name: student.firstName + " " + student.lastName,
+        course: student.course,
+        year: student.year,
+        joinYear: student.joinYear
+      })))
+    }
+    getStudentDetails();
+  }, [])
+
+  useEffect(() => {
+    async function getCourses(){
+      const response = await CourseService.getCourses();
+      setCourseFilters(response.map(course =>({
+        text : course,
+        value: course
+      })))
+    }
+    getCourses();
+  }, []);
+
+
+  const columns = [
+    {
+      title: "Application Number",
+      dataIndex: "applicationNumber",
+      defaultSortOrder: "descend",
+      sorter: (a, b) => a.age - b.age,
+    },
+  
+    {
+      title: "Regd No",
+      dataIndex: "regdNo",
+      defaultSortOrder: "ascend",
+      sorter: (a, b) => a.regdNo - b.regdNo,
+    },
+  
+    {
+      title: "Name",
+      dataIndex: "name",
+      showSorterTooltip: {
+        target: "full-header",
+      },
+      onFilter: (value, record) => record.name.indexOf(value) === 0,
+      sorter: (a, b) => a.name.localeCompare(b.name)
+    },
+  
+    {
+      title: "Course",
+      dataIndex: "course",
+      filters: courseFilters,
+      onFilter: (value, record) => record.address.indexOf(value) === 0,
+    },
+    {
+      title: "Year",
+      dataIndex: "year",
+      filters: [
+        {
+          text: "First",
+          value: "First",
+        },
+        {
+          text: "Second",
+          value: "Second",
+        },
+        {
+          text: "Third",
+          value: "Third",
+        },
+        {
+          text: "Fourth",
+          value: "Fourth",
+        },
+      ],
+      onFilter: (value, record) => record.address.indexOf(value) === 0,
+    },
+    {
+      title: "Join Year",
+      dataIndex: "joinYear",
+      filters: [
+        {
+          text: "2022",
+          value: "2022",
+        },
+        {
+          text: "2023",
+          value: "2023",
+        },
+        {
+          text: "2024",
+          value: "2024",
+        },
+        {
+          text: "2025",
+          value: "2025",
+        }
+      ],
+      onFilter: (value, record) => record.address.indexOf(value) === 0,
+    },
+  ];
+  
+  const data = [
+    {
+      key: "1",
+      name: "John Brown",
+      age: 32,
+      address: "New York No. 1 Lake Park",
+      regdNo: "24252413",
+    },
+    {
+      key: "2",
+      name: "Jim Green",
+      age: 42,
+      address: "London No. 1 Lake Park",
+      regdNo: "2421534523",
+    },
+    {
+      key: "3",
+      name: "Joe Black",
+      age: 32,
+      address: "Sydney No. 1 Lake Park",
+      regdNo: "1",
+    },
+    {
+      key: "4",
+      name: "Jim Red",
+      age: 32,
+      address: "London No. 2 Lake Park",
+      regdNo: "24265413",
+    },
+    {
+      key: "5",
+      name: "Jim Red",
+      age: 32,
+      address: "London No. 2 Lake Park",
+      regdNo: "242112343",
+    },
+    {
+      key: "6",
+      name: "Jim Red",
+      age: 32,
+      address: "London No. 2 Lake Park",
+      regdNo: "242134213",
+    },
+    {
+      key: "7",
+      name: "Jim Red",
+      age: 32,
+      address: "London No. 2 Lake Park",
+      regdNo: "2421134",
+    },
+    {
+      key: "8",
+      name: "Jim Red",
+      age: 32,
+      address: "London No. 2 Lake Park",
+      regdNo: "2",
+    },
+    {
+      key: "9",
+      name: "Jim Red",
+      age: 32,
+      address: "London No. 2 Lake Park",
+      regdNo: "242325213",
+    },
+  ];
+  const onChange = (pagination, filters, sorter, extra) => {
+    console.log("params", pagination, filters, sorter, extra);
+  };
 
   return (
     <>
@@ -265,7 +280,7 @@ function Students() {
                 pagination={true}
                 rowSelection={5}
                 columns={columns}
-                dataSource={data}
+                dataSource={studentDetails}
                 onChange={onChange(5)}
                 showSorterTooltip={{
                   target: "sorter-icon",
