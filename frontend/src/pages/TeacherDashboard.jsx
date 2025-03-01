@@ -8,6 +8,7 @@ import Attendance from "../components/Attendance";
 import StudentMarks from "../components/StudentMarks";
 import UpcomingEvents from "../components/UpcomingEvents";
 import TeacherProfile from "../components/TeacherProfile";
+import AddAttendanceForm from "../components/AddAttendanceForm";
 const TeacherDashboard = () => {
   return (
     <Box sx={{ p: 3 }}>
@@ -44,6 +45,7 @@ const TeacherDashboard = () => {
         <Stack direction={{ xs: "column", md: "row" }} spacing={3}>
           <LessonPlan />
           <StudentMarks />
+          <AddAttendanceForm/>
         </Stack>
       </Stack>
     </Box>
