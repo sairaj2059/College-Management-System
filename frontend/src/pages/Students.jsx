@@ -25,6 +25,20 @@ import { Table } from "antd";
 
 const columns = [
   {
+    title: "Application Number",
+    dataIndex: "applicationNumber",
+    defaultSortOrder: "descend",
+    sorter: (a, b) => a.age - b.age,
+  },
+
+  {
+    title: "Regd No",
+    dataIndex: "regdNo",
+    defaultSortOrder: "ascend",
+    sorter: (a, b) => a.regdNo - b.regdNo,
+  },
+
+  {
     title: "Name",
     dataIndex: "name",
     showSorterTooltip: {
@@ -59,21 +73,40 @@ const columns = [
     sorter: (a, b) => a.name.length - b.name.length,
     sortDirections: ["descend"],
   },
+
   {
-    title: "Age",
-    dataIndex: "age",
-    defaultSortOrder: "descend",
-    sorter: (a, b) => a.age - b.age,
+    title: "Course",
+    dataIndex: "course",
+    filters: [
+      {
+        text: "London",
+        value: "London",
+      },
+      {
+        text: "New York",
+        value: "New York",
+      },
+    ],
+    onFilter: (value, record) => record.address.indexOf(value) === 0,
   },
   {
-    title:"Regd No",
-    dataIndex:'regdNo',
-    defaultSortOrder:"ascend",
-    sorter:(a,b)=> a.regdNo - b.regdNo,
+    title: "Year",
+    dataIndex: "year",
+    filters: [
+      {
+        text: "London",
+        value: "London",
+      },
+      {
+        text: "New York",
+        value: "New York",
+      },
+    ],
+    onFilter: (value, record) => record.address.indexOf(value) === 0,
   },
   {
-    title: "Address",
-    dataIndex: "address",
+    title: "Join Year",
+    dataIndex: "joinYear",
     filters: [
       {
         text: "London",
@@ -116,31 +149,36 @@ const data = [
     age: 32,
     address: "London No. 2 Lake Park",
     regdNo: "24265413",
-  },{
+  },
+  {
     key: "5",
     name: "Jim Red",
     age: 32,
     address: "London No. 2 Lake Park",
     regdNo: "242112343",
-  },{
+  },
+  {
     key: "6",
     name: "Jim Red",
     age: 32,
     address: "London No. 2 Lake Park",
     regdNo: "242134213",
-  },{
+  },
+  {
     key: "7",
     name: "Jim Red",
     age: 32,
     address: "London No. 2 Lake Park",
     regdNo: "2421134",
-  },{
+  },
+  {
     key: "8",
     name: "Jim Red",
     age: 32,
     address: "London No. 2 Lake Park",
     regdNo: "2",
-  },{
+  },
+  {
     key: "9",
     name: "Jim Red",
     age: 32,
@@ -224,8 +262,8 @@ function Students() {
           <Box>
             <Card>
               <Table
-              pagination={true}
-              rowSelection={5}
+                pagination={true}
+                rowSelection={5}
                 columns={columns}
                 dataSource={data}
                 onChange={onChange(5)}

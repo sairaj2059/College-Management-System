@@ -9,7 +9,9 @@ import lombok.*;
 
 public class Subject {
     private String subjectCode;
-    private String subject;
+    private String subjectCredit;
+    private String subjectTeacher;
+    private String subjectName;
     private Double cie1;
     private Double cie2;
     private Double cie3;

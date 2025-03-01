@@ -58,6 +58,7 @@ function RegisterUser() {
     pinCode: "",
     mobileNo: "",
     emailAddress: "",
+    joinYear: "",
     fathersName: "",
     fathersOccupation: "",
     fathersMobileNo: "",
@@ -103,9 +104,7 @@ function RegisterUser() {
     event.preventDefault();
     try {
       const result = await UserService.addStudent(formData);
-    } catch (error) {
-
-    }
+    } catch (error) {}
   };
   return (
     <Card sx={{ width: "100%", height: "100%", m: 2, p: 5 }}>
@@ -277,11 +276,9 @@ function RegisterUser() {
                   <FormLabel>Department</FormLabel>
                   <Autocomplete
                     placeholder="Select Department"
-                    value={
-                      departments.find(
-                        (department) => department.label === formData.department
-                      )
-                    }
+                    value={departments.find(
+                      (department) => department.label === formData.department
+                    )}
                     onChange={handleAutocompleteChange("department")}
                     size="sm"
                     options={departments}
@@ -321,14 +318,13 @@ function RegisterUser() {
                 </FormControl>
 
                 <FormControl sx={{ display: "flex" }}>
-                  <FormLabel>Caste</FormLabel>
+                  <FormLabel> Year</FormLabel>
                   <Input
-                    name="caste"
-                    value={formData.caste}
+                    name="year"
+                    value={formData.joinYear}
                     onChange={handleInput}
                     size="sm"
-                    type="text"
-                    placeholder="Enter Caste"
+                    placeholder="Enter Year"
                     sx={{ minWidth: 230 }}
                   />
                 </FormControl>
@@ -434,6 +430,34 @@ function RegisterUser() {
                     placeholder="Enter Pin Code"
                   />
                 </FormControl>
+              </Stack>
+
+              <Stack direction={"row"} spacing={4} marginTop={4}>
+                <FormControl sx={{ display: "flex" }}>
+                  <FormLabel>Join Year</FormLabel>
+                  <Input
+                    name="joinYear"
+                    value={formData.joinYear}
+                    onChange={handleInput}
+                    size="sm"
+                    placeholder="Enter Join Year"
+                    sx={{ minWidth: 230 }}
+                  />
+                </FormControl>
+
+                <FormControl sx={{ display: "flex" }}>
+                  <FormLabel>Caste</FormLabel>
+                  <Input
+                    name="caste"
+                    value={formData.caste}
+                    onChange={handleInput}
+                    size="sm"
+                    type="text"
+                    placeholder="Enter Caste"
+                    sx={{ minWidth: 230 }}
+                  />
+                </FormControl>
+                
               </Stack>
             </Stack>
           </Box>
