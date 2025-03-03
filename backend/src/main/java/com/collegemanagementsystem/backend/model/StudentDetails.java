@@ -50,4 +50,5 @@ public class StudentDetails {
     private String guardiansMobileNo;
     private String guardiansEmailAddress;
     private String guardiansAddress;
+    private String semester;
 }

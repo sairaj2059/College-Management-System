@@ -22,6 +22,10 @@ class StudentDashboardService {
       return null;
     }
   }
+  static async getStudentProfilebyregdNo( regdNo){
+    const token = localStorage.getItem("token");
+  }
+
 }
 
 export default StudentDashboardService;
