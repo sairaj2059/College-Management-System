@@ -7,7 +7,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 //import ResetPasswordComponent from "./components/ResetPasswordComponent";
-import PageNotFound from "./pages/PageNotFound";
+//import PageNotFound from "./pages/PageNotFound";
 import Discussion from "./pages/Discussion";
 
 import { NavigationBar } from "./pages/NavigationBar";
@@ -37,7 +37,7 @@ function App() {
       <Route element={<ProtectedRoute allowedRoles = {"ADMIN"} />}>
         <Route path="/admin/*" element={<AdminDasboard />} />
         <Route path="/admin/studentsList" element={<Students />} />
-        <Route path="/admin/addStudent" element={<AddStudent />} />
+        {/* <Route path="/admin/addStudent" element={<AddStudent />} /> */}
       </Route>
 
       {/* Student Ony Pages */}
