@@ -48,8 +48,8 @@ const ExamResults = () => {
         setData(response.data || { id: null, semesters: [] });
         console.log(response.data);
       } catch (error) {
+        console.error("Failed to fetch data:", error.response?.data || error.message);
         setData({ id: null, semesters: [] });
-        console.error("data not transmitted", error);
       }
     };
     fetchData();
@@ -73,15 +73,16 @@ const ExamResults = () => {
   //     0
   //   ) / semesters.length;
 
+  
   // Filter semesters based on search input
   const filteredSemesters =
     searchTerm.trim() === ""
       ? data.semesters
       : data.semesters?.filter((semester) =>
-          semester.subjects?.some(
-            (subject) =>
-              subject.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-              subject.code?.toLowerCase().includes(searchTerm.toLowerCase())
+          semester.subjectMarks?.some(
+            (subjectMark) =>
+              subjectMark.subject?.subjectName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+              subjectMark.subject?.subjectCode?.toLowerCase().includes(searchTerm.toLowerCase())
           )
         ) || [];
 
@@ -100,7 +101,7 @@ const ExamResults = () => {
           }}
         >
           <Container maxWidth="lg">
-            <Box py={8}>
+            <Box py={7}>
               <Box display="flex" flexDirection="column" gap={4}>
                 <Box
                   display="flex"

@@ -42,7 +42,7 @@ export const NavigationBar = () => {
         flexDirection: "column",
         height: "100vh",
         width: "100vw",
-        background: "linear-gradient(to bottom, #74c0fc, #4263eb)", //linear-gradient(to right, #74c0fc, #ff758f); optional
+        background: "linear-gradient(to right, #74c0fc, #ff758f)", //linear-gradient(to right, #74c0fc, #ff758f); optional //linear-gradient(to bottom, #74c0fc, #4263eb)
         alignItems: "center",
         justifyContent: "center",
         gap: "clamp(14px, 3vw, 16px)",

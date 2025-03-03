@@ -58,11 +58,7 @@ function CustomPasswordField({
         name="password"
         size="small"
         required
-        onClick={() => {
-          setIsFocusedP(true);
-          setIsFocusedU(false);
-        }}
-        onKeyDown={() => {
+        onFocus={() => {
           setIsFocusedP(true);
           setIsFocusedU(false);
         }}
@@ -91,7 +87,7 @@ function CustomPasswordField({
         }
         startAdornment={
           <InputAdornment position="start">
-            <LockIcon sx={{ fontSize: 20 }}></LockIcon>
+            <LockIcon sx={{ fontSize: 20 }} ></LockIcon>
           </InputAdornment>
         }
         label="Password"
@@ -127,14 +123,11 @@ const CustomUserName = ({
         label="Username"
         autoComplete="off"
         required
-        onClick={() => {
+        onFocus={() => {
           setIsFocusedU(true);
           setIsFocusedP(false);
         }}
-        onKeyDown={() => {
-          setIsFocusedU(true);
-          setIsFocusedP(false);
-        }}
+    
         value={username}
         onChange={(e) => {
           setUsername(e.target.value);

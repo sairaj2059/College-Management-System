@@ -126,28 +126,29 @@ export default function NavBarComponent() {
             }}
           >
             <Tooltip title={String(Username)} arrow>
-              <Typography
-                sx={{
-                  fontSize: { xs: "10px", sm: "12px", md: "14px" },
-                  fontWeight: 500,
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                }}
-              >
-                {Username}
-              </Typography>
-         
+              <Box>
+                <Typography
+                  sx={{
+                    fontSize: { xs: "10px", sm: "12px", md: "14px" },
+                    fontWeight: 500,
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                  }}
+                >
+                  {Username}
+                </Typography>
 
-            <Typography
-              sx={{
-                fontSize: { xs: "8px", sm: "10px", md: "12px" },
-                color: "text.secondary",
-                fontWeight: 400,
-              }}
-            >
-              {EmailId}
-            </Typography>
+                <Typography
+                  sx={{
+                    fontSize: { xs: "8px", sm: "10px", md: "12px" },
+                    color: "text.secondary",
+                    fontWeight: 400,
+                  }}
+                >
+                  {EmailId}
+                </Typography>
+              </Box>
             </Tooltip>
           </Box>
         </Box>

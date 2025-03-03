@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-//import AdminDasboard from "./pages/AdminDasboard";
-//import TeacherDashboard from "./pages/TeacherDashboard";
+import AdminDasboard from "./pages/AdminDasboard";
+import TeacherDashboard from "./pages/TeacherDashboard";
 //import ResetPasswordComponent from "./components/ResetPasswordComponent";
+import PageNotFound from "./pages/PageNotFound";
 import Discussion from "./pages/Discussion";
 
 import { NavigationBar } from "./pages/NavigationBar";
@@ -19,20 +20,22 @@ function App() {
   return (
     <Routes>
       {/* Public Routes */}
-      <Route path="/" element={isLoggedIn ? <Navigate to = "/dashboard"/> : <Login/>} />
+      <Route
+        path="/"
+        element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />}
+      />
       <Route path="/login" element={<Login />} />
 
       <Route
         path="/dashboard"
         element={
           <ProtectedRoute allowedRoles={["STUDENT", "TEACHER", "ADMIN"]}>
-              <NavigationBar /> 
+            <NavigationBar />
           </ProtectedRoute>
         }
       />
 
-   
-      {/* <Route
+      <Route
         path="/admin"
         element={
           <ProtectedRoute allowedRoles={["ADMIN"]}>
@@ -40,33 +43,35 @@ function App() {
           </ProtectedRoute>
         }
       />
- 
+
       <Route
         path="/student"
-        element={ 
-          <ProtectedRoute  allowedRoles={["STUDENT"]}>
+        element={
+          <ProtectedRoute allowedRoles={["STUDENT"]}>
             <StudentDashboard />
           </ProtectedRoute>
         }
       />
 
-     
       <Route
         path="/teacher/*"
-        element={ 
-          <ProtectedRoute  allowedRoles={["TEACHER"]}>
+        element={
+          <ProtectedRoute allowedRoles={["TEACHER"]}>
             <TeacherDashboard />
           </ProtectedRoute>
         }
-      /> */}
+      />
 
-      <Route path="/register-user" element={<Students />} />
+      {/* catch all */}
+      <Route path="*" element={<PageNotFound/>}></Route>
+
+      <Route path="/admin/register-user" element={<Students />} />
+
       <Route path="/test" element={<StudentDashboard />}></Route>
       <Route path="/test1" element={<Discussion />}></Route>
-    
-      <Route path="/exam" element={<ExamResults/>}/>
-      <Route path="/nav" element={<NavigationBar/>}/>
-      <Route path="/addsubject" element={<AddSubject/>}/>
+
+      <Route path="/nav" element={<NavigationBar />} />
+      <Route path="/addsubject" element={<AddSubject />} />
     </Routes>
   );
 }
