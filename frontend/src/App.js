@@ -25,48 +25,27 @@ function App() {
         element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />}
       />
       <Route path="/login" element={<Login />} />
+      <Route path="/" element={<Login />} />
 
-      <Route
-        path="/dashboard"
-        element={
-          <ProtectedRoute allowedRoles={["STUDENT", "TEACHER", "ADMIN"]}>
-            <NavigationBar />
-          </ProtectedRoute>
-        }
-      />
+      {/* Admin Ony Pages */}
+      <Route element={<ProtectedRoute roleRequired={"ADMIN"} />}>
+        <Route path="/admin/*" element={<AdminDasboard />} />
+        <Route path="/admin/studentsList" element={<Students />} />
+        <Route path="/admin/addStudent" element={<AddStudent />} />
+      </Route>
 
-      <Route
-        path="/admin"
-        element={
-          <ProtectedRoute allowedRoles={["ADMIN"]}>
-            <AdminDasboard />
-          </ProtectedRoute>
-        }
-      />
+      {/* Student Ony Pages */}
+      <Route element={<ProtectedRoute roleRequired={"STUDENT"} />}>
+        <Route path="/student/*" element={<StudentDashboard />} />
+      </Route>
 
-      <Route
-        path="/student"
-        element={
-          <ProtectedRoute allowedRoles={["STUDENT"]}>
-            <StudentDashboard />
-          </ProtectedRoute>
-        }
-      />
+      {/* Teacher Ony Pages */}
+      <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
+        <Route path="/teacher/*" element={<TeacherDashboard />} />
+      </Route>
 
-      <Route
-        path="/teacher/*"
-        element={
-          <ProtectedRoute allowedRoles={["TEACHER"]}>
-            <TeacherDashboard />
-          </ProtectedRoute>
-        }
-      />
 
-      {/* catch all */}
-      <Route path="*" element={<PageNotFound/>}></Route>
-
-      <Route path="/admin/register-user" element={<Students />} />
-
+      
       <Route path="/test" element={<StudentDashboard />}></Route>
       <Route path="/test1" element={<Discussion />}></Route>
 

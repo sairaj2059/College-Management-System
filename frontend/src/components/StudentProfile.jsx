@@ -6,7 +6,7 @@ import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import Button from "@mui/joy/Button";
-import "../resources/css/studentprofile.css";
+import "../resources/css/StudentProfile.css";
 
 function StudentProfile({ userData, profileImage }) {
   return (
