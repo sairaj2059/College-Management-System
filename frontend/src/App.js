@@ -1,26 +1,29 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
-// import { useSelector } from "react-redux";
+import { Routes, Route, Navigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 import Login from "./pages/Login";
-// import Home from "./pages/Home";
 import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 //import ResetPasswordComponent from "./components/ResetPasswordComponent";
-import ExamResults from "./components/ExamResults";
+import PageNotFound from "./pages/PageNotFound";
 import Discussion from "./pages/Discussion";
-
-import AddStudent from "./components/AddStudent";
 
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
 
 function App() {
+  const { isLoggedIn } = useSelector((state) => state.auth || {});
+
   return (
     <Routes>
       {/* Public Routes */}
+      <Route
+        path="/"
+        element={isLoggedIn ? <Navigate to="/dashboard" /> : <Login />}
+      />
       <Route path="/login" element={<Login />} />
       <Route path="/" element={<Login />} />
 
@@ -42,11 +45,10 @@ function App() {
       </Route>
       
       <Route path="/test" element={<StudentDashboard />}></Route>
-      <Route path="/test1" element={<AddStudent />}></Route>
-    
-      <Route path="/exam" element={<ExamResults/>}/>
-      <Route path="/nav" element={<NavigationBar/>}/>
-      <Route path="/addsubject" element={<AddSubject/>}/>
+      <Route path="/test1" element={<Discussion />}></Route>
+
+      <Route path="/nav" element={<NavigationBar />} />
+      <Route path="/addsubject" element={<AddSubject />} />
     </Routes>
   );
 }

@@ -10,5 +10,5 @@ import lombok.*;
 @Setter
 public class Semester {
     private String semesterNumber;
-    private List<Subject> subjects;
+    private List<SubjectMarks> subjectMarks;
 }

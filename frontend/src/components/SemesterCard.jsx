@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo} from "react";
 import DownloadIcon from "@mui/icons-material/Download";
 import {
   Box,
@@ -25,9 +25,16 @@ import {
   BookOpen,
 } from "lucide-react";
 
-const getProgressBar = (score) => {
-  const percentage = (score / 50) * 100;
-  const color = score >= 45 ? "success" : score >= 40 ? "primary" : "error";
+//edit required for average calculation
+const cie1total = 20;
+const cie2Total = 30;
+const cie3Total = 20;
+const ese = 70;
+
+const getProgressBar = (score, totalMarks) => {
+  const percentage = (score / totalMarks) * 100;
+  const color =
+    percentage >= 80 ? "success" : percentage >= 50 ? "primary" : "error";
 
   return (
     <Box
@@ -49,23 +56,25 @@ const getProgressBar = (score) => {
 };
 
 const getPerformanceIcon = (average) => {
-  if (average >= 45)
+  if (average >= 80)
     return <Trophy style={{ height: 16, width: 16, color: "#facc15" }} />;
-  if (average < 40)
+  if (average < 50)
     return (
       <AlertTriangle style={{ height: 16, width: 16, color: "#ef4444" }} />
     );
   return <TrendingUp style={{ height: 16, width: 16, color: "#3b82f6" }} />;
 };
 
-const getScoreColor = (score) => {
-  if (score >= 45)
+const getScoreColor = (score, totalMarks) => {
+  const percentage = (score / totalMarks) * 100;
+
+  if (percentage >= 80)
     return {
       color: "#16a34a",
       backgroundColor: "#f0fdf4",
       border: "1px solid #bbf7d0",
     };
-  if (score >= 40)
+  if (percentage >= 50)
     return {
       color: "#2563eb",
       backgroundColor: "#eff6ff",
@@ -78,10 +87,18 @@ const getScoreColor = (score) => {
   };
 };
 
+//edit required
+
 const SemesterCard = ({ semester, isExpanded, onToggle }) => {
-  const semesterAverage =
-    semester.subjects.reduce((acc, subject) => acc + subject.average, 0) /
-    semester.subjects.length;
+  const semesterAverage = useMemo(() => {
+    return semester.subjectMarks.length > 0
+      ? semester.subjectMarks.reduce(
+          (acc, subjectMark) => acc + (subjectMark.cieMarks?.subAverage || 0),
+          0
+        ) / semester.subjectMarks.length
+      : 0;
+  }, [semester.subjectMarks]);
+
   // const excellentSubjects = semester.subjects.filter(
   //   (subject) => subject.average >= 45
   // ).length;
@@ -113,7 +130,7 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                 variant="h6"
                 sx={{ fontWeight: 600, color: "grey.900" }}
               >
-                Semester {semester.number}
+                Semester {semester.semesterNumber}
               </Typography>
 
               <Stack
@@ -123,7 +140,7 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                 sx={{ fontSize: "0.875rem", color: "grey.500" }}
               >
                 <BookOpen sx={{ width: 16, height: 16 }} />
-                <Typography>{semester.subjects.length} Subjects</Typography>
+                <Typography>{semester.subjectMarks.length} Subjects</Typography>
               </Stack>
             </Box>
           </Box>
@@ -154,9 +171,10 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
           {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
         </Box>
       </Button>
+
       {isExpanded && (
         <Box sx={{ borderTop: 1, borderColor: "grey.200" }}>
-          <Box sx={{ p: 3 }}>
+          <Box sx={{ p: 4 }}>
             <TableContainer component={Paper}>
               <Table>
                 <TableHead>
@@ -183,24 +201,24 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {semester.subjects.map((subject) => (
-                    <TableRow key={subject.code} hover>
+                  {semester.subjectMarks.map((subjects) => (
+                    <TableRow key={subjects.subject.subjectCode} hover>
                       <TableCell>
                         <Stack>
                           <Typography fontWeight="medium" color="text.primary">
-                            {subject.name}
+                            {subjects.subject.subjectName}
                           </Typography>
                           <Typography variant="body2" color="text.secondary">
-                            {subject.code}
+                            {subjects.subject.subjectCode}
                           </Typography>
                         </Stack>
                       </TableCell>
                       {[
-                        subject.cie1,
-                        subject.cie2,
-                        subject.cie3,
-                        subject.ese,
-                      ].map((score, index) => (
+                        { score: subjects.cieMarks.cie1, total: cie1total },
+                        { score: subjects.cieMarks.cie2, total: cie2Total },
+                        { score: subjects.cieMarks.cie3, total: cie3Total },
+                        { score: subjects.cieMarks.ese, total: ese },
+                      ].map(({ score, total }, index) => (
                         <TableCell key={index} align="center">
                           <Stack alignItems="center" spacing={1}>
                             <Box
@@ -209,14 +227,14 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                                 textAlign: "center",
                                 py: 0.5,
                                 borderRadius: "50px",
-                                bgcolor: getScoreColor(score),
+                                bgcolor: getScoreColor(score, total),
                               }}
                             >
                               <Typography variant="body2" fontWeight="medium">
                                 {score}
                               </Typography>
                             </Box>
-                            {getProgressBar(score)}
+                            {getProgressBar(score, total)}
                           </Stack>
                         </TableCell>
                       ))}
@@ -230,18 +248,18 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                             <Typography
                               variant="h6"
                               color={
-                                subject.average >= 45
+                                subjects.average >= 45
                                   ? "success.main"
-                                  : subject.average >= 40
+                                  : subjects.average >= 40
                                     ? "primary.main"
                                     : "error.main"
                               }
                             >
-                              {subject.average.toFixed(2)}
+                              {subjects.cieMarks.subAverage}
                             </Typography>
-                            {getPerformanceIcon(subject.average)}
+                            {getPerformanceIcon(subjects.cieMarks.subAverage)}
                           </Stack>
-                          {getProgressBar(subject.average)}
+                          {getProgressBar(subjects.cieMarks.subAverage, 100)}
                         </Stack>
                       </TableCell>
                     </TableRow>
@@ -267,25 +285,25 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                 <Typography
                   variant="h6"
                   color={
-                    semesterAverage >= 45
+                    semesterAverage >= 80
                       ? "success.main"
-                      : semesterAverage >= 40
+                      : semesterAverage >= 50
                         ? "primary.main"
                         : "error.main"
                   }
                 >
-                  {semesterAverage >= 45
+                  {semesterAverage >= 80
                     ? "Excellent"
-                    : semesterAverage >= 40
+                    : semesterAverage >= 50
                       ? "Good"
                       : "Needs Improvement"}
                 </Typography>
               </Stack>
               <Stack direction="row" spacing={3}>
                 {[
-                  { color: "success.main", label: "≥ 45 (Excellent)" },
-                  { color: "primary.main", label: "40-44 (Good)" },
-                  { color: "error.main", label: "< 40 (Improve)" },
+                  { color: "success.main", label: "≥ 80 (Excellent)" },
+                  { color: "primary.main", label: "50-79 (Good)" },
+                  { color: "error.main", label: "< 50 (Improve)" },
                 ].map((item, index) => (
                   <Stack
                     key={index}
