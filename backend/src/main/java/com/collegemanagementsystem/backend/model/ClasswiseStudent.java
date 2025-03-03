@@ -4,23 +4,18 @@ import java.util.List;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Document(collection = "classwiseStudent")
 public class ClasswiseStudent {
     private String className;
     private List<Student> students;
-    public String getClassName() {
-        return className;
-    }
-    public void setClassName(String className) {
-        this.className = className;
-    }
-    public List<Student> getStudents() {
-        return students;
-    }
-    public void setStudents(List<Student> students) {
-        this.students = students;
-    }
 
 }

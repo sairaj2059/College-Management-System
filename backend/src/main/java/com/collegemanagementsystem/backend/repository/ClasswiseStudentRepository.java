@@ -8,4 +8,6 @@ public interface ClasswiseStudentRepository extends MongoRepository<ClasswiseStu
 
     ClasswiseStudent findStudentsByClassName(String batch);
 
+    ClasswiseStudent findByClassName(String string);
+
 }

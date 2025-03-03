@@ -16,40 +16,47 @@ import AddStudent from "./components/AddStudent";
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
+import AddTeacher from "./components/AddTeacher";
+import UserService from "./services/UserService";
+import NavBarComponent from "./components/NavBarComponent";
+import Card from "@mui/joy/Card";
 
 function App() {
   return (
-    <Routes>
-      {/* Public Routes */}
-      <Route path="/login" element={<Login />} />
-      <Route path="/" element={<Login />} />
+    <>
+  <Card>
+      <Routes>
+        {/* Public Routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
 
-      {/* Admin Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"ADMIN"} />}>
-        <Route path="/admin/*" element={<AdminDasboard />} />
-        <Route path="/admin/studentsList" element={<Students />} />
-        <Route path="/admin/addStudent" element={<AddStudent />} />
-      </Route>
+        {/* Admin Ony Pages */}
+        <Route element={<ProtectedRoute roleRequired={"ADMIN"} />}>
+          <Route path="/admin/*" element={<AdminDasboard />} />
+          <Route path="/admin/studentsList" element={<Students />} />
+          <Route path="/admin/addStudent" element={<AddStudent />} />
+        </Route>
 
-      {/* Student Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"STUDENT"} />}>
-        <Route path="/student/*" element={<StudentDashboard />} />
-      </Route>
+        {/* Student Ony Pages */}
+        <Route element={<ProtectedRoute roleRequired={"STUDENT"} />}>
+          <Route path="/student/*" element={<StudentDashboard />} />
+        </Route>
 
-      {/* Teacher Ony Pages */}
-      <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
-        <Route path="/teacher/*" element={<TeacherDashboard />} />
-      </Route>
+        {/* Teacher Ony Pages */}
+        <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
+          <Route path="/teacher/*" element={<TeacherDashboard />} />
+        </Route>
 
+        <Route path="/test" element={<StudentDashboard />}></Route>
+        <Route path="/test1" element={<AddStudent />}></Route>
 
-      
-      <Route path="/test" element={<StudentDashboard />}></Route>
-      <Route path="/test1" element={<AddStudent />}></Route>
-    
-      <Route path="/exam" element={<ExamResults/>}/>
-      <Route path="/nav" element={<NavigationBar/>}/>
-      <Route path="/addsubject" element={<AddSubject/>}/>
-    </Routes>
+        <Route path="/teacher" element={<AddTeacher />}></Route>
+        <Route path="/exam" element={<ExamResults />} />
+        <Route path="/nav" element={<NavigationBar />} />
+        <Route path="/addsubject" element={<AddSubject />} />
+      </Routes>
+      </Card>
+    </>
   );
 }
 

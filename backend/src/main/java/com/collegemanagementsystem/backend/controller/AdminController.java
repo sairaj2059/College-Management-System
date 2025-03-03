@@ -70,5 +70,11 @@ public class AdminController {
     public ResponseEntity<List<StudentDetails>> getStudentDetails() {
         return administratorService.getStudentDetails();
     }
+
+    @GetMapping("/addTeacher")
+    public String getMethodName(@RequestParam String param) {
+        return new String();
+    }
+    
     
 }

@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import UserService from "../services/UserService";
+import { NavigationBar } from "../pages/NavigationBar";
 
 function ProtectedRoute({ roleRequired = null }) {
   if (!UserService.isAuthenticated()) {
