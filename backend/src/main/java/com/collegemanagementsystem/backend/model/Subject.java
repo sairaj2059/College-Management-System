@@ -12,9 +12,4 @@ public class Subject {
     private String subjectCredit;
     private String subjectTeacher;
     private String subjectName;
-    private Double cie1;
-    private Double cie2;
-    private Double cie3;
-    private Double ese;
-    private Double subAverage;//subject averge
 }

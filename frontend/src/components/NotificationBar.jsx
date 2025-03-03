@@ -10,7 +10,6 @@ export default function NotificationBar() {
     const timer = setTimeout(() => {
       setOpen(false);
     }, 4000);
-
     return () => clearTimeout(timer);
   }, []);
 

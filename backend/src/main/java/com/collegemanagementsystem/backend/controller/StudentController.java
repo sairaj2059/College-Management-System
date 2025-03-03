@@ -1,5 +1,7 @@
 package com.collegemanagementsystem.backend.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -10,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.SemesterResults;
-import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
 
@@ -33,6 +35,20 @@ public class StudentController {
         return "Hello Student from Student Dashboard";
     }
 
+    @GetMapping("/studentProfile")
+    public List<StudentProfile> getAllStudentProfiles() {
+        return studentService.getStudentProfiles();
+    }
+    @GetMapping("/studentProfile/{regdNo}")
+    public ResponseEntity<?>getStudentProfileByRegdNo(@PathVariable String regdNo) {
+        try{
+            StudentProfile profile = studentService.getStudentProfileByRegdNo(regdNo);
+            return ResponseEntity.ok(profile);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
     @GetMapping("/get_Sattendance/{className}")
 public ResponseEntity<?> getAttendanceMonth(
         @PathVariable String className,  // Changed from @RequestParam to @PathVariable
@@ -50,9 +66,6 @@ public ResponseEntity<?> getAttendanceMonth(
     }
     return ResponseEntity.ok(attendanceMonth.getStudents().get(0).getAttendance().get(0));
 }
-
-
-
 
     @GetMapping("/semResults/{id}")
     public SemesterResults getSemResultDetails(@PathVariable int id){

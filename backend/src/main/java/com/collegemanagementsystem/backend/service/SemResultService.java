@@ -24,11 +24,11 @@ public class SemResultService {
         SemesterResults semesterResults = resultsRepository.findById(request.getId())
                 .orElse(new SemesterResults(request.getId(), request.getSemesters()));
 
-        Map<String, Semester> semesterMap = new HashMap<>();
+        //Map<String, Semester> semesterMap = new HashMap<>();
         
-        for (Semester sem : semesterResults.getSemesters()) {
-            semesterMap.put(sem.getSemesterNumber(), sem);
-        }
+        //for (Semester sem : semesterResults.getSemesters()) {
+          //  semesterMap.put(sem.getSemesterNumber(), sem);
+        //}
 
         // for (Semester newSem : request.getSemesters()) {
         //     if (semesterMap.containsKey(newSem.getSemesterNumber())) {
@@ -53,7 +53,7 @@ public class SemResultService {
         //     }
         // }
 
-        semesterResults.setSemesters(new ArrayList<>(semesterMap.values()));
+        //semesterResults.setSemesters(new ArrayList<>(semesterMap.values()));
         return resultsRepository.save(semesterResults);
     }
 }
