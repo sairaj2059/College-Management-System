@@ -9,6 +9,7 @@ import StudentMarks from "../components/StudentMarks";
 import UpcomingEvents from "../components/UpcomingEvents";
 import TeacherProfile from "../components/TeacherProfile";
 import AddAttendanceForm from "../components/AddAttendanceForm";
+import AddStudent from "../components/AddStudent";
 const TeacherDashboard = () => {
   return (
     <Box sx={{ p: 3 }}>
