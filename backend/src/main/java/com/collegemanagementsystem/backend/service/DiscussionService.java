@@ -9,9 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.collegemanagementsystem.backend.dto.AddMember;
-import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student;
+
 import com.collegemanagementsystem.backend.model.ClasswiseStudent;
 import com.collegemanagementsystem.backend.model.Discussion;
+import com.collegemanagementsystem.backend.model.Student;
 import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.model.Discussion.Message;
 import com.collegemanagementsystem.backend.repository.ClasswiseStudentRepository;
@@ -82,7 +83,7 @@ public class DiscussionService {
 
                 if (!exists) {
                     Discussion.Participant newParticipant = new Discussion.Participant();
-                    newParticipant.setName(student.getName());
+                    newParticipant.setName(student.getStudentName());
                     newParticipant.setRegdNo(student.getRegdNo());
                     group.getParticipants().add(newParticipant);
                 }
