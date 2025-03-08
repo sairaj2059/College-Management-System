@@ -110,18 +110,18 @@ function RegisterUser() {
     } catch (error) {}
   };
 
-  useEffect(() => {
-    async function getCourses() {
-      const response = await CourseService.getCourses();      
-      setCourses(
-        response.map((course) => ({
-          label : course,
-        }))
-      );
-    }
-    getCourses();
+  // useEffect(() => {
+  //   async function getCourses() {
+  //     const response = await CourseService.getCourses();      
+  //     setCourses(
+  //       response.map((course) => ({
+  //         label : course,
+  //       }))
+  //     );
+  //   }
+  //   getCourses();
     
-  }, []);
+  // }, []);
   return (
     <Card sx={{ width: "100%", height: "100%", m: 2, p: 5 }}>
       <Box

@@ -141,6 +141,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, CardContent, Typography, Stack, Box, useMediaQuery } from "@mui/material";
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
+import StudentDashboardService from "../services/StudentDashboardService";
 
 const SAttendance = () => {
   const isSmallScreen = useMediaQuery("(max-width:500px)");
@@ -149,16 +150,38 @@ const SAttendance = () => {
   const className = "III BSc CS"; // Static class name
   const regdNo = "224206"; // Static registration number
   const month = "March"; // Static month
+  // State variables
+  const [attendanceData, setAttendanceData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Static attendance data
-  const attendanceData = {
-    present: 18,
-    absent: 2
-  };
+  // Fetch attendance data from backend
+  useEffect(() => {
+    async function fetchAttendance() {
+      try {
+        const data = await StudentDashboardService.getStudentAttendence(className, regdNo, month);
+        if (data && !data.error) {
+          setAttendanceData(data);
+        } else {
+          setError(data?.error || "Failed to load attendance data.");
+        }
+      } catch (err) {
+        setError("Error fetching attendance data.");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchAttendance();
+  }, []);
 
+  if (loading) return <Typography>Loading...</Typography>;
+  if (error) return <Typography color="error">{error}</Typography>;
+  if (!attendanceData) return <Typography>No attendance data available.</Typography>;
+
+  // Prepare chart data
   const data = [
-    { name: "Present", value: attendanceData.present, color: "#2563eb" }, // Blue
-    { name: "Absent", value: attendanceData.absent, color: "#dc2626" }, // Red
+    { name: "Present", value: attendanceData.daysPresent, color: "#2563eb" }, // Blue
+    { name: "Absent", value: attendanceData.daysAbsent, color: "#dc2626" }, // Red
   ];
 
   return (
@@ -184,7 +207,7 @@ const SAttendance = () => {
         >
           Attendance - {month}
         </Typography>
-
+        {/* Legend */}
         <Stack
           direction={isSmallScreen ? "column" : "row"}
           spacing={2}
@@ -227,6 +250,7 @@ const SAttendance = () => {
           ))}
         </Stack>
 
+        {/* Pie Chart */}
         <Box sx={{ width: "100%", height: 200 }}>
           <ResponsiveContainer>
             <PieChart>

@@ -1,6 +1,8 @@
     package com.collegemanagementsystem.backend.model;
 
-    import org.springframework.data.annotation.Id;
+    import java.util.List;
+
+import org.springframework.data.annotation.Id;
     import org.springframework.data.mongodb.core.mapping.Document;
 
     import lombok.*;
@@ -33,4 +35,5 @@
         private String classmentor;//to which he/she is mentor
         private String Qulifications;
         private String designation;
+        private List <String> subjects;
     }

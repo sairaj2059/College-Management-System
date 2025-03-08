@@ -96,7 +96,7 @@ function StudentProfile() {
         <img 
           src={userData.profileImage || "default-profile.png"} 
           loading="lazy" 
-          alt={`${userData.FirstName} ${userData.LastName}`} 
+          alt={`${userData.firstName} ${userData.lastName}`} 
           className="profile-image"
         />
       </AspectRatio>
