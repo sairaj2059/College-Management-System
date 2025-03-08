@@ -224,7 +224,7 @@ export default function SignInPageComponent({ serverError, setServerError }) {
         // } else {
         //   alert("Invalid Login Credentials");
         // }
-        navigate("/dashboard")
+        navigate("/home")
       } else {
         console.log("error password");
         setError(true);

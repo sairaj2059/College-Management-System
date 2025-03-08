@@ -1,0 +1,26 @@
+package com.collegemanagementsystem.backend.service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import com.collegemanagementsystem.backend.model.ClasswiseStudent;
+import com.collegemanagementsystem.backend.repository.ClasswiseStudentRepository;
+
+@Service
+public class ClassService {
+
+  @Autowired
+  ClasswiseStudentRepository classwiseStudentRepository;
+
+    public ResponseEntity<List<String>> getClasses() {
+        List<String>classList = classwiseStudentRepository.findAll()
+                .stream()
+                .map(ClasswiseStudent::getClassName)
+                .toList();
+
+                return ResponseEntity.ok().body(classList);
+    }
+}

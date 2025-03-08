@@ -58,8 +58,7 @@ import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import Button from "@mui/joy/Button";
-import StudentDashboardService from "../services/StudentDashboardService"; 
-import "../resources/css/StudentProfile.css";
+import "../resources/css/studentprofile.css";
 
 function StudentProfile() {
   const regdNo = "224206"; // Hardcoded for now

@@ -32,8 +32,8 @@ import org.springframework.data.annotation.Id;
         private String pinCode;
         private String mobileNo;
         private String emailAddress;
-        private String classmentor;//to which he/she is mentor
-        private String Qulifications;
+        private String classmentor;
+        private String qualification;
         private String designation;
         private List <String> subjects;
     }
