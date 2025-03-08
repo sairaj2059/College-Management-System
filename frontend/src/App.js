@@ -13,7 +13,10 @@ import Discussion from "./pages/Discussion";
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
+<<<<<<< HEAD
+=======
 import ExamResults from"./components/ExamResults";
+>>>>>>> fcbe913288a356811d2a1fe78388c0b0de2721c5
 //import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
 

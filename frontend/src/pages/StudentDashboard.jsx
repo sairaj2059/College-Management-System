@@ -7,6 +7,7 @@ import Calendar from "../components/Calendars";
 import Faculty from "../components/Faculty";
 import profileImage from "../resources/images/224206.jpg";
 import { UserData } from "../resources/DataList";
+import AddStudent from "../components/AddStudent";
 
 function StudentDashboard() {
   return (
@@ -29,6 +30,7 @@ function StudentDashboard() {
 
       <Box className="dashboard-card">
         <PerformanceChart />
+        <AddStudent/>
       </Box>
 
       <Box className="dashboard-card">
