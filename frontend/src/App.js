@@ -16,10 +16,7 @@ import Students from "./pages/Students";
 import ExamResults from"./components/ExamResults";
 //import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
-import AddTeacher from "./components/AddTeacher";
-import UserService from "./services/UserService";
-import NavBarComponent from "./components/NavBarComponent";
-import Card from "@mui/joy/Card";
+
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
@@ -66,21 +63,6 @@ function App() {
       <Route path="/test1" element={<Discussion />}></Route>
       <Route path="/addsubject" element={<AddSubject />} />
     </Routes>
-        {/* Teacher Ony Pages */}
-        <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
-          <Route path="/teacher/*" element={<TeacherDashboard />} />
-        </Route>
-
-        <Route path="/test" element={<StudentDashboard />}></Route>
-        <Route path="/test1" element={<AddStudent />}></Route>
-
-        <Route path="/teacher" element={<AddTeacher />}></Route>
-        <Route path="/exam" element={<ExamResults />} />
-        <Route path="/nav" element={<NavigationBar />} />
-        <Route path="/addsubject" element={<AddSubject />} />
-      </Routes>
-      </Card>
-    </>
   );
 }
 
