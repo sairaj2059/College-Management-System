@@ -27,7 +27,7 @@ import EditRoundedIcon from "@mui/icons-material/EditRounded";
 
 import Autocomplete from "@mui/joy/Autocomplete";
 import Avatar from "@mui/joy/Avatar";
-import { countries, departments } from "../resources/DataList";
+import { countries, departments, qualifications } from "../resources/DataList";
 import UserService from "../services/UserService";
 import CourseService from "../services/CourseService";
 import ClassService from "../services/ClassService";
@@ -35,9 +35,11 @@ import ClassService from "../services/ClassService";
 function AddTeacher() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [classes, setClasses] = useState([]);
+  const [subjects, setSubjects] = useState([]);
 
   const [formData, setFormData] = useState({
     image: selectedImage,
+    teacherId: "5764765",
     title: "",
     firstName: "",
     lastName: "",
@@ -53,9 +55,10 @@ function AddTeacher() {
     pinCode: "",
     mobileNo: "",
     emailAddress: "",
-    classmentor:"",
-    qualification:"",
-    designation:""
+    classmentor: "",
+    qualification: "",
+    designation: "",
+    subjects: [],
   });
 
   const getOptionLabel = (option) => (option ? option.label : "");
@@ -81,10 +84,13 @@ function AddTeacher() {
   };
 
   const handleSubmit = async (event) => {
-    event.preventDefault();
+
     try {
-      const result = await UserService.addStudent(formData);
-    } catch (error) {}
+      const result = await UserService.addTeacher(formData);
+
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleAutocompleteChange = (fieldName) => (event, newValue) => {
@@ -99,11 +105,18 @@ function AddTeacher() {
       const response = await ClassService.getClasses();
       setClasses(
         response.map((className) => ({
-          label : className,
+          label: className,
         }))
       );
     }
     getClasses();
+  }, []);
+  useEffect(() => {
+    async function getSubjects() {
+      const response = await CourseService.getAllSubjects();
+      setSubjects(response);
+    }
+    getSubjects();
   }, []);
   return (
     <Box>
@@ -418,16 +431,16 @@ function AddTeacher() {
             </Box>
 
             <Box sx={{ m: 3 }}>
-              <Stack direction={"column"}>
+              <Stack direction={"column"} spacing={4}>
                 <Stack direction={"row"} spacing={4}>
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>Mentorship</FormLabel>
                     <Autocomplete
-                      placeholder="Select Country"
+                      placeholder="Select Class"
                       value={classes.find(
                         (className) => classes.label === formData.classmentor
                       )}
-                      onChange={handleAutocompleteChange("country")}
+                      onChange={handleAutocompleteChange("classes")}
                       options={classes}
                       size="sm"
                       getOptionLabel={getOptionLabel}
@@ -437,68 +450,54 @@ function AddTeacher() {
                   </FormControl>
 
                   <FormControl sx={{ display: "flex" }}>
-                    <FormLabel>First Name</FormLabel>
-                    <Input
-                      type="text"
-                      name="firstName"
-                      value={formData.firstName}
-                      onChange={handleInput}
-                      size="sm"
-                      placeholder="Enter First Name"
-                      sx={{ minWidth: 230 }}
-                    />
-                  </FormControl>
-
-                  <FormControl sx={{ display: "flex" }}>
-                    <FormLabel>Last Name</FormLabel>
-                    <Input
-                      type="text"
-                      name="lastName"
-                      value={formData.lastName}
-                      onChange={handleInput}
-                      size="sm"
-                      placeholder="Enter Last Name"
-                      sx={{ minWidth: 230 }}
-                    />
-                  </FormControl>
-
-                  <FormControl sx={{ display: "flex" }}>
-                    <FormLabel>Date of Birth</FormLabel>
-                    <Input
-                      name="dateOfBirth"
-                      value={formData.dateOfBirth}
-                      onChange={handleInput}
-                      type="date"
-                      size="sm"
-                      sx={{ minWidth: 230 }}
-                    />
-                  </FormControl>
-
-                  <FormControl sx={{ display: "flex" }}>
-                    <FormLabel>Department</FormLabel>
+                    <FormLabel>Subjects</FormLabel>
                     <Autocomplete
-                      placeholder="Select Department"
-                      value={departments.find(
-                        (department) => department.label === formData.department
-                      )}
-                      onChange={handleAutocompleteChange("department")}
+                      multiple
+                      placeholder="Select Subjects"
+                      options={subjects}
+                      value={formData.subjects}
+                      onChange={(event, newValue) => {
+                        setFormData((prevData) => ({
+                          ...prevData,
+                          subjects: newValue,
+                        }));
+                      }}
                       size="sm"
-                      options={departments}
-                      sx={{ minWidth: 230 }}
+                      getOptionLabel={(option) =>
+                        `${option.subjectCode} ${option.subjectName}`
+                      }
+                      isOptionEqualToValue={(option, value) =>
+                        option.subjectCode === value.subjectCode
+                      }
+                      sx={{ minWidth: 500 }}
+                    />
+                  </FormControl>
+                  <FormControl sx={{ display: "flex" }}>
+                    <FormLabel>Maximum Qualification</FormLabel>
+                    <Autocomplete
+                      placeholder="Maximum Qualification"
+                      value={qualifications.find(
+                        (qualification) =>
+                          qualifications.label === formData.qualification
+                      )}
+                      onChange={handleAutocompleteChange("qualification")}
+                      options={qualifications}
+                      size="sm"
                       getOptionLabel={getOptionLabel}
                       isOptionEqualToValue={isOptionEqualToValue}
+                      sx={{ minWidth: 230 }}
                     />
                   </FormControl>
 
                   <FormControl sx={{ display: "flex" }}>
-                    <FormLabel>National ID Number</FormLabel>
+                    <FormLabel>Designation</FormLabel>
                     <Input
-                      name="nationalIdNumber"
-                      value={formData.nationalIdNumber}
+                      name="designation"
+                      value={formData.designation}
                       onChange={handleInput}
                       size="sm"
                       type="text"
-                      placeholder="Enter National ID No."
+                      placeholder="Enter Designation"
                       sx={{ minWidth: 230 }}
                     />
                   </FormControl>
@@ -517,7 +516,7 @@ function AddTeacher() {
             >
               Cancel
             </Button>
-            <Button onClick={handleSubmit}>Add Student</Button>
+            <Button onClick={handleSubmit}>Add Teacher</Button>
           </Box>
         </Box>
       </Card>

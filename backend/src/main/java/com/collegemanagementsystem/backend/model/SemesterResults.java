@@ -16,5 +16,5 @@ import lombok.*;
 public class SemesterResults {
     @Id
     private int id;//regd
-    private List<Semester> semesters;
+    private List<SemesterMarks> semesters;
 }

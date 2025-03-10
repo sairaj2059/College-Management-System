@@ -11,5 +11,6 @@ public class Subject {
     private String subjectCode;
     private String subjectCredit;
     private String subjectTeacher;
+    private String subjectTeacherId;
     private String subjectName;
 }

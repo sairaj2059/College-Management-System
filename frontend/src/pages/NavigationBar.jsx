@@ -10,9 +10,9 @@ export const NavigationBar = () => {
   const navigate = useNavigate();
 
   const getDashboardRoute = useCallback(() => {
-    if (role === "ADMIN") return "admin";
-    if (role === "STUDENT") return "student";
-    if (role === "TEACHER") return "teacher";
+    if (role === "ADMIN") return "/home/admin";
+    if (role === "STUDENT") return "/home/student";
+    if (role === "TEACHER") return "/home/teacher";
     return "/login";
   },[role]);
 

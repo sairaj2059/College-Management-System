@@ -20,7 +20,7 @@ import login_logo from "../resources/images/Llogo.webp";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/slices/authSlice";
 
@@ -29,13 +29,14 @@ const providers = [{ id: "credentials", name: "Password and Username" }]; //name
 function CustomPasswordField({
   error,
   setError,
-  setPassword,
   password,
   isFocusedP,
   setIsFocusedP,
   setIsFocusedU,
   showPassword,
   setShowPassword,
+  inputRefP,
+  onPasswordChange,
 }) {
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -65,9 +66,10 @@ function CustomPasswordField({
         value={password}
         autoFocus={isFocusedP}
         onChange={(e) => {
-          setPassword(e.target.value);
+          onPasswordChange(e);
           handleError();
         }}
+        inputRef={inputRefP}
         endAdornment={
           <InputAdornment position="end">
             <IconButton
@@ -87,7 +89,7 @@ function CustomPasswordField({
         }
         startAdornment={
           <InputAdornment position="start">
-            <LockIcon sx={{ fontSize: 20 }} ></LockIcon>
+            <LockIcon sx={{ fontSize: 20 }}></LockIcon>
           </InputAdornment>
         }
         label="Password"
@@ -101,10 +103,11 @@ const CustomUserName = ({
   error,
   setError,
   username,
-  setUsername,
   isFocusedU,
   setIsFocusedU,
   setIsFocusedP,
+  inputRefU,
+  onUsernameChange,
 }) => {
   const handleError = () => {
     if (error) setError(false);
@@ -127,13 +130,13 @@ const CustomUserName = ({
           setIsFocusedU(true);
           setIsFocusedP(false);
         }}
-    
         value={username}
         onChange={(e) => {
-          setUsername(e.target.value);
           handleError();
+          onUsernameChange(e);
         }}
         autoFocus={isFocusedU}
+        inputRef={inputRefU}
         startAdornment={
           <InputAdornment position="start">
             <PersonIcon sx={{ fontSize: 20 }} />
@@ -205,26 +208,54 @@ export default function SignInPageComponent({ serverError, setServerError }) {
   const [isFocusedU, setIsFocusedU] = useState(false);
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [cursorPosition, setCursorPosition] = useState(0);
+  const inputRefU = useRef();
+  const inputRefP = useRef();
+
+  const onUsernameChange = (e) => {
+    setCursorPosition(e.target.selectionStart);
+    setUsername(e.target.value);
+  };
+
+  const onPasswordChange = (e) => {
+    setCursorPosition(e.target.selectionStart);
+    setPassword(e.target.value);
+  };
+
+  //for username
+  useEffect(() => {
+    if (inputRefU.current) {
+      inputRefU.current.setSelectionRange(cursorPosition, cursorPosition);
+    }
+  }, [username, cursorPosition]);
+
+  //for password
+  useEffect(() => {
+    if (inputRefP.current) {
+      inputRefP.current.setSelectionRange(cursorPosition, cursorPosition);
+    }
+  }, [password, cursorPosition]);
 
   const SignIn = async (provider, formData) => {
     const { username, password } = Object.fromEntries(formData);
     try {
       const userData = await UserService.login(username, password);
-      console.log(userData);
 
       if (userData.success) {
         dispatch(login({ token: userData.token, role: userData.role }));
 
-        // if (userData.role === "ADMIN") {
-        //   navigate("/admin");
-        // } else if (userData.role === "TEACHER") {
-        //   navigate("/teacher");
-        // } else if (userData.role === "STUDENT") {
-        //   navigate("/student");
-        // } else {
-        //   alert("Invalid Login Credentials");
-        // }
-        navigate("/home")
+        localStorage.setItem("token", userData.token);
+        localStorage.setItem("role", userData.role);
+
+        if (userData.role === "ADMIN") {
+          navigate("/admin");
+        } else if (userData.role === "TEACHER") {
+          navigate("/teacher");
+        } else if (userData.role === "STUDENT") {
+          navigate("/student");
+        } else {
+          alert("Invalid Login Credentials");
+        }
       } else {
         console.log("error password");
         setError(true);
@@ -232,7 +263,6 @@ export default function SignInPageComponent({ serverError, setServerError }) {
     } catch (error) {
       console.error("Login failed", error);
       setServerError(true);
-      console.log("sairam");
     }
   };
 
@@ -258,10 +288,11 @@ export default function SignInPageComponent({ serverError, setServerError }) {
                 error={error}
                 setError={setError}
                 username={username}
-                setUsername={setUsername}
                 isFocusedU={isFocusedU}
                 setIsFocusedU={setIsFocusedU}
                 setIsFocusedP={setIsFocusedP}
+                inputRefU={inputRefU}
+                onUsernameChange={onUsernameChange}
               />
             ),
             passwordField: () => (
@@ -269,12 +300,13 @@ export default function SignInPageComponent({ serverError, setServerError }) {
                 error={error}
                 setError={setError}
                 password={password}
-                setPassword={setPassword}
                 isFocusedP={isFocusedP}
                 setIsFocusedP={setIsFocusedP}
                 setIsFocusedU={setIsFocusedU}
                 showPassword={showPassword}
                 setShowPassword={setShowPassword}
+                inputRefP={inputRefP}
+                onPasswordChange={onPasswordChange}
               />
             ),
             subtitle: Noop,
