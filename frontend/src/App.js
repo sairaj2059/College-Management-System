@@ -13,10 +13,7 @@ import Discussion from "./pages/Discussion";
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
-<<<<<<< HEAD
-=======
 import ExamResults from"./components/ExamResults";
->>>>>>> fcbe913288a356811d2a1fe78388c0b0de2721c5
 //import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
 import AddTeacher from "./components/AddTeacher";
@@ -69,22 +66,7 @@ function App() {
       <Route path="/test1" element={<Discussion />}></Route>
       <Route path="/addsubject" element={<AddSubject />} />
     </Routes>
-        {/* Teacher Ony Pages */}
-        <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
-          <Route path="/teacher/*" element={<TeacherDashboard />} />
-        </Route>
-
-        <Route path="/test" element={<StudentDashboard />}></Route>
-        <Route path="/test1" element={<AddStudent />}></Route>
-
-        <Route path="/teacher" element={<AddTeacher />}></Route>
-        <Route path="/exam" element={<ExamResults />} />
-        <Route path="/nav" element={<NavigationBar />} />
-        <Route path="/addsubject" element={<AddSubject />} />
-      </Routes>
-      </Card>
-    </>
-  );
+  )
 }
 
 export default App;
