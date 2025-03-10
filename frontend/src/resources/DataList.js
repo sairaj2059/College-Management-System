@@ -183,6 +183,13 @@ export const courses = [
   { label: "MSc Data Science 2024" },
 ];
 
+export const qualifications =[
+  {label: "Ph.D"},
+  {label: "Master's Degree"},
+  {label: "Bachelor's Degree"},
+  {label: "Diploma"}
+]
+
 export const roles = [
   { label: "ADMIN" },
   { label: "TEACHER" },

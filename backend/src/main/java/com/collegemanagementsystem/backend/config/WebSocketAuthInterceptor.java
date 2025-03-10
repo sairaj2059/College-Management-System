@@ -53,7 +53,6 @@ public class WebSocketAuthInterceptor implements HandshakeInterceptor {
             UserDetails userDetails = context.getBean(UserService.class).loadUserByUsername(username);
             return jwtService.validateToken(token, userDetails);
         } catch (Exception e) {
-            // Log exception for debugging purposes
             System.out.println("Token validation error: " + e.getMessage());
             return false;
         }

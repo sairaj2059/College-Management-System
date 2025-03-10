@@ -31,7 +31,7 @@ import { countries, departments} from "../resources/DataList";
 import UserService from "../services/UserService";
 import CourseService from "../services/CourseService";
 
-function RegisterUser() {
+function AddStudent() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [courses, setCourses] = useState([]);
 
@@ -107,7 +107,9 @@ function RegisterUser() {
     event.preventDefault();
     try {
       const result = await UserService.addStudent(formData);
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
@@ -717,4 +719,4 @@ function RegisterUser() {
   );
 }
 
-export default RegisterUser;
+export default AddStudent;

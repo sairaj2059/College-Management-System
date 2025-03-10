@@ -1,6 +1,7 @@
 package com.collegemanagementsystem.backend.controller;
 
 import com.collegemanagementsystem.backend.model.StudentDetails;
+import com.collegemanagementsystem.backend.model.TeacherDetails;
 import com.collegemanagementsystem.backend.service.AdministratorService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +11,14 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
+
 @RestController
+@RequestMapping("/admin")
 public class AdminController {
     
     @Autowired
     private AdministratorService administratorService;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-    @GetMapping("/dashboard")
-    public String greet(HttpServletRequest request) {
-        return "Hello Admin, Session ID: " + request.getSession().getId();
-    }
 
     @PostMapping("/addStudent")
     public ResponseEntity<?> addStudentByForm(@RequestBody StudentDetails studentDetails) {
@@ -32,9 +30,9 @@ public class AdminController {
         return administratorService.getStudentDetails();
     }
 
-    @GetMapping("/addTeacher")
-    public String getMethodName(@RequestParam String param) {
-        return new String();
+    @PostMapping("/addTeacher")
+    public ResponseEntity<?> addTeacher(@RequestBody TeacherDetails teacherDetails) {
+        return administratorService.addTeacherByForm(teacherDetails);
     }
     
     

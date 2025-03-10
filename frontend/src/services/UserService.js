@@ -4,8 +4,6 @@ class UserService{
     static BASE_URL = "http://localhost:8080";
 
   static async login(username, password) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
     try {
       const response = await axios.post(`${UserService.BASE_URL}/login`, {
         username,
@@ -17,17 +15,31 @@ class UserService{
     }
   }
 
+  static async addTeacher(formData){
+    const token = localStorage.getItem("token");
+
+      try {
+        const response = await axios.post(`${UserService.BASE_URL}/admin/addTeacher`, formData,{
+          headers:{
+            Authorization:`Bearer ${token}`,
+            "Content-Type": "application/json",
+          }
+        })
+      return response.data;
+      } catch (error) {
+        console.log(error);
+      }
+  }
+
   static async addStudent(formData) {
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.post(`${UserService.BASE_URL}/addStudent`, formData, {
+      const response = await axios.post(`${UserService.BASE_URL}/admin/addStudent`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       });
-      console.log(response.data);
-      
       return response.data;
     } catch (error) {
         console.log(error);
@@ -37,7 +49,7 @@ class UserService{
   static async getStudentsDetails(){
     const token = localStorage.getItem("token");
 
-    const response = await axios.get(`${this.BASE_URL}/getStudentsDetails`, {
+    const response = await axios.get(`${this.BASE_URL}/admin/getStudentsDetails`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
