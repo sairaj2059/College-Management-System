@@ -4,7 +4,7 @@ import SignInPageComponent from "../components/SignInPageComponent";
 import { useState } from "react";
 import NotificationBar from "../components/NotificationBar";
 
-const message = ['"The cultivation of human values alone is true education."'];
+const message = '"The cultivation of human values alone is true education."';
 
 const Login = () => {
   const [serverError, setServerError] = useState(false);

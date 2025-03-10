@@ -7,13 +7,17 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 //import ResetPasswordComponent from "./components/ResetPasswordComponent";
-//import PageNotFound from "./pages/PageNotFound";
+import PageNotFound from "./pages/PageNotFound";
 import Discussion from "./pages/Discussion";
 
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
-import AddStudent from "./components/AddStudent";
+<<<<<<< HEAD
+=======
+import ExamResults from"./components/ExamResults";
+>>>>>>> fcbe913288a356811d2a1fe78388c0b0de2721c5
+//import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
 import AddTeacher from "./components/AddTeacher";
 import UserService from "./services/UserService";

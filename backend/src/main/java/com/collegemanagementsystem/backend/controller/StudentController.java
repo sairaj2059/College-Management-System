@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.SemesterResults;
+import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
 
@@ -48,7 +49,6 @@ public class StudentController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
     @GetMapping("/get_Sattendance/{className}")
 public ResponseEntity<?> getAttendanceMonth(
         @PathVariable String className,  // Changed from @RequestParam to @PathVariable

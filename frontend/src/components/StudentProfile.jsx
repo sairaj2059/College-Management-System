@@ -58,9 +58,8 @@ import CardContent from "@mui/joy/CardContent";
 import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import Button from "@mui/joy/Button";
-import "../resources/css/studentprofile.css";
+import "../resources/css/StudentProfile.css";
 import StudentDashboardService from "../services/StudentDashboardService";
-
 
 function StudentProfile() {
   const regdNo = "224206"; // Hardcoded for now
@@ -97,7 +96,7 @@ function StudentProfile() {
         <img 
           src={userData.profileImage || "default-profile.png"} 
           loading="lazy" 
-          alt={`${userData.FirstName} ${userData.LastName}`} 
+          alt={`${userData.firstName} ${userData.lastName}`} 
           className="profile-image"
         />
       </AspectRatio>

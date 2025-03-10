@@ -3,6 +3,9 @@
     import java.util.List;
 
 import org.springframework.data.annotation.Id;
+    import java.util.List;
+
+import org.springframework.data.annotation.Id;
     import org.springframework.data.mongodb.core.mapping.Document;
 
     import lombok.*;
@@ -36,5 +39,6 @@ import org.springframework.data.annotation.Id;
         private String classmentor;
         private String qualification;
         private String designation;
+        private List <String> subjects;
         private List<Subject> subjects;
     }

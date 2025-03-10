@@ -1,39 +1,30 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useEffect, useMemo } from "react";
 import { Box } from "@mui/material";
 import NavBarComponent from "../components/NavBarComponent";
-import StudentDashboard from "./StudentDashboard";
-import Discussion from "../pages/Discussion.jsx";
-import ExamResults from "../components/ExamResults.jsx";
-import TeacherDashboard from "./TeacherDashboard";
-import AdminDasboard from "./AdminDasboard.jsx";
 import { useSelector } from "react-redux";
-
-const tabComponents = {
-  1: ExamResults,
-  2: Discussion,
-};
-
-const roleBasedDashboard = {
-  ADMIN: AdminDasboard,
-  TEACHER: TeacherDashboard,
-  STUDENT: StudentDashboard,
-};
+import { Outlet,useNavigate} from "react-router-dom";
 
 export const NavigationBar = () => {
   const tabValue = useSelector((state) => state.tabs.tabValue);
   const { role } = useSelector((state) => state.auth || {});
+  const navigate = useNavigate();
 
-  const SelectedComponent = useMemo(() => {
-    if(tabValue === 0){      
-      return roleBasedDashboard[role];
-    }
-    if (tabValue === 2)
-    {
-      return <Discussion/>;
-    }
-    else return tabComponents[tabValue];//changes required
+  const getDashboardRoute = useCallback(() => {
+    if (role === "ADMIN") return "/home/admin";
+    if (role === "STUDENT") return "/home/student";
+    if (role === "TEACHER") return "/home/teacher";
+    return "/login";
+  },[role]);
 
-  }, [tabValue,role]);
+  const tabRoutes = useMemo(() =>({
+    0: getDashboardRoute(),
+    1: "exam-results",
+    2: "/discussion",
+  }), [getDashboardRoute]);
+
+  useEffect(() => {
+    navigate(tabRoutes[tabValue] || "/login");
+  }, [tabValue, tabRoutes, navigate]);
 
   return (
     <Box
@@ -50,7 +41,7 @@ export const NavigationBar = () => {
       }}
     >
       <Box sx={{ width: "100%", height: "8%", backgroundColor: "transparent" }}>
-        <NavBarComponent />
+        <NavBarComponent/>
       </Box>
 
       <Box
@@ -66,7 +57,7 @@ export const NavigationBar = () => {
           },
         }}
       >
-        <SelectedComponent />
+        <Outlet />
       </Box>
     </Box>
   );
