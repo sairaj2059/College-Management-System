@@ -9,7 +9,7 @@ export const NavigationBar = () => {
   const { role } = useSelector((state) => state.auth || {});
   const navigate = useNavigate();
 
-  const getDashboardRoute = useCallback(() => {
+  const getDashboardRoute = useCallback(() => {    
     if (role === "ADMIN") return "/home/admin";
     if (role === "STUDENT") return "/home/student";
     if (role === "TEACHER") return "/home/teacher";

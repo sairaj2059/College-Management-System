@@ -6,17 +6,13 @@ import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
-//import ResetPasswordComponent from "./components/ResetPasswordComponent";
+import ResetPassword from "./pages/ResetPassword";
 import PageNotFound from "./pages/PageNotFound";
 import Discussion from "./pages/Discussion";
-
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
-<<<<<<< HEAD
-=======
 import ExamResults from"./components/ExamResults";
->>>>>>> fcbe913288a356811d2a1fe78388c0b0de2721c5
 //import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
 
@@ -65,6 +61,7 @@ function App() {
       <Route path="/test" element={<StudentDashboard />}></Route>
       <Route path="/test1" element={<Discussion />}></Route>
       <Route path="/addsubject" element={<AddSubject />} />
+      <Route path="/reset" element={<ResetPassword />} />
     </Routes>
   );
 }

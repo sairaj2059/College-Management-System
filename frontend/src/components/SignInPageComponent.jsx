@@ -240,10 +240,9 @@ export default function SignInPageComponent({ serverError, setServerError }) {
     const { username, password } = Object.fromEntries(formData);
     try {
       const userData = await UserService.login(username, password);
-      console.log(userData);
-
+      
       if (userData.success) {
-        dispatch(login({ token: userData.token, role: "ADMIN" }));
+        dispatch(login({ token: userData.token, role: userData.role }));
         navigate("/home");
       } else {
         console.log("error password");
