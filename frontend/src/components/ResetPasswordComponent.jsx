@@ -1,4 +1,3 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
@@ -8,6 +7,8 @@ import { styled } from "@mui/material/styles";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import MailOutlineOutlinedIcon from "@mui/icons-material/MailOutlineOutlined";
 import "../resources/css/multiline.css";
+import Alert from "@mui/material/Alert";
+import { useState } from "react";
 
 const Root = styled("div")(({ theme }) => ({
   width: "60%",
@@ -19,6 +20,21 @@ const Root = styled("div")(({ theme }) => ({
 }));
 
 export default function ResetPasswordComponent() {
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+    const email = event.target.elements.email.value;
+    const username = event.target.elements.username.value;
+
+    if ((email && username) || (!email && !username)) {
+      setErrorMessage("Please enter either your email or username, not both.");
+    } else {
+      alert(`Email: ${email}, Username: ${username}`);
+      setErrorMessage("");
+    }
+  };
+
   return (
     <Box
       component="form"
@@ -33,13 +49,12 @@ export default function ResetPasswordComponent() {
         height: "40vh",
         borderRadius: "2%",
         minWidth: "150px",
-        minHeight: "250px",
+        minHeight: "50vh",
         boxShadow: "5px 5px 8px rgba(0, 0, 0, 0.5)",
-        padding: "2rem 1.8rem 1.9rem 1.8rem",
-        gap: "1rem",
+        padding:'2%'
       }}
-      noValidate
       autoComplete="off"
+      onSubmit={onSubmitHandler}
     >
       <Box
         sx={{
@@ -71,24 +86,39 @@ export default function ResetPasswordComponent() {
             Reset Password
           </Typography>
           <Typography
-            variant="h9"
+            variant="body2"
             sx={{
               color: "rgb(62, 62, 62)",
-              fontSize: "clamp(0.75rem, 1.2vw, 1.5rem)",
+              fontSize: "clamp(0.65rem, 1.1vw, 1.2rem)",
             }}
           >
-            Enter your email or username
+            {errorMessage ? (
+              <Alert
+                severity="error"
+                sx={{
+                  width: "100%",
+                  maxWidth: "250px",
+                  fontSize: "0.8rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minHeight: "10px",
+                  height: "75%",
+                }}
+              >
+                {errorMessage}
+              </Alert>
+            ):"Enter your email or username"}
           </Typography>
         </div>
 
         <div>
           <TextField
-            id="Rst_email"
+            name="email"
             label="Email id"
             placeholder="Email id"
             size="small"
             type="email"
-            required
             slotProps={{
               inputLabel: {
                 required: false,
@@ -107,16 +137,26 @@ export default function ResetPasswordComponent() {
           />
         </div>
         <Root>
-          <Divider>OR CONTINUE WITH</Divider>
+          <Divider />
+          <Typography
+            variant="body2"
+            sx={{
+              whiteSpace: "nowrap",
+              color: "red",
+              fontSize: { xs: "10px", sm: "12px", md: "14px" },
+            }}
+          >
+            OR CONTINUE WITH
+          </Typography>
+          <Divider />
         </Root>
         <div>
           <TextField
-            id="Rst_username"
+            name="username"
             label="Username"
             placeholder="Username"
             size="small"
             type="text"
-            required
             slotProps={{
               inputLabel: {
                 required: false,
@@ -136,6 +176,7 @@ export default function ResetPasswordComponent() {
         </div>
       </Box>
       <Button
+        type="submit"
         variant="contained"
         size="medium"
         sx={{ width: "22vw", borderRadius: "16px", marginBottom: "0.8em" }}

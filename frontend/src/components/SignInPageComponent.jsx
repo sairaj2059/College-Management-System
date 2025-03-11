@@ -240,22 +240,10 @@ export default function SignInPageComponent({ serverError, setServerError }) {
     const { username, password } = Object.fromEntries(formData);
     try {
       const userData = await UserService.login(username, password);
-
+      
       if (userData.success) {
         dispatch(login({ token: userData.token, role: userData.role }));
-
-        localStorage.setItem("token", userData.token);
-        localStorage.setItem("role", userData.role);
-
-        if (userData.role === "ADMIN") {
-          navigate("/admin");
-        } else if (userData.role === "TEACHER") {
-          navigate("/teacher");
-        } else if (userData.role === "STUDENT") {
-          navigate("/student");
-        } else {
-          alert("Invalid Login Credentials");
-        }
+        navigate("/home");
       } else {
         console.log("error password");
         setError(true);

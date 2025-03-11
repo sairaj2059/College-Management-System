@@ -6,10 +6,9 @@ import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDasboard from "./pages/AdminDasboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
-//import ResetPasswordComponent from "./components/ResetPasswordComponent";
+import ResetPassword from "./pages/ResetPassword";
 import PageNotFound from "./pages/PageNotFound";
 import Discussion from "./pages/Discussion";
-
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
@@ -49,17 +48,13 @@ function App() {
           <Route path="/teacher/*" element={<TeacherDashboard />} />
         </Route>
 
-        <Route path="/test" element={<StudentDashboard />}></Route>
-        {/* <Route path="/test1" element={<AddStudent />}></Route> */}
-
-        <Route path="/teacher" element={<AddTeacher />}></Route>
-        <Route path="/exam" element={<ExamResults />} />
-        <Route path="/nav" element={<NavigationBar />} />
-        <Route path="/addsubject" element={<AddSubject />} />
-        <Route path="/discussion" element={<Discussion/>}/>
-        <Route path="/exampage" element={<ExamPage/>}/>
-      </Routes>
-    </>
+      <Route path="/unauthorized" element={<Unauthorized />} />
+      <Route path="*" element={<PageNotFound />} />
+      <Route path="/test" element={<StudentDashboard />}></Route>
+      <Route path="/test1" element={<Discussion />}></Route>
+      <Route path="/addsubject" element={<AddSubject />} />
+      <Route path="/reset" element={<ResetPassword />} />
+    </Routes>
   );
 }
 
