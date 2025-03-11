@@ -48,13 +48,17 @@ function App() {
           <Route path="/teacher/*" element={<TeacherDashboard />} />
         </Route>
 
-      <Route path="/unauthorized" element={<Unauthorized />} />
-      <Route path="*" element={<PageNotFound />} />
-      <Route path="/test" element={<StudentDashboard />}></Route>
-      <Route path="/test1" element={<Discussion />}></Route>
-      <Route path="/addsubject" element={<AddSubject />} />
-      <Route path="/reset" element={<ResetPassword />} />
-    </Routes>
+        <Route path="/test" element={<StudentDashboard />}></Route>
+        {/* <Route path="/test1" element={<AddStudent />}></Route> */}
+
+        <Route path="/teacher" element={<AddTeacher />}></Route>
+        <Route path="/exam" element={<ExamResults />} />
+        <Route path="/nav" element={<NavigationBar />} />
+        <Route path="/addsubject" element={<AddSubject />} />
+        <Route path="/discussion" element={<Discussion/>}/>
+        <Route path="/exampage" element={<ExamPage/>}/>
+      </Routes>
+    </>
   );
 }
 

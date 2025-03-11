@@ -1,6 +1,10 @@
 package com.collegemanagementsystem.backend.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import lombok.*;
+
+@Document(collection = "Subjects")
 
 @NoArgsConstructor  
 @AllArgsConstructor 
