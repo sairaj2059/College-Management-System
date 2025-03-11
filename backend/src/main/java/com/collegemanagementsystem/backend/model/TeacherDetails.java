@@ -11,7 +11,6 @@ import org.springframework.data.annotation.Id;
     import lombok.*;
 
     @NoArgsConstructor  
-    @AllArgsConstructor 
     @Getter 
     @Setter 
     @Document(collection = "TeacherDetails")
@@ -39,6 +38,5 @@ import org.springframework.data.annotation.Id;
         private String classmentor;
         private String qualification;
         private String designation;
-        private List <String> subjects;
         private List<Subject> subjects;
     }

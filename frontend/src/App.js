@@ -20,7 +20,6 @@ import AddTeacher from "./components/AddTeacher";
 import UserService from "./services/UserService";
 import NavBarComponent from "./components/NavBarComponent";
 import Card from "@mui/joy/Card";
-import ExamResults from "./components/ExamResults";
 import ExamPage from "./pages/ExamPage";
 
 function App() {
@@ -51,7 +50,7 @@ function App() {
         </Route>
 
         <Route path="/test" element={<StudentDashboard />}></Route>
-        <Route path="/test1" element={<AddStudent />}></Route>
+        {/* <Route path="/test1" element={<AddStudent />}></Route> */}
 
         <Route path="/teacher" element={<AddTeacher />}></Route>
         <Route path="/exam" element={<ExamResults />} />

@@ -6,6 +6,9 @@ const data = [
   { name: "UCSH-602", GPA: 8.0 },
   { name: "UCSH-603", GPA: 6.5 },
   { name: "UCSH-604", GPA: 7.5 },
+  { name: "UCSH-605", GPA: 9.0 },
+  { name: "UCSH-605", GPA: 9.0 },
+  
 ];
 
 const SubjectGraph = () => {
