@@ -12,7 +12,22 @@ class CourseService {
           "Content-Type": "application/json",
         },
       });
-    
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  static async getAllSubjects() {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`${this.BASE_URL}/getAllSubjects`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
       return response.data;
     } catch (error) {
       console.error(error);

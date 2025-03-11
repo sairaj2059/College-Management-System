@@ -251,7 +251,6 @@ export default function SignInPageComponent({ serverError, setServerError }) {
     } catch (error) {
       console.error("Login failed", error);
       setServerError(true);
-      console.log("sairam");
     }
   };
 

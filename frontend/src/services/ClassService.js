@@ -11,7 +11,6 @@ class ClassService {
           "Content-Type": "application/json",
         },
       });
-      console.log(response.data);
 
       return response.data;
     } catch (error) {

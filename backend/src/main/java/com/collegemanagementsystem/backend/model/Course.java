@@ -2,6 +2,7 @@ package com.collegemanagementsystem.backend.model;
 
 import java.util.List;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.AllArgsConstructor;
@@ -15,6 +16,9 @@ import lombok.Setter;
 @NoArgsConstructor
 @Document(collection = "Courses")
 public class Course {
+
+    @Id
+    private String id;
     private String courseName;
     private String courseType;
     private List<Semester> semestersList;

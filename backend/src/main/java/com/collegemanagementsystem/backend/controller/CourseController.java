@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.collegemanagementsystem.backend.model.Course;
 import com.collegemanagementsystem.backend.model.Semester;
+import com.collegemanagementsystem.backend.model.Subject;
 import com.collegemanagementsystem.backend.service.CourseService;
 
 import java.util.List;
@@ -13,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+
 
 @RestController
 @RequestMapping("/courses")
@@ -41,5 +43,11 @@ public class CourseController {
     public ResponseEntity<Semester> getSemesterData(@PathVariable String courseName, @PathVariable String semesterNumber) {
         return courseService.getSemesterData(courseName, semesterNumber);
     }
+
+    @GetMapping("/getAllSubjects")
+    public ResponseEntity<List<Subject>> getAllSubjects() {
+        return courseService.getAllSubjects();
+    }
+    
 
 }
