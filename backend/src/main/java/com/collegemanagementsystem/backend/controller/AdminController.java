@@ -3,10 +3,8 @@ package com.collegemanagementsystem.backend.controller;
 import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.model.TeacherDetails;
 import com.collegemanagementsystem.backend.service.AdministratorService;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

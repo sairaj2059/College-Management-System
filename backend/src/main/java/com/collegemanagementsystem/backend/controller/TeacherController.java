@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
-import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
 import com.collegemanagementsystem.backend.service.TeacherService;
 import com.collegemanagementsystem.backend.service.StudentService;

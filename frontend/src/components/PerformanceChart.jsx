@@ -4,11 +4,11 @@ import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import { CalendarMonth } from "@mui/icons-material";
 
 const data = [
-  { name: "Semester-1", GPA: 5.2 },
-  { name: "Semester 2", GPA: 6.8,  },
-  { name: "Semester 3", GPA: 7.6 },
-  { name: "Semester 4", GPA: 8.0 },
-  { name: "Semester 5", GPA: 9.6 },
+  { name: "UCSH-601", GPA: 5.2 },
+  { name: "UCSH-602", GPA: 6.8,  },
+  { name: "UCSH-603", GPA: 7.6 },
+  { name: "UCSH-604", GPA: 8.0 },
+  { name: "UCSH-605", GPA: 9.6 },
 ];
 
 const PerformanceChart = () => {
