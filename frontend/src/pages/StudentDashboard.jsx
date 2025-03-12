@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Stack, Paper } from "@mui/material";
 import SAttendance from "../components/SAttendance";
 import StudentProfile from "../components/StudentProfile";
@@ -11,6 +11,15 @@ import { UserData } from "../resources/DataList";
 import "../resources/css/StudentDashboard.css"; // Import styles
 
 function StudentDashboard() {
+
+  const [regdNo, setRegdNo] = useState(null);
+  const [semesterNumber, setSemesterNumber] = useState(null);
+
+  const handleProfileLoaded = (regdNo, semester) => {
+    setRegdNo(regdNo);
+    setSemesterNumber(semester);
+  };
+
   return (
     <Box sx={{ px: 1, py: 1, backgroundColor: "#f8fbff", minHeight: "100vh" }}>
       <Stack spacing={1}>
@@ -18,7 +27,7 @@ function StudentDashboard() {
         {/* Top Section - Profile, Attendance, Calendar */}
         <Stack direction={{ xs: "column", md: "row" }} spacing={1} alignItems="stretch">
           <Paper elevation={3} className="dashboard-card top-section-card">
-            <StudentProfile userData={UserData} profileImage={profileImage} />
+          <StudentProfile onProfileLoaded={handleProfileLoaded} />
           </Paper>
           <Paper elevation={3} className="dashboard-card top-section-card">
             <SAttendance />
@@ -34,7 +43,7 @@ function StudentDashboard() {
             <PerformanceChart />
           </Paper>
           <Paper elevation={3} className="dashboard-card mid-section-card subject-graph">
-            <SubjectGraph />
+             <SubjectGraph regdNo={regdNo} semesterNumber={semesterNumber} />
           </Paper>
         </Stack>
 
@@ -48,10 +57,3 @@ function StudentDashboard() {
 }
 
 export default StudentDashboard;
-
-
-
-{/* <Paper elevation={3} sx={{ flex: 1, padding: 1, minHeight: "180px" }}> */}
-{/* <Paper elevation={3} sx={{ flex: 1, padding: 1, minHeight: "180px" }}>
-<SubjectGraph />
-</Paper> */}

@@ -4,11 +4,11 @@ import { Card, CardContent, Typography, IconButton } from "@mui/material";
 import { CalendarMonth } from "@mui/icons-material";
 
 const data = [
-  { name: "Quarter 1", Avg_Score: 72, attendance: 84 },
-  { name: "Quarter 2", Avg_Score: 68, attendance: 78 },
-  { name: "Half yearly", Avg_Score: 66, attendance: 75 },
-  { name: "Model", Avg_Score: 70, attendance: 80 },
-  { name: "Final", Avg_Score: 76, attendance: 55 },
+  { name: "UCSH-601", GPA: 5.2 },
+  { name: "UCSH-602", GPA: 6.8,  },
+  { name: "UCSH-603", GPA: 7.6 },
+  { name: "UCSH-604", GPA: 8.0 },
+  { name: "UCSH-605", GPA: 9.6 },
 ];
 
 const PerformanceChart = () => {
@@ -53,7 +53,7 @@ const PerformanceChart = () => {
               tick={{ fill: "#64748b" }}
             />
             <YAxis 
-              domain={[0, 100]} 
+              domain={[0, 10.0]} 
               stroke="#64748b"
               tick={{ fill: "#64748b" }}
             />
@@ -82,7 +82,7 @@ const PerformanceChart = () => {
             />
             <Line 
               type="monotone" 
-              dataKey="Avg_Score" 
+              dataKey="GPA" 
               stroke="#1e40af" 
               strokeWidth={2} 
               dot={{ fill: "#1e40af", r: 5 }}

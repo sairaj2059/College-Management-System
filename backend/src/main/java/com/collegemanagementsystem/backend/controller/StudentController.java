@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.SemesterResults;
-import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
 
@@ -67,9 +66,9 @@ public ResponseEntity<?> getAttendanceMonth(
     return ResponseEntity.ok(attendanceMonth.getStudents().get(0).getAttendance().get(0));
 }
 
-    @GetMapping("/semResults/{id}")
-    public SemesterResults getSemResultDetails(@PathVariable int id){
-        return semResultService.getSemResultDetails(id);
+    @GetMapping("/semResults/{regdNo}")
+    public SemesterResults getSemResultDetails(@PathVariable String regdNo){
+        return semResultService.getSemResultDetails(regdNo);
     }
 
     @PostMapping("/semResults")

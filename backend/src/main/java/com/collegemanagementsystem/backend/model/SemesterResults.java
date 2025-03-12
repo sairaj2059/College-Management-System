@@ -15,6 +15,11 @@ import lombok.*;
 @Document(collection = "semesterResults")
 public class SemesterResults {
     @Id
-    private int id;//regd
+    private String id;
+    private String regdNo;//regd
     private List<SemesterMarks> semesters;
+    public SemesterResults(String regdNo, List<SemesterMarks> semesters) {
+        this.regdNo = regdNo;
+        this.semesters = semesters;
+    }
 }

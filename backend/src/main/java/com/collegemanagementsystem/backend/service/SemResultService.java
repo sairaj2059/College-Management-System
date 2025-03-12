@@ -1,13 +1,6 @@
 package com.collegemanagementsystem.backend.service;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.collegemanagementsystem.backend.model.Semester;
 import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.repository.ResultsRepository;
 
@@ -16,13 +9,22 @@ public class SemResultService {
     @Autowired
     private ResultsRepository resultsRepository;
 
-    public SemesterResults getSemResultDetails(int id) {
-        return resultsRepository.findById(id).orElse(null);
-    }
+   public SemesterResults getSemResultDetails(String regdNo) {
+    return resultsRepository.findByRegdNo(regdNo);
+}
 
-    public SemesterResults saveSemesterResult(SemesterResults request) {
-        SemesterResults semesterResults = resultsRepository.findById(request.getId())
-                .orElse(new SemesterResults(request.getId(), request.getSemesters()));
+public SemesterResults saveSemesterResult(SemesterResults request) {
+    SemesterResults semesterResults = resultsRepository.findByRegdNo(request.getRegdNo());
+    if (semesterResults == null) {
+        semesterResults = new SemesterResults(request.getRegdNo(), request.getSemesters());
+    }
+    
+
+    semesterResults.setSemesters(request.getSemesters());
+    return resultsRepository.save(semesterResults);
+}
+
+    
 
         //Map<String, Semester> semesterMap = new HashMap<>();
         
@@ -54,6 +56,6 @@ public class SemResultService {
         // }
 
         //semesterResults.setSemesters(new ArrayList<>(semesterMap.values()));
-        return resultsRepository.save(semesterResults);
-    }
+    //     return resultsRepository.save(semesterResults);
+    // }
 }
