@@ -18,8 +18,8 @@ export const NavigationBar = () => {
 
   const tabRoutes = useMemo(() =>({
     0: getDashboardRoute(),
-    1: "exam-results",
-    2: "/discussion",
+    1: "/home/exam-results",
+    2: "/home/discussion",
   }), [getDashboardRoute]);
 
   useEffect(() => {
