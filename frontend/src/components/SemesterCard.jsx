@@ -29,7 +29,7 @@ import {
 const cie1total = 20;
 const cie2Total = 30;
 const cie3Total = 20;
-const ese = 70;
+const ese_gpa = 70;
 
 const getProgressBar = (score, totalMarks) => {
   const percentage = (score / totalMarks) * 100;
@@ -193,10 +193,10 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                       <Typography variant="subtitle2">CIE 3</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography variant="subtitle2">ESE</Typography>
+                      <Typography variant="subtitle2">ESE(GPA)</Typography>
                     </TableCell>
                     <TableCell align="center">
-                      <Typography variant="subtitle2">Average</Typography>
+                      <Typography variant="subtitle2">CGPA</Typography>
                     </TableCell>
                   </TableRow>
                 </TableHead>
@@ -217,7 +217,7 @@ const SemesterCard = ({ semester, isExpanded, onToggle }) => {
                         { score: subjects.cieMarks.cie1, total: cie1total },
                         { score: subjects.cieMarks.cie2, total: cie2Total },
                         { score: subjects.cieMarks.cie3, total: cie3Total },
-                        { score: subjects.cieMarks.ese, total: ese },
+                        { score: subjects.cieMarks.ese_gpa, total: ese_gpa },
                       ].map(({ score, total }, index) => (
                         <TableCell key={index} align="center">
                           <Stack alignItems="center" spacing={1}>

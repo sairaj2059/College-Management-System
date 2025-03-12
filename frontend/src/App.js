@@ -42,19 +42,21 @@ function App() {
 
             {/* Student Ony Pages */}
             <Route element={<ProtectedRoute allowedRoles={"[STUDENT]"} />}>
-              <Route path="student" element={<StudentDashboard />} />
+              <Route path="student/*" element={<StudentDashboard />} />
               <Route path="exam-results" element={<ExamResults />} />
             </Route>
 
             {/* Teacher Ony Pages */}
-            <Route element={<ProtectedRoute roleRequired={"[TEACHER]"} />}>
-              <Route path="teacher/" element={<TeacherDashboard />} />
+            <Route element={<ProtectedRoute allowedRoles={"[TEACHER]"} />}>
+              <Route path="teacher" element={<TeacherDashboard />} />
             </Route>
           </Route>
         </Route>
 
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="*" element={<PageNotFound />} />
+        <Route path="teacher" element={<TeacherDashboard />} />
+
         <Route path="/test" element={<StudentDashboard />}></Route>
         <Route path="/test1" element={<Discussion />}></Route>
         <Route path="/addsubject" element={<AddSubject />} />
