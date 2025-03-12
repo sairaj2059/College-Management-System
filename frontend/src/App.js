@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AdminDasboard from "./pages/AdminDasboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import ResetPassword from "./pages/ResetPassword";
 import PageNotFound from "./pages/PageNotFound";
@@ -15,6 +15,7 @@ import Students from "./pages/Students";
 import ExamResults from "./components/ExamResults";
 //import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
+import NoticeBoard from "./components/NoticeBoard";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
@@ -35,7 +36,7 @@ function App() {
 
             {/* Admin Ony Pages */}
             <Route element={<ProtectedRoute allowedRoles={"[ADMIN]"} />}>
-              <Route path="admin/*" element={<AdminDasboard />} />
+              <Route path="admin/*" element={<AdminDashboard />} />
               <Route path="admin/studentsList" element={<Students />} />
               {/* <Route path="/admin/addStudent" element={<AddStudent />} /> */}
             </Route>
@@ -47,8 +48,8 @@ function App() {
             </Route>
 
             {/* Teacher Ony Pages */}
-            <Route element={<ProtectedRoute roleRequired={"[TEACHER]"} />}>
-              <Route path="teacher/" element={<TeacherDashboard />} />
+            <Route element={<ProtectedRoute allowedRoles={"[TEACHER]"} />}>
+              <Route path="teacher" element={<TeacherDashboard />} />
             </Route>
           </Route>
         </Route>
@@ -59,6 +60,7 @@ function App() {
         <Route path="/test1" element={<Discussion />}></Route>
         <Route path="/addsubject" element={<AddSubject />} />
         <Route path="/reset" element={<ResetPassword />} />
+        <Route path="notice-board" element={<NoticeBoard />} />
       </Routes>
     </>
   );
