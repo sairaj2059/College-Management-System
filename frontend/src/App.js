@@ -40,10 +40,10 @@ function App() {
               <Route path="admin/studentsList" element={<Students />} />
             </Route>
 
-            {/* Student Ony Pages */}
-            <Route element={<ProtectedRoute allowedRoles={"[STUDENT]"} />}>
-              <Route path="student/*" element={<StudentDashboard />} />
-              <Route path="exam-results" element={<ExamResults />} />
+              {/* Student Ony Pages */}
+              <Route element={<ProtectedRoute allowedRoles={"[STUDENT]"} />}>
+                <Route path="student/*" element={<StudentDashboard />} />
+                <Route path="exam-results" element={<ExamResults />} />
             </Route>
 
             {/* Teacher Ony Pages */}
@@ -58,7 +58,13 @@ function App() {
         <Route path="teacher" element={<TeacherDashboard />} />
 
         <Route path="/test" element={<StudentDashboard />}></Route>
-        <Route path="/test1" element={<Discussion />}></Route>
+        <Route path="/addstudent" element={<AddStudent />}></Route>
+
+        <Route path="/addteacher" element={<AddTeacher />} />
+        <Route path="/studentlist" element={<Students />} />
+        <Route path="/examresults" element={<ExamResults />} />
+        <Route path="/nav" element={<NavigationBar />} />
+        {/* <Route path="/nav" element={<NavBarComponent />} /> */}
         <Route path="/addsubject" element={<AddSubject />} />
         <Route path="/reset" element={<ResetPassword />} />
         <Route path="notice-board" element={<NoticeBoard />} />
