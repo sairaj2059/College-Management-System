@@ -9,22 +9,22 @@ export const NavigationBar = () => {
   const { role } = useSelector((state) => state.auth || {});
   const navigate = useNavigate();
 
-  const getDashboardRoute = useCallback(() => {
-    if (role === "ADMIN") return "/home/admin";
-    if (role === "STUDENT") return "/home/student";
-    if (role === "TEACHER") return "/home/teacher";
-    return "/login";
-  },[role]);
+  // const getDashboardRoute = useCallback(() => {
+  //   if (role === "ADMIN") return "/home/admin";
+  //   if (role === "STUDENT") return "/home/student";
+  //   if (role === "TEACHER") return "/home/teacher";
+  //   return "/login";
+  // },[role]);
 
-  const tabRoutes = useMemo(() =>({
-    0: getDashboardRoute(),
-    1: "exam-results",
-    2: "/discussion",
-  }), [getDashboardRoute]);
+  // const tabRoutes = useMemo(() =>({
+  //   0: getDashboardRoute(),
+  //   1: "exam-results",
+  //   2: "/discussion",
+  // }), [getDashboardRoute]);
 
-  useEffect(() => {
-    navigate(tabRoutes[tabValue] || "/login");
-  }, [tabValue, tabRoutes, navigate]);
+  // useEffect(() => {
+  //   navigate(tabRoutes[tabValue] || "/login");
+  // }, [tabValue, tabRoutes, navigate]);
 
   return (
     <Box

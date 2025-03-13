@@ -4,51 +4,98 @@ import { Table } from "antd";
 import Button from "@mui/joy/Button";
 import Typography from "@mui/joy/Typography";
 import IconButton from "@mui/joy/IconButton";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Stack from "@mui/joy/Stack";
-import { FormControl, FormLabel } from "@mui/material";
+import { FormControl, FormLabel, Modal } from "@mui/material";
 import Input from "@mui/joy/Input";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import Autocomplete from "@mui/joy/Autocomplete";
+import CourseService from "../../services/CourseService";
+import ClassService from "../../services/ClassService";
+import ExamService from "../../services/ExamService";
+
+import SendIcon from "@mui/icons-material/Send";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import QuestionsPage from "./QuestionsPage";
+import AddExam from "./AddExam";
 
 function ExamList() {
   const [examListData, setExamListData] = useState([]);
-  const [addExam, setAddExam] = useState(false);
-  const [addExamData, setAddExamData] = useState({
-    examTitle: "",
-    subject: "",
-    startDate: "",
-    endDate: "",
-    duration: "",
-    status: "",
-    uploadedBy: "",
-  });
+  const [addExamToggle, setAddExamToggle] = useState(false);
+  const [teacherId, setTeacherId] = useState("abc"); //Need to get from the redux
+  const [selectedRecord, setSelectedRecord] = useState(null);
 
-  const handleInput = (event) => {
-    const { name, value } = event.target;
-    setAddExamData((prevData) => ({
-      ...prevData,
-      [name]: value,
-    }));
+  const handleEdit = (record) => {
+    setSelectedRecord(record);
   };
 
-  const handleAddExam = () => {
-    setAddExam((prevBool) => !prevBool);
+  const handleExam = () => {
+    setAddExamToggle(() => {
+      return !addExamToggle;
+    });
   };
+  const fetchExamList = async () => {
+    try {
+      const response = await ExamService.getExamListByTeacher(teacherId);
+      setExamListData(response);
+    } catch (error) {
+      console.error("Error fetching exam list:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchExamList();
+  }, []);
+
+
+  const handleDelete = async (id) => {
+    try {
+      await ExamService.deleteExam(id);
+      fetchExamList();
+    } catch (error) {
+      console.error("Error deleting exam:", error);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setSelectedRecord(null);
+  };
+
 
   const columns = [
     {
       title: "Title",
-      dataIndex: "title",
+      dataIndex: "examTitle",
     },
     {
       title: "Subject",
       dataIndex: "subject",
+      render: (subject) =>
+        subject ? `${subject.subjectCode} ${subject.subjectName}` : "",
+      sorter: (a, b) =>
+        (a.subject?.subjectName ?? "").localeCompare(b.subject?.subjectName ?? ""),
+      onFilter: (value, record) => {
+        const subjectCode = record.subject?.subjectCode?.toLowerCase() ?? "";
+        const subjectName = record.subject?.subjectName?.toLowerCase() ?? "";
+        return (
+          subjectCode.includes(value.toLowerCase()) ||
+          subjectName.includes(value.toLowerCase())
+        );
+      },
+    },
+
+    {
+      title: "ClassName",
+      dataIndex: "className",
       showSorterTooltip: {
         target: "full-header",
       },
-      onFilter: (value, record) => record.subject.indexOf(value) === 0,
-      sorter: (a, b) => a.subject.localeCompare(b.subject),
+      onFilter: (value, record) =>
+        (record.className ?? "").indexOf(value) === 0,
+      sorter: (a, b) =>
+        (a.className ?? "").localeCompare(b.className ?? ""),
     },
-
     {
       title: "Start Date",
       dataIndex: "startDate",
@@ -56,19 +103,22 @@ function ExamList() {
       showSorterTooltip: {
         target: "full-header",
       },
-      onFilter: (value, record) => record.startDate.indexOf(value) === 0,
-      sorter: (a, b) => a.startDate.localeCompare(b.startDate),
+      onFilter: (value, record) =>
+        (record.startDate ?? "").indexOf(value) === 0,
+      sorter: (a, b) =>
+        (a.startDate ?? "").localeCompare(b.startDate ?? ""),
     },
     {
-      title: "End Data",
+      title: "End Date",
       dataIndex: "endDate",
       showSorterTooltip: {
         target: "full-header",
       },
-      onFilter: (value, record) => record.endDate.indexOf(value) === 0,
-      sorter: (a, b) => a.endDate.localeCompare(b.endDate),
+      onFilter: (value, record) =>
+        (record.endDate ?? "").indexOf(value) === 0,
+      sorter: (a, b) =>
+        (a.endDate ?? "").localeCompare(b.endDate ?? ""),
     },
-
     {
       title: "Duration(In Minutes)",
       dataIndex: "duration",
@@ -80,22 +130,36 @@ function ExamList() {
     {
       title: "Uploaded By",
       dataIndex: "uploadedBy",
-      onFilter: (value, record) => record.uploadedBy.indexOf(value) === 0,
-      sorter: (a, b) => a.uploadedBy.localeCompare(b.uploadedBy),
+      onFilter: (value, record) =>
+        (record.uploadedBy ?? "").indexOf(value) === 0,
+      sorter: (a, b) =>
+        (a.uploadedBy ?? "").localeCompare(b.uploadedBy ?? ""),
     },
-
     {
       title: "Action",
       dataIndex: "action",
+      render: (_, record) => (
+        <Stack direction="row" spacing={1}>
+          <IconButton onClick={() => handleEdit(record)}>
+            <EditIcon />
+          </IconButton>
+          <IconButton onClick={()=> handleDelete(record.id)}>
+            <DeleteIcon />
+          </IconButton>
+          <IconButton>
+            <SendIcon />
+          </IconButton>
+        </Stack>
+      ),
     },
   ];
 
   return (
     <>
       <Box sx={{ width: "100%", height: "100%" }}>
-        <Card sx={{ display: addExam ? "none" : "flex" }}>
+        <Card sx={{ display: addExamToggle ? "none" : "flex" }}>
           <Box>
-            <Button onClick={handleAddExam}>Add Exam</Button>
+            <Button onClick={handleExam}>Add Exam</Button>
           </Box>
 
           <Box>
@@ -109,84 +173,21 @@ function ExamList() {
                   target: "sorter-icon",
                 }}
               />
+              {addExamToggle && (
+                <Modal open onClose={handleExam}>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
+                    <AddExam closeFunction={handleExam} refreshExamList={fetchExamList} />
+                  </Box>
+                </Modal>
+              )}
             </Card>
-          </Box>
-        </Card>
-
-        <Card sx={{ display: addExam ? "flex" : "none" }}>
-          <Box
-            sx={{
-              borderTopLeftRadius: 7,
-              borderTopRightRadius: 7,
-              backgroundColor: "#d7e0e5",
-              width: "100%",
-              height: "5vh",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
-              gap: 1,
-              p: 4,
-            }}
-          >
-            <Typography level="h4">Add Exam</Typography>
-            <IconButton onClick={handleAddExam}>
-              <Typography>X</Typography>
-            </IconButton>
-          </Box>
-
-          <Box sx={{ m: 2 }}>
-            <Stack direction={"column"}>
-          <Stack direction={"row"} gap={5}>
-            <FormControl>
-              <FormLabel>Exam Title</FormLabel>
-              <Input
-                name="nationalIdNumber"
-                value={addExamData.examTitle}
-                onChange={handleInput}
-                size="sm"
-                type="text"
-                placeholder="Enter Exam Title"
-                sx={{ minWidth: 400 }}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Exam Title</FormLabel>
-              <Input
-                name="nationalIdNumber"
-                value={addExamData.examTitle}
-                onChange={handleInput}
-                size="sm"
-                type="text"
-                placeholder="Enter Exam Title"
-                sx={{ minWidth: 400 }}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Exam Title</FormLabel>
-              <Input
-                name="nationalIdNumber"
-                value={addExamData.examTitle}
-                onChange={handleInput}
-                size="sm"
-                type="text"
-                placeholder="Enter Exam Title"
-                sx={{ minWidth: 400 }}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Exam Title</FormLabel>
-              <Input
-                name="nationalIdNumber"
-                value={addExamData.examTitle}
-                onChange={handleInput}
-                size="sm"
-                type="text"
-                placeholder="Enter Exam Title"
-                sx={{ minWidth: 400 }}
-              />
-            </FormControl>
-          </Stack>
-          </Stack>
           </Box>
         </Card>
       </Box>

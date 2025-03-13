@@ -1,13 +1,8 @@
 package com.collegemanagementsystem.backend.service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.collegemanagementsystem.backend.model.Semester;
 import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.repository.ResultsRepository;
 

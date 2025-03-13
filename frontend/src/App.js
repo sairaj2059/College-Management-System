@@ -13,10 +13,7 @@ import Discussion from "./pages/Discussion";
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
-<<<<<<< HEAD
-=======
-import ExamResults from"./components/ExamResults";
->>>>>>> fcbe913288a356811d2a1fe78388c0b0de2721c5
+
 //import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
 import AddTeacher from "./components/AddTeacher";
@@ -25,6 +22,8 @@ import NavBarComponent from "./components/NavBarComponent";
 import Card from "@mui/joy/Card";
 import ExamResults from "./components/ExamResults";
 import ExamPage from "./pages/ExamPage";
+import AddStudent from "./components/AddStudent";
+import QuestionsPage from "./components/ExamComponents/QuestionsPage";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
@@ -36,17 +35,17 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/" element={<Login />} />
 
-      {/* Admin Ony Pages */}
-      <Route element={<ProtectedRoute allowedRoles = {"ADMIN"} />}>
-        <Route path="/admin/*" element={<AdminDasboard />} />
-        <Route path="/admin/studentsList" element={<Students />} />
-        {/* <Route path="/admin/addStudent" element={<AddStudent />} /> */}
-      </Route>
+        {/* Admin Ony Pages */}
+        <Route element={<ProtectedRoute allowedRoles={"ADMIN"} />}>
+          <Route path="/admin/*" element={<AdminDasboard />} />
+          <Route path="/admin/studentsList" element={<Students />} />
+          {/* <Route path="/admin/addStudent" element={<AddStudent />} /> */}
+        </Route>
 
-      {/* Student Ony Pages */}
-      <Route element={<ProtectedRoute allowedRoles={"STUDENT"} />}>
-        <Route path="/student" element={<StudentDashboard />} />
-      </Route>
+        {/* Student Ony Pages */}
+        <Route element={<ProtectedRoute allowedRoles={"STUDENT"} />}>
+          <Route path="/student" element={<StudentDashboard />} />
+        </Route>
 
         {/* Teacher Ony Pages */}
         <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
@@ -54,14 +53,17 @@ function App() {
         </Route>
 
         <Route path="/test" element={<StudentDashboard />}></Route>
-        <Route path="/test1" element={<AddStudent />}></Route>
+        <Route path="/addstudent" element={<AddStudent />}></Route>
 
-        <Route path="/teacher" element={<AddTeacher />}></Route>
-        <Route path="/exam" element={<ExamResults />} />
+        <Route path="/addteacher" element={<AddTeacher />} />
+        <Route path="/studentlist" element={<Students />} />
+        <Route path="/examresults" element={<ExamResults />} />
         <Route path="/nav" element={<NavigationBar />} />
+        {/* <Route path="/nav" element={<NavBarComponent />} /> */}
         <Route path="/addsubject" element={<AddSubject />} />
-        <Route path="/discussion" element={<Discussion/>}/>
-        <Route path="/exampage" element={<ExamPage/>}/>
+        <Route path="/discussion" element={<Discussion />} />
+        <Route path="/exampage" element={<ExamPage />} />
+        <Route path="/questionpage" element= {<QuestionsPage/>}/>
       </Routes>
     </>
   );

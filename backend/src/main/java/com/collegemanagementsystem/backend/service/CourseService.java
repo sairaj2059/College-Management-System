@@ -1,7 +1,6 @@
 package com.collegemanagementsystem.backend.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.collegemanagementsystem.backend.model.Course;
 import com.collegemanagementsystem.backend.model.Semester;
-import com.collegemanagementsystem.backend.model.Student;
 import com.collegemanagementsystem.backend.model.Subject;
 import com.collegemanagementsystem.backend.repository.CourseRepository;
 
