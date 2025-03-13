@@ -11,4 +11,5 @@ import lombok.*;
 public class SemesterMarks {
     private String semesterNumber;
     private List<SubjectMarks> subjectMarks;
+    private String semcgpa;
 }

@@ -60,6 +60,25 @@ class StudentDashboardService {
       return null;
     }
   }
+  static async getSemesterData(courseName,semesterNumber) {     
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        `${this.BASE_URL}/getSemesterData/${courseName}${semesterNumber}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
 }
 
 export default StudentDashboardService;
