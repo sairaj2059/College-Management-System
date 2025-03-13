@@ -6,8 +6,7 @@ import PerformanceChart from "../components/PerformanceChart";
 import Calendars from "../components/Calendars";
 import Faculty from "../components/Faculty";
 import SubjectGraph from "../components/SubjectGraph";
-import profileImage from "../resources/images/224206.jpg";
-import { UserData } from "../resources/DataList";
+import NoticeBoardComponent from "../components/NoticeBoardComponent";
 import "../resources/css/StudentDashboard.css"; // Import styles
 
 function StudentDashboard() {
@@ -50,6 +49,9 @@ function StudentDashboard() {
         {/* Faculty Section */}
         <Paper elevation={3} className="dashboard-card faculty-section">
           <Faculty />
+          <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+        <NoticeBoardComponent />
+      </Box>
         </Paper>
       </Stack>
     </Box>

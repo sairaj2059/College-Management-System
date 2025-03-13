@@ -36,6 +36,7 @@ public class Securityconfig {
                 .requestMatchers("/teacher/**").hasRole("TEACHER")
                 .requestMatchers("/student/**").hasRole("STUDENT")
                 .requestMatchers("/chat/**").permitAll()
+                .requestMatchers("/courses/**").permitAll()
                 .anyRequest().authenticated());
 
         http.httpBasic(Customizer.withDefaults());

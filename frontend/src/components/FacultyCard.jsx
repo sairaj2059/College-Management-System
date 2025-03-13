@@ -2,7 +2,7 @@ import React from "react";
 import { Card, CardContent, Typography, Avatar, Button, Stack, Box } from "@mui/material";
 import EmailIcon from "@mui/icons-material/Email";
 import ChatIcon from "@mui/icons-material/Chat";
-import "../resources/css/FacultyCard.css";
+
 const FacultyCard = ({ name, subject, image }) => {
   return (
     <Card 
@@ -20,7 +20,7 @@ const FacultyCard = ({ name, subject, image }) => {
     >
       <Box sx={{ position: "relative", mb: 2 }}>
         <Avatar 
-          src={image} 
+          src={image || "https://via.placeholder.com/80"}  // Placeholder if image is missing
           sx={{ 
             width: 80, 
             height: 80, 
@@ -94,4 +94,5 @@ const FacultyCard = ({ name, subject, image }) => {
     </Card>
   );
 };
+
 export default FacultyCard;
