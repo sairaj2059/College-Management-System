@@ -13,7 +13,7 @@ import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
 import ExamResults from "./components/ExamResults";
-//import AddStudent from "./components/AddStudent";
+import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
 import NoticeBoard from "./components/NoticeBoard";
 
@@ -38,7 +38,6 @@ function App() {
             <Route element={<ProtectedRoute allowedRoles={"[ADMIN]"} />}>
               <Route path="admin/*" element={<AdminDashboard />} />
               <Route path="admin/studentsList" element={<Students />} />
-              {/* <Route path="/admin/addStudent" element={<AddStudent />} /> */}
             </Route>
 
             {/* Student Ony Pages */}
@@ -63,6 +62,7 @@ function App() {
         <Route path="/addsubject" element={<AddSubject />} />
         <Route path="/reset" element={<ResetPassword />} />
         <Route path="notice-board" element={<NoticeBoard />} />
+        <Route path="/addStudent" element={<AddStudent />} />
       </Routes>
     </>
   );
