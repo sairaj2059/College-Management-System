@@ -6,5 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.collegemanagementsystem.backend.model.SemesterResults;
 
 @Repository
-public interface ResultsRepository extends MongoRepository<SemesterResults,Integer> {  
+public interface ResultsRepository extends MongoRepository<SemesterResults,String> { 
+    SemesterResults findByRegdNo(String regdNoString);
 } 

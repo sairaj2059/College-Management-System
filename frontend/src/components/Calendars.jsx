@@ -1,48 +1,4 @@
-// import React, { useState } from "react";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-// import { format } from "date-fns";
 
-// const Calendar= () => {
-//   const [selectedDate, setSelectedDate] = useState(new Date());
-
-//   return (
-//     <div className="p-4 rounded-lg shadow-lg bg-white w-80">
-//       <div className="flex justify-between items-center mb-2">
-//         <h2 className="text-lg font-semibold">Schedules</h2>
-//         <button className="text-blue-600 text-sm">+ Add New</button>
-//       </div>
-
-//       <div className="text-center">
-//         <DatePicker
-//           selected={selectedDate}
-//           onChange={(date) => setSelectedDate(date)}
-//           inline
-//           calendarClassName="custom-calendar"
-//           renderCustomHeader={({
-//             date,
-//             decreaseMonth,
-//             increaseMonth,
-//           }) => (
-//             <div className="flex justify-between px-4 py-2">
-//               <button onClick={decreaseMonth}>{"<"}</button>
-//               <span className="font-semibold">
-//                 {format(date, "MMMM yyyy")}
-//               </span>
-//               <button onClick={increaseMonth}>{">"}</button>
-//             </div>
-//           )}
-//         />
-//       </div>
-
-//       <div className="mt-2 text-sm text-gray-500 text-center">
-//         Upcoming Events
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Calendar;
 import React from 'react';
 import dayjs from 'dayjs';
 import 'dayjs/locale/zh-cn';

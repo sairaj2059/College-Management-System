@@ -4,26 +4,18 @@ import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
-import AdminDasboard from "./pages/AdminDasboard";
+import AdminDashboard from "./pages/AdminDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
-//import ResetPasswordComponent from "./components/ResetPasswordComponent";
+import ResetPassword from "./pages/ResetPassword";
 import PageNotFound from "./pages/PageNotFound";
 import Discussion from "./pages/Discussion";
-
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
-
+import ExamResults from "./components/ExamResults";
 //import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
-import AddTeacher from "./components/AddTeacher";
-import UserService from "./services/UserService";
-import NavBarComponent from "./components/NavBarComponent";
-import Card from "@mui/joy/Card";
-import ExamResults from "./components/ExamResults";
-import ExamPage from "./pages/ExamPage";
-import AddStudent from "./components/AddStudent";
-import QuestionsPage from "./components/ExamComponents/QuestionsPage";
+import NoticeBoard from "./components/NoticeBoard";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
@@ -32,8 +24,15 @@ function App() {
     <>
       <Routes>
         {/* Public Routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Login />} />
+        <Route path="/login" element={isLoggedIn ? <Navigate to="/home" /> : <Login />} />
+        <Route path="/" element={<Navigate to = "/login"/>} />
+
+        <Route
+          element={
+            <ProtectedRoute allowedRoles={["ADMIN", "STUDENT", "TEACHER"]} />
+          }
+        >
+          <Route path="/home" element={<NavigationBar />}>
 
         {/* Admin Ony Pages */}
         <Route element={<ProtectedRoute allowedRoles={"ADMIN"} />}>
@@ -42,15 +41,22 @@ function App() {
           {/* <Route path="/admin/addStudent" element={<AddStudent />} /> */}
         </Route>
 
-        {/* Student Ony Pages */}
-        <Route element={<ProtectedRoute allowedRoles={"STUDENT"} />}>
-          <Route path="/student" element={<StudentDashboard />} />
+              {/* Student Ony Pages */}
+              <Route element={<ProtectedRoute allowedRoles={"[STUDENT]"} />}>
+                <Route path="student/*" element={<StudentDashboard />} />
+                <Route path="exam-results" element={<ExamResults />} />
+            </Route>
+
+            {/* Teacher Ony Pages */}
+            <Route element={<ProtectedRoute allowedRoles={"[TEACHER]"} />}>
+              <Route path="teacher" element={<TeacherDashboard />} />
+            </Route>
+          </Route>
         </Route>
 
-        {/* Teacher Ony Pages */}
-        <Route element={<ProtectedRoute roleRequired={"TEACHER"} />}>
-          <Route path="/teacher/*" element={<TeacherDashboard />} />
-        </Route>
+        <Route path="/unauthorized" element={<Unauthorized />} />
+        <Route path="*" element={<PageNotFound />} />
+        <Route path="teacher" element={<TeacherDashboard />} />
 
         <Route path="/test" element={<StudentDashboard />}></Route>
         <Route path="/addstudent" element={<AddStudent />}></Route>
@@ -61,9 +67,9 @@ function App() {
         <Route path="/nav" element={<NavigationBar />} />
         {/* <Route path="/nav" element={<NavBarComponent />} /> */}
         <Route path="/addsubject" element={<AddSubject />} />
-        <Route path="/discussion" element={<Discussion />} />
-        <Route path="/exampage" element={<ExamPage />} />
-        <Route path="/questionpage" element= {<QuestionsPage/>}/>
+        <Route path="/reset" element={<ResetPassword  />}  />
+        <Route path="notice-board" element={<NoticeBoard  />} />
+        <Route path="/questionpage" element= {<QuestionsPage/>} />
       </Routes>
     </>
   );

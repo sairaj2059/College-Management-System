@@ -66,9 +66,9 @@ public ResponseEntity<?> getAttendanceMonth(
     return ResponseEntity.ok(attendanceMonth.getStudents().get(0).getAttendance().get(0));
 }
 
-    @GetMapping("/semResults/{id}")
-    public SemesterResults getSemResultDetails(@PathVariable int id){
-        return semResultService.getSemResultDetails(id);
+    @GetMapping("/semResults/{regdNo}")
+    public SemesterResults getSemResultDetails(@PathVariable String regdNo){
+        return semResultService.getSemResultDetails(regdNo);
     }
 
     @PostMapping("/semResults")

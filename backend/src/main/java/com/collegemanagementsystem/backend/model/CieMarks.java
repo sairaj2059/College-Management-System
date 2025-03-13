@@ -13,6 +13,6 @@ public class CieMarks {
     private Double cie1;
     private Double cie2;
     private Double cie3;
-    private Double ese;
-    private Double subAverage;//subject average
+    private Double ese_gpa;
+    private Double gpa;//subject average
 }

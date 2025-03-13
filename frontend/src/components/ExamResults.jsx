@@ -25,7 +25,7 @@ const ExamResults = () => {
   const [expandedSemesters, setExpandedSemesters] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [data, setData] = useState({ id: null, semesters: [] });
-  const id = 224209;
+  const id = "224206";
 
   useEffect(() => {
     const fetchData = async () => {
