@@ -22,9 +22,9 @@ export const NavigationBar = () => {
     2: "/home/discussion",
   }), [getDashboardRoute]);
 
-  useEffect(() => {
-    navigate(tabRoutes[tabValue] || "/login");
-  }, [tabValue, tabRoutes, navigate]);
+  // useEffect(() => {
+  //   navigate(tabRoutes[tabValue] || "/login");
+  // }, [tabValue, tabRoutes, navigate]);
 
   return (
     <Box

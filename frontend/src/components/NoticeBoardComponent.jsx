@@ -53,7 +53,7 @@ const NoticeBoardComponent = () => {
     <Paper
       sx={{
         p: 1.5,
-        maxWidth: 360,
+        maxWidth: 400,
         borderRadius: 2,
         boxShadow: 1,
         backgroundColor: "#fff",
