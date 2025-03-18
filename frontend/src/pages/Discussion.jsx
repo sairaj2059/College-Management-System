@@ -4,12 +4,7 @@ import CardContent from "@mui/joy/CardContent";
 import Stack from "@mui/joy/Stack";
 import Typography from "@mui/joy/Typography";
 import { useEffect, useRef, useState } from "react";
-import {
-  attachments,
-  courses,
-  tempDiscussionSidebar,
-  tempMessages,
-} from "../resources/DataList";
+import { attachments } from "../resources/DataList";
 import Textarea from "@mui/joy/Textarea";
 import SendIcon from "@mui/icons-material/Send";
 import AttachFileIcon from "@mui/icons-material/AttachFile";
@@ -20,50 +15,334 @@ import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import KeyboardArrowDownRoundedIcon from "@mui/icons-material/KeyboardArrowDownRounded";
+import GroupsIcon from "@mui/icons-material/Groups";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import FileDownloadRounded from "@mui/icons-material/FileDownloadRounded";
 import PreviewRounded from "@mui/icons-material/VisibilityOutlined";
 import SockJS from "sockjs-client";
+import ForumIcon from "@mui/icons-material/Forum";
+
 import { Stomp } from "@stomp/stompjs";
 
 import Avatar from "@mui/joy/Avatar";
 import AvatarGroup from "@mui/joy/AvatarGroup";
-import { Collapse, FormControl, FormLabel } from "@mui/material";
+import {
+  Collapse,
+  FormControl,
+  FormLabel,
+  Modal,
+  TextField,
+} from "@mui/material";
 
 import DiscussionService from "../services/DiscussionService";
 import Button from "@mui/joy/Button";
 import UserService from "../services/UserService";
 import Input from "@mui/joy/Input";
-import Autocomplete from "@mui/joy/Autocomplete";
+import Autocomplete from "@mui/material/Autocomplete";
 import Slide from "@mui/material/Slide";
+import ClassService from "../services/ClassService";
 
+function JoinRoom({ closeFunction }) {
+  const [groupIdData, setGroupIdData] = useState("");
+  const [regdNo, setRegdNo] = useState("224206"); //need to get from redux
+  const [error, setError] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      const response = await DiscussionService.joinGroupByGroupId(
+        groupIdData,
+        regdNo
+      );
+      if (response == null) {
+        setError(true);
+      } else {
+        closeFunction();
+      }
+    } catch (error) {
+      setError(true);
+    }
+  };
+
+  return (
+    <Box
+      className="join-room-container"
+      sx={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+      }}
+    >
+      <Card sx={{ m: "10%", width: "30%", height: "30%", gap: 2 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignContent: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography level="title-lg">Join Room</Typography>
+          <IconButton
+            sx={{ ":hover": { backgroundColor: "red" } }}
+            onClick={closeFunction}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <Stack>
+          <FormControl sx={{ gap: 1.5 }}>
+            <FormLabel>Group Id</FormLabel>
+            <Input
+              color={error ? "danger" : "neutral"}
+              placeholder="Enter Group Id"
+              value={groupIdData}
+              onChange={(event) => {
+                setGroupIdData(event.target.value);
+              }}
+              sx={{ backgroundColor: "#f6f8fa", p: 1.5 }}
+            />
+          </FormControl>
+        </Stack>
+
+        <Typography
+          display={error ? "block" : "none"}
+          alignSelf={"center"}
+          color="danger"
+        >
+          Group not found!
+        </Typography>
+
+        <Button
+          onClick={async () => {
+            await handleSubmit();
+          }}
+          sx={{
+            width: 150,
+            alignSelf: "center",
+            mt: 5,
+          }}
+        >
+          Join Room
+        </Button>
+      </Card>
+    </Box>
+  );
+}
+
+function CreateRoom({ closeFunction, groupData, disableGroupInfo }) {
+  const [classes, setClasses] = useState([]);
+  const [indRegdNo, setIndRegdNo] = useState("");
+  const [teacherId, setTeacherId] = useState("teacher123"); //need to get from redux
+  const [createRoomData, setCreateRoomData] = useState({
+    groupName: "",
+    groupId: "",
+  });
+
+  const [addMemberData, setAddMemberData] = useState({
+    batches: [],
+    regdNoList: [],
+  });
+  const handleCreateRoom = async () => {
+    const createRoom = {
+      roomData: createRoomData,
+      memberData: addMemberData,
+      teacherId: teacherId,
+    };
+    try {
+      const response = await DiscussionService.createRoom(createRoom);
+      console.log(response);
+      closeFunction();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  const handleRegdNoInput = (event) => {
+    setIndRegdNo(event.target.value);
+  };
+
+  const handleAddRegdNoInput = () => {
+    if (indRegdNo.trim() !== "") {
+      setAddMemberData((prevData) => ({
+        ...prevData,
+        regdNoList: [...prevData.regdNoList, indRegdNo.trim()],
+      }));
+      setIndRegdNo("");
+    }
+  };
+
+  const getClasses = async () => {
+    try {
+      const result = await ClassService.getClasses();
+      setClasses(result);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  useEffect(() => {
+    getClasses();
+  }, []);
+
+  const handleInput = (event) => {
+    if (disableGroupInfo) return;
+    const { name, value } = event.target;
+    setCreateRoomData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  useEffect(() => {
+    if (groupData) {
+      setCreateRoomData({
+        groupId: groupData.groupId,
+        groupName: groupData.groupName,
+      });
+    }
+  }, [groupData]);
+
+  return (
+    <Box
+      className="create-room-container"
+      sx={{
+        flex: 1,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100%",
+      }}
+    >
+      <Card sx={{ height: "auto", width: "50vh", gap: 2, p: 3 }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Typography level="title-lg">Create Room</Typography>
+          <IconButton
+            sx={{ ":hover": { backgroundColor: "red" } }}
+            onClick={closeFunction}
+          >
+            <CloseIcon />
+          </IconButton>
+        </Box>
+
+        <Stack direction={"column"} spacing={2}>
+          <FormControl sx={{ gap: 1.5 }}>
+            <FormLabel>
+              <Typography level="body-sm">Group Name</Typography>
+            </FormLabel>
+            <Input
+              placeholder="Enter Group Name"
+              name="groupName"
+              value={createRoomData.groupName}
+              disabled={disableGroupInfo}
+              onChange={handleInput}
+              sx={{ backgroundColor: "#f6f8fa", p: 1.5 }}
+            />
+          </FormControl>
+
+          <FormControl sx={{ gap: 1.5 }}>
+            <FormLabel>
+              <Typography level="body-sm">Group ID</Typography>
+            </FormLabel>
+            <Input
+              placeholder="Enter GroupId"
+              name="groupId"
+              value={createRoomData.groupId}
+              disabled={disableGroupInfo}
+              onChange={handleInput}
+              sx={{ backgroundColor: "#f6f8fa", p: 1.5 }}
+            />
+          </FormControl>
+          <FormControl sx={{ gap: 1.5 }}>
+            <Autocomplete
+              multiple
+              options={classes}
+              onChange={(event, newValue) => {
+                setAddMemberData((prevData) => ({
+                  ...prevData,
+                  batches: newValue,
+                }));
+              }}
+              renderInput={(params) => (
+                <TextField
+                  sx={{ backgroundColor: "#f6f8fa" }}
+                  {...params}
+                  label="Add Class"
+                />
+              )}
+            />
+          </FormControl>
+          <FormControl sx={{ gap: 1.5 }}>
+            <FormLabel>
+              <Typography level="body-sm">Add Students by Regd No</Typography>
+            </FormLabel>
+            <Input
+              sx={{ backgroundColor: "#f6f8fa", p: 1.5 }}
+              value={indRegdNo}
+              onChange={handleRegdNoInput}
+              placeholder="Enter Regd No"
+              endDecorator={
+                <Button
+                  onClick={handleAddRegdNoInput}
+                  sx={{
+                    marginRight: 1,
+                    backgroundColor: "#e0e0e0",
+                    color: "black",
+                    ":hover": { background: "white" },
+                  }}
+                >
+                  Add
+                </Button>
+              }
+            />
+          </FormControl>
+        </Stack>
+        <Typography>Added Regd No:</Typography>
+        <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1.5 }}>
+          {addMemberData.regdNoList.map((regdNo) => (
+            <Typography color="neutral" level="body-sm" variant="solid">
+              {regdNo}
+            </Typography>
+          ))}
+        </Box>
+
+        <Stack display={"flex"} flexDirection={"row-reverse"} gap={1.5}>
+          <Button onClick={handleCreateRoom}>Create Room</Button>
+          <Button color="neutral" onClick={closeFunction}>
+            Cancel
+          </Button>
+        </Stack>
+      </Card>
+    </Box>
+  );
+}
 function Discussion() {
   const [toggleSmallWindow, setToggleSmallWindow] = useState(false);
   const [toggleInfoWindow, setToggleInfoWindow] = useState(false);
   const [toggleMemberIcon, setToggleMemberIcon] = useState(false);
   const [toggleAttachmentIcon, setToggleAttachmentIcon] = useState(false);
-  const [groupId, setgroupId] = useState("cs_discussion_01");
+  const [sidebarData, setSidebarData] = useState([]);
+  const [groupId, setgroupId] = useState("");
   const [stompClient, setStompClient] = useState(null);
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState([
-    {
-      id: "msg01",
-      sender: "Prof. Sita Sharma",
-      message:
-        "Welcome to the Computer Science discussion group. Let's start with the basics of algorithms.",
-      timestamp: "2025-02-11T09:00:00Z",
-      avatar: "SS",
-    },
-    {
-      id: "msg02",
-      sender: "raj1",
-      message: "Professor, could you explain the concept of time complexity?",
-      timestamp: "2025-02-11T09:05:00Z",
-      avatar: "RG",
-    },
-  ]);
+  const [userId, setUserId] = useState("teacher123"); //need to get from redux
+  const [messages, setMessages] = useState([]);
+  const [participants, setParticipants] = useState([]);
+  const [addMemberWindow, setAddMemberWindow] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState({
+    groupName: "",
+    groupId: "",
+  });
 
   const currentUser = localStorage.getItem("username");
+  const role = localStorage.getItem("role");
   // const groupId = "67a9d177de4a6b84a7c86873";
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -83,47 +362,124 @@ function Discussion() {
     setToggleSmallWindow((prevBool) => !prevBool);
   };
 
+  const handleAddMember = () => {
+    setAddMemberWindow((prevBool) => !prevBool);
+  };
   useEffect(() => {
-    const connectWebSocket = () => {
-      const token = localStorage.getItem("token");
-      const sock = new SockJS(`${UserService.BASE_URL}/chat?token=${token}`);
-      const client = Stomp.over(sock);
+    if (!groupId) return;
 
-      client.connect({}, () => {
-        setStompClient(client);
-        client.subscribe(`/topic/group/${groupId}`, (message) => {
-          const newMessage = JSON.parse(message.body);
-          console.log(newMessage);
-          setMessages((prev) => [...prev, newMessage]);
-        });
+    const token = localStorage.getItem("token");
+    const sock = new SockJS(`${UserService.BASE_URL}/chat?token=${token}`);
+    const client = Stomp.over(sock);
+    let subscription;
+
+    client.connect({}, () => {
+      setStompClient(client);
+      subscription = client.subscribe(`/topic/group/${groupId}`, (message) => {
+        const newMessage = JSON.parse(message.body);
+        setMessages((prev) => [...prev, newMessage]);
+        setSidebarData((prevSidebar) =>
+          prevSidebar.map((chat) =>
+            chat.groupId === groupId
+              ? { ...chat, lastMessage: newMessage.message }
+              : chat
+          )
+        );
       });
-    };
+    });
 
-    connectWebSocket();
+    return () => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+      if (client) {
+        client.disconnect();
+      }
+    };
   }, [groupId]);
+
+  useEffect(() => {
+    async function fetchParticipants() {
+      const result = await DiscussionService.getParticipants(groupId);
+      setParticipants(result);
+    }
+    fetchParticipants();
+  }, [selectedGroup]);
+
+  
+
+  const fetchGroupListByStudent = async () => {
+    const response = await DiscussionService.getGroupListByStudent(userId);
+    setSidebarData(response);
+  };
+
+  const fetchGroupListByTeacher = async () => {
+    const response = await DiscussionService.getGroupListByTeacher(userId);
+    setSidebarData(response);
+  };
+
+  useEffect(() => {
+
+      if (role === "STUDENT") {
+        fetchGroupListByStudent();
+      } else if (role === "TEACHER") {
+        fetchGroupListByTeacher();
+      }    
+  }, [groupId, userId]);
+
+  const sendMessage = async () => {
+    if (stompClient) {
+      const message = {
+        sender: currentUser,
+        message: input,
+        groupId: groupId,
+      };
+
+      stompClient.send(
+        `/app/sendMessage/${groupId}`,
+        {},
+        JSON.stringify(message),
+        {}
+      );
+      setInput("");
+
+      setSidebarData((prevSidebar) =>
+        prevSidebar.map((chat) =>
+          chat.roomId === groupId
+            ? { ...chat, lastMessage: message.message }
+            : chat
+        )
+      );
+    }
+  };
+  useEffect(() => {
+    if (sidebarData != null) {
+      setSelectedGroup(sidebarData.find((chat) => chat.groupId === groupId));
+    }
+    console.log(selectedGroup);
+  }, [groupId, sidebarData]);
 
   useEffect(() => {
     async function fetchData() {
-      const response = await DiscussionService.getMessages(groupId);
+      let response;
+      if (role === "TEACHER") {
+        response = await DiscussionService.getMessagesByTeacher(
+          groupId,
+          userId
+        );
+      } else {
+        response = await DiscussionService.getMessagesByStudent(
+          groupId,
+          userId
+        );
+      }
       setMessages(response);
     }
-    fetchData();
-  }, [groupId]);
-  const sendMessage = async()=>{
-    if (stompClient) {
-      console.log(input);
-      
-      const message = {
-        sender: currentUser,
-        message : input,
-        groupId : groupId
-      }
-
-      stompClient.send(`/app/sendMessage/${groupId}`, {}, JSON.stringify(message), {});
-      console.log(JSON.stringify(message));
-      setInput("");
+    if (groupId) {
+      fetchData();
     }
-  }
+  }, [groupId]);
+
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
   }, [messages, toggleSmallWindow]);
@@ -131,7 +487,7 @@ function Discussion() {
   return (
     <Box
       sx={{
-        height: "100vh",
+        height: "100%",
         width: "100%",
         display: "flex",
         alignItems: "center",
@@ -192,248 +548,137 @@ function Discussion() {
             }}
           >
             <Stack spacing={2}>
-              {tempDiscussionSidebar.map((chat, index) => (
-                <Card
-                  key={index}
-                  sx={{
-                    border: "none",
-                    display: "flex",
-                    pl: 1,
-                    cursor: "pointer",
-                    "&:hover": { bgcolor: "background.level1" },
-                  }}
-                >
-                  <CardContent>
-                    <Stack direction={"row"} spacing={2}>
-                      <Avatar />
-                      <Stack>
-                        <Typography fontWeight="bold">
-                          {chat.subject}
-                        </Typography>
-                        <Typography
-                          level="body-sm"
-                          noWrap
-                          overflow={"hidden"}
-                          width={200}
-                        >
-                          {chat.messsage}
-                        </Typography>
+              {sidebarData != null && sidebarData.length > 0 ? (
+                sidebarData.map((chat, index) => (
+                  <Card
+                    key={chat.groupId}
+                    onClick={() => {
+                      setgroupId(chat.groupId);
+                    }}
+                    sx={{
+                      border: "none",
+                      display: "flex",
+                      pl: 1,
+                      cursor: "pointer",
+                      "&:hover": { bgcolor: "background.level1" },
+                    }}
+                  >
+                    <CardContent>
+                      <Stack direction={"row"} spacing={2}>
+                        <Avatar />
+                        <Stack>
+                          <Typography fontWeight="bold">
+                            {chat.groupName}
+                          </Typography>
+                          <Typography
+                            level="body-sm"
+                            noWrap
+                            overflow={"hidden"}
+                            width={200}
+                          >
+                            {chat.lastMessage}
+                          </Typography>
+                        </Stack>
                       </Stack>
-                    </Stack>
-                  </CardContent>
-                </Card>
-              ))}
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <>
+                  <Box
+                    sx={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "10%",
+                      transform: "translate(-50%, -50%)",
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <GroupsIcon sx={{ height: 80, width: 80 }} />
+                    <Typography level="body-sm">No Groups to show</Typography>
+                  </Box>
+                </>
+              )}
             </Stack>
           </Box>
         </Box>
-
-        {toggleSmallWindow ? (
-          UserService.isTeacher() ? (
-            <Box
-              className="create-room-container"
-              sx={{
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100%",
-              }}
-            >
-              <Card sx={{ height: "auto", width: "50vh", gap: 2, p: 3 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography level="title-lg">Create Room</Typography>
-                  <IconButton
-                    sx={{ ":hover": { backgroundColor: "red" } }}
-                    onClick={handleSmallWindow}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </Box>
-
-                <Stack direction={"column"} spacing={2}>
-                  <FormControl sx={{ gap: 1.5 }}>
-                    <FormLabel>
-                      <Typography level="body-sm">Group Name</Typography>
-                    </FormLabel>
-                    <Input sx={{ backgroundColor: "#f6f8fa", p: 1.5 }} />
-                  </FormControl>
-
-                  <FormControl sx={{ gap: 1.5 }}>
-                    <FormLabel>
-                      <Typography level="body-sm">Group ID</Typography>
-                    </FormLabel>
-                    <Input sx={{ backgroundColor: "#f6f8fa", p: 1.5 }} />
-                  </FormControl>
-                  <FormControl sx={{ gap: 1.5 }}>
-                    <FormLabel>
-                      <Typography level="body-sm">Add Batch</Typography>
-                    </FormLabel>
-                    <Autocomplete
-                      multiple
-                      placeholder="Add Class"
-                      options={courses}
-                      sx={{ backgroundColor: "#f6f8fa", p: 1.5 }}
-                    />
-                  </FormControl>
-                  <FormControl sx={{ gap: 1.5 }}>
-                    <FormLabel>
-                      <Typography level="body-sm">
-                        Add Students by Regd No
-                      </Typography>
-                    </FormLabel>
-                    <Input
-                      sx={{ backgroundColor: "#f6f8fa", p: 1.5 }}
-                      endDecorator={
-                        <Button
-                          sx={{
-                            marginRight: 1,
-                            backgroundColor: "#e0e0e0",
-                            color: "black",
-                            ":hover": { background: "white" },
-                          }}
-                        >
-                          Add
-                        </Button>
-                      }
-                    />
-                  </FormControl>
-                </Stack>
-                <Typography>Added students:</Typography>
-                <AvatarGroup>
-                  <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-                  <Avatar
-                    alt="Travis Howard"
-                    src="/static/images/avatar/2.jpg"
-                  />
-                  <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-                  <Avatar>+3</Avatar>
-                </AvatarGroup>
-
-                <Stack display={"flex"} flexDirection={"row-reverse"} gap={1.5}>
-                  <Button>Create Room</Button>
-                  <Button color="neutral">Cancel</Button>
-                </Stack>
-              </Card>
-            </Box>
+        <Modal open={toggleSmallWindow} onClose={handleSmallWindow}>
+          {UserService.isTeacher() ? (
+            <CreateRoom closeFunction={handleSmallWindow} />
           ) : (
-            <Box
-              className="join-room-container"
-              sx={{
-                flex: 1,
-                display: "flex",
-                flexDirection: "column",
-                height: "100%",
-              }}
-            >
-              <Card sx={{ m: "10%", width: "30vw", height: "30vh", gap: 2 }}>
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Typography level="title-lg">Join Room</Typography>
-                  <IconButton
-                    sx={{ ":hover": { backgroundColor: "red" } }}
-                    onClick={handleSmallWindow}
-                  >
-                    <CloseIcon />
-                  </IconButton>
-                </Box>
-
-                <Stack
-                  direction={"row"}
-                  spacing={2}
-                  alignSelf={"center"}
-                  justifySelf={"center"}
-                >
-                  <FormControl>
-                    <FormLabel>Group ID</FormLabel>
-                    <Input sx={{ width: 300 }} />
-                  </FormControl>
-                </Stack>
-
-                <Button
-                  onClick={handleSmallWindow}
-                  sx={{
-                    width: 200,
-                    alignSelf: "center",
-                    justifySelf: "center",
-                  }}
-                >
-                  Join Room
-                </Button>
-              </Card>
-            </Box>
-          )
-        ) : (
+            <JoinRoom closeFunction={handleSmallWindow} />
+          )}
+        </Modal>
+        <Box
+          className="message-container"
+          sx={{
+            flex: 1,
+            display: "flex",
+            flexDirection: "column",
+            height: "100%",
+            width: "auto",
+          }}
+        >
           <Box
-            className="message-container"
             sx={{
-              flex: 1,
+              p: 3,
+              backgroundColor: "background.level1",
+              alignItems: "center",
+              justifyContent: "space-between",
               display: "flex",
-              flexDirection: "column",
-              height: "100%",
-              width: "auto",
             }}
           >
-            <Box
-              sx={{
-                p: 3,
-                backgroundColor: "background.level1",
-                alignItems: "center",
-                justifyContent: "space-between",
-                display: "flex",
-              }}
-            >
-              <Stack direction={"row"} spacing={2} alignItems={"center"}>
-                <Avatar />
-                <Stack direction={"column"}>
-                  <Typography fontWeight="bold">
-                    High Performance Computing
-                  </Typography>
-                  <Typography level="body-sm">UCSH-603</Typography>
-                </Stack>
+            <Stack direction={"row"} spacing={2} alignItems={"center"}>
+              <Avatar />
+              <Stack direction={"column"}>
+                <Typography fontWeight="bold">
+                  {selectedGroup ? selectedGroup.groupName : ""}
+                </Typography>
+                <Typography level="body-sm">
+                  {selectedGroup ? selectedGroup.groupId : ""}
+                </Typography>
               </Stack>
+            </Stack>
 
-              <IconButton
-                onClick={handleInfoWindow}
-                variant="plain"
-                color="neutral"
-              >
-                <InfoIcon />
-              </IconButton>
-            </Box>
-
-            <Box
-              sx={{
-                flex: 1,
-                overflow: "auto",
-                paddingInline: 3,
-                display: "flex",
-                flexDirection: "column",
-                gap: 2,
-              }}
+            <IconButton
+              onClick={handleInfoWindow}
+              variant="plain"
+              color="neutral"
+              disabled={selectedGroup == null}
             >
-              {messages.map((msg) => (
+              <InfoIcon />
+            </IconButton>
+          </Box>
+
+          <Box
+            sx={{
+              flex: 1,
+              overflow: "auto",
+              paddingInline: 3,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
+            {messages != null && messages.length > 0 ? (
+              messages.map((msg) => (
                 <Box
                   key={msg.id}
                   sx={{
-                    alignSelf: msg.sender === currentUser ? "flex-end" : "flex-start",
+                    alignSelf:
+                      msg.sender === currentUser ? "flex-end" : "flex-start",
                     display: "flex",
                     alignItems: "flex-end",
-                    flexDirection: msg.sender === currentUser ? "row-reverse" : "row",
+                    flexDirection:
+                      msg.sender === currentUser ? "row-reverse" : "row",
                   }}
                 >
                   <Stack
-                    direction={msg.sender === currentUser ? "row-reverse" : "row"}
+                    direction={
+                      msg.sender === currentUser ? "row-reverse" : "row"
+                    }
                     alignItems={"flex-end"}
                   >
                     <Avatar
@@ -441,7 +686,9 @@ function Discussion() {
                       variant="solid"
                       sx={{
                         bgcolor:
-                          msg.sender === currentUser ? "primary.500" : "neutral.500",
+                          msg.sender === currentUser
+                            ? "primary.500"
+                            : "neutral.500",
                       }}
                     >
                       {msg.avatar}
@@ -455,7 +702,9 @@ function Discussion() {
                       </Typography>
                       <Card
                         variant={msg.sender === currentUser ? "solid" : "soft"}
-                        color={msg.sender === currentUser ? "primary" : "neutral"}
+                        color={
+                          msg.sender === currentUser ? "primary" : "neutral"
+                        }
                         sx={{
                           p: 1,
                           "--Card-radius":
@@ -465,69 +714,98 @@ function Discussion() {
                           boxShadow: "sm",
                         }}
                       >
-                        <Typography sx={{ px: 1, py: 0.5 }}>
+                        <Typography color="white" sx={{ px: 1, py: 0.5 }}>
                           {msg.message}
                         </Typography>
                       </Card>
                     </Box>
                   </Stack>
                 </Box>
-              ))}
-              <div ref={messagesEndRef} />
-            </Box>
-
-            <Box
-              sx={{
-                p: 2,
-                borderTop: "1px solid",
-                borderColor: "divider",
-                display: "flex",
-                alignItems: "flex-end",
-                gap: 1,
-              }}
-            >
-              <Textarea
-                placeholder="Type a message..."
-                value={input}
-                onChange={(e)=>{setInput(e.target.value)}}
-                minRows={1}
-                maxRows={4}
-                sx={{ flex: 1 }}
-              />
-              <input
-                type="file"
-                ref={fileInputRef}
-                style={{ display: "none" }}
-              />
-              <IconButton
-                size="lg"
-                variant="plain"
-                onClick={() => fileInputRef.current?.click()}
-                sx={{ "&:hover": { bgcolor: "background.level1" } }}
+              ))
+            ) : (
+              <Box
+                sx={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "60%",
+                  transform: "translate(-50%, -50%)",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                }}
               >
-                <AttachFileIcon />
-              </IconButton>
-              <IconButton size="lg" variant="plain">
-                <MicIcon />
-              </IconButton>
-              <IconButton onClick={sendMessage} size="lg" variant="solid" color="primary">
-                <SendIcon />
-              </IconButton>
-            </Box>
+                <ForumIcon sx={{ height: 80, width: 80 }} />
+                <Typography level="body-sm">No Messages to show</Typography>
+              </Box>
+            )}
+            <div ref={messagesEndRef} />
           </Box>
-        )}
+
+          <Box
+            sx={{
+              p: 2,
+              borderTop: "1px solid",
+              borderColor: "divider",
+              display: "flex",
+              alignItems: "flex-end",
+              gap: 1,
+            }}
+          >
+            <Textarea
+              placeholder="Type a message..."
+              value={input}
+              onKeyDown={(event) => {
+                if (event.key === "Enter" && !event.shiftKey) {
+                  event.preventDefault();
+                  sendMessage();
+                }
+              }}
+              onChange={(e) => {
+                setInput(e.target.value);
+              }}
+              minRows={1}
+              maxRows={4}
+              sx={{ flex: 1 }}
+            />
+            <input type="file" ref={fileInputRef} style={{ display: "none" }} />
+            <IconButton
+              size="lg"
+              variant="plain"
+              onClick={() => fileInputRef.current?.click()}
+              sx={{ "&:hover": { bgcolor: "background.level1" } }}
+            >
+              <AttachFileIcon />
+            </IconButton>
+            <IconButton size="lg" variant="plain">
+              <MicIcon />
+            </IconButton>
+            <IconButton
+              onClick={sendMessage}
+              size="lg"
+              variant="solid"
+              color="primary"
+            >
+              <SendIcon />
+            </IconButton>
+          </Box>
+        </Box>
+        {/* )} */}
         <Slide
           direction="left"
           in={toggleInfoWindow}
           mountOnEnter
           unmountOnExit
         >
-          <Box sx={{ width: "15vw", p: 5 }}>
+          <Box sx={{ width: "20vw", p: 5, overflow:'scroll' }}>
             <Stack direction={"column"}>
               <Stack alignItems={"center"} spacing={2}>
                 <Avatar size="md" />
-                <Typography>High Performance Computing</Typography>
-                <Typography>UCSH-603</Typography>
+                <Typography>
+                  {selectedGroup ? selectedGroup.groupName : ""}
+                </Typography>
+                <Typography>
+                  {selectedGroup ? selectedGroup.groupId : ""}
+                </Typography>
               </Stack>
               <Box
                 sx={{ marginTop: 10 }}
@@ -554,10 +832,24 @@ function Discussion() {
                 </Box>
                 <Box>
                   <Box display={"flex"} alignItems={"center"} gap={1}>
-                    <IconButton>
-                      <AddRoundedIcon />
-                    </IconButton>
-                    <Typography>Add Members</Typography>
+                    {UserService.isTeacher() ? (
+                      <>
+                        <IconButton onClick={handleAddMember}>
+                          <AddRoundedIcon />
+                        </IconButton>
+                        <Typography>Add Members</Typography>
+
+                        <Modal open={addMemberWindow} onClose={handleAddMember}>
+                          <CreateRoom
+                            closeFunction={handleAddMember}
+                            groupData={selectedGroup}
+                            disableGroupInfo={true}
+                          />
+                        </Modal>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </Box>
                   <Collapse
                     in={toggleMemberIcon}
@@ -565,38 +857,24 @@ function Discussion() {
                     unmountOnExit
                   >
                     <Stack spacing={2} marginTop={2}>
-                      <Stack
-                        direction={"row"}
-                        alignItems={"center"}
-                        spacing={2}
-                      >
-                        <Avatar />
-                        <Typography>Raj Guragain</Typography>
-                      </Stack>
-                      <Stack
-                        direction={"row"}
-                        alignItems={"center"}
-                        spacing={2}
-                      >
-                        <Avatar />
-                        <Typography>Raj Guragain</Typography>
-                      </Stack>
-                      <Stack
-                        direction={"row"}
-                        alignItems={"center"}
-                        spacing={2}
-                      >
-                        <Avatar />
-                        <Typography>Raj Guragain</Typography>
-                      </Stack>
-                      <Stack
-                        direction={"row"}
-                        alignItems={"center"}
-                        spacing={2}
-                      >
-                        <Avatar />
-                        <Typography>Raj Guragain</Typography>
-                      </Stack>
+                      {participants && participants.length > 0 ? (
+                        participants.map((participant) => (
+                          <Stack
+                            key={participant.id}
+                            direction="row"
+                            alignItems="center"
+                            spacing={2}
+                          >
+                            <Avatar
+                              src={participant.avatar}
+                              alt={participant.name}
+                            />
+                            <Typography>{participant.name}</Typography>
+                          </Stack>
+                        ))
+                      ) : (
+                        <Typography>No members are in the group.</Typography>
+                      )}
                     </Stack>
                   </Collapse>
                 </Box>

@@ -58,7 +58,7 @@ const AdminDashboard = () => {
       sx={{
         p: 3,
         background: "linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%)",
-        minHeight: "100vh",
+        minHeight: "100%",
         display: "flex",
         flexDirection: "column",
         gap: 3,

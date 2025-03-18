@@ -3,6 +3,10 @@ import axios from "axios";
 class ExamService {
   static BASE_URL = "http://localhost:8080";
 
+  // static async getQuestionsByTeacher(){
+
+  // }
+
   static async addExam(exam) {
     const token = localStorage.getItem("token");
     try {
@@ -33,7 +37,6 @@ class ExamService {
           },
         }
       );
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.log(error);

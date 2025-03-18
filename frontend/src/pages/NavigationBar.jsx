@@ -10,21 +10,21 @@ export const NavigationBar = () => {
   const navigate = useNavigate();
 
   const getDashboardRoute = useCallback(() => {    
-    if (role === "ADMIN") return "/home/admin/";
-    if (role === "STUDENT") return "/home/student";
-    if (role === "TEACHER") return "/home/teacher";
+    if (role === "ADMIN") return "/admin/home";
+    if (role === "STUDENT") return "/student/home";
+    if (role === "TEACHER") return "/teacher/home";
     return "/login";
   },[role]);
 
   const tabRoutes = useMemo(() =>({
     0: getDashboardRoute(),
-    1: "/home/exam-results",
-    2: "/home/discussion",
+    1: role === "ADMIN"? "/admin/studentsList" : `/${role.toLowerCase()}/exam`,
+    2: `/${role.toLowerCase()}/discussion`,
   }), [getDashboardRoute]);
 
-  // useEffect(() => {
-  //   navigate(tabRoutes[tabValue] || "/login");
-  // }, [tabValue, tabRoutes, navigate]);
+  useEffect(() => {
+    navigate(tabRoutes[tabValue] || "/login");
+  }, [tabValue, tabRoutes, navigate]);
 
   return (
     <Box
@@ -33,7 +33,7 @@ export const NavigationBar = () => {
         flexDirection: "column",
         height: "100vh",
         width: "100vw",
-        background: "linear-gradient(to right, #74c0fc, #ff758f)", //linear-gradient(to right, #74c0fc, #ff758f); optional //linear-gradient(to bottom, #74c0fc, #4263eb)
+        background: "linear-gradient(to right, #74c0fc, #ff758f)",
         alignItems: "center",
         justifyContent: "center",
         gap: "clamp(14px, 3vw, 16px)",

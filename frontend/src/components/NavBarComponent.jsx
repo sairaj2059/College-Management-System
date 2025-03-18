@@ -11,6 +11,11 @@ import { MessageOutlined } from "@ant-design/icons";
 import Tooltip from "@mui/material/Tooltip";
 import { useDispatch, useSelector } from "react-redux";
 import { setTab } from "../redux/slices/navSlice";
+import { Link } from "react-router-dom";
+import { InfoRounded } from "@mui/icons-material";
+import listIcon from "../resources/images/listIcon.png"
+
+import ListIcon from '@mui/icons-material/List';
 
 export default function NavBarComponent() {
   //const [value, setValue] = React.useState(0);
@@ -18,6 +23,7 @@ export default function NavBarComponent() {
   const value = useSelector((state) => state.tabs.tabValue);
   const Username = "kokonda Shree Shyam sundar";
   const EmailId = "keshav@123";
+  const role = localStorage.getItem("role");
 
   const handleChange = (event, newValue) => {
     console.log(newValue);
@@ -61,18 +67,37 @@ export default function NavBarComponent() {
             />
           </Tooltip>
 
-          <Tooltip title="Exam">
-            <Tab
-              icon={
-                <img
-                  src={examIcon}
-                  alt="exam"
-                  style={{ width: 25, height: 25, fontWeight: "500" }}
-                />
-              }
-              aria-label="exam"
-            />
-          </Tooltip>
+          {role === "TEACHER" || role === "STUDENT" ? (
+            <Tooltip title="Exam">
+
+              <Tab
+                icon={
+                  <img
+                    src={examIcon}
+                    alt="exam"
+                    style={{ width: 25, height: 25, fontWeight: "500" }}
+                  />
+                }
+                aria-label="exam"
+              />
+
+            </Tooltip>
+          ) : (
+            <Tooltip title="Student List">
+  
+              <Tab
+                icon={
+                  <img
+                    src={listIcon}
+                    alt="listIcon"
+                    style={{ width: 25, height: 25, fontWeight: "500" }}
+                  />
+                }
+                aria-label="studentlist"
+              />
+ 
+            </Tooltip>
+          )}
 
           <Tooltip title="Messages">
             <Tab
@@ -102,7 +127,6 @@ export default function NavBarComponent() {
           sx={{
             display: "flex",
             alignItems: "center",
-            // justifyContent: "space-evenly",
             width: "80%",
             gap: { xs: "4px", sm: "6px", md: "10px", lg: "14px" },
           }}

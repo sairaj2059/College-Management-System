@@ -8,7 +8,9 @@ import AdminDashboard from "./pages/AdminDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import ResetPassword from "./pages/ResetPassword";
 import PageNotFound from "./pages/PageNotFound";
-import Discussion from "./pages/Discussion";
+
+import AddTeacher from "./components/AddTeacher";
+// import Discussion from "./pages/Discussion";
 import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
@@ -16,61 +18,85 @@ import ExamResults from "./components/ExamResults";
 //import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
 import NoticeBoard from "./components/NoticeBoard";
+import AddStudent from "./components/AddStudent";
+import QuestionsPage from "./components/ExamComponents/QuestionsPage";
+import ExamPage from "./pages/ExamPage";
+import Card from "@mui/joy/Card";
+import Box from "@mui/joy/Box";
+import Discussion from "./pages/Discussion";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
 
   return (
     <>
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/login" element={isLoggedIn ? <Navigate to="/home" /> : <Login />} />
-        <Route path="/" element={<Navigate to = "/login"/>} />
+      <Box
+        sx={{
+          position: "relative",
+          width: "100vw",
+          height: "100vh",
+        }}
+      >
+        {isLoggedIn ? (
+          <>
+            <NavigationBar />
+            <Card
+              sx={{
+                position: "absolute",
+                top: "8%",
+                left: "1%",
+                right: "1%",
+                bottom: "1%",
+                zIndex: 10,
+                p: 1,
+                boxShadow: 3,
+                "--Card-radius": "15px",
+                overflow: "hidden",
+              }}
+            >
+              <Routes>
+                <Route element={<ProtectedRoute allowedRoles={"ADMIN"} />}>
+                  <Route path="/" element={<AdminDashboard />} />
+                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/admin/home" element={<AdminDashboard />} />
+                  <Route path="/admin/studentsList" element={<Students />} />
+                  <Route path="/admin/addStudent" element={<AddStudent />} />
+                </Route>
+                <Route element={<ProtectedRoute allowedRoles={"TEACHER"} />}>
+                  <Route path="/" element={<TeacherDashboard />} />
+                  <Route path="/teacher" element={<TeacherDashboard />} />
+                  <Route path="/teacher/home" element={<TeacherDashboard />} />
+                  <Route path="/teacher/exam" element={<ExamPage />} />
+                  <Route
+                    path="/teacher/exam/questions"
+                    element={<QuestionsPage />}
+                  />
 
-        <Route
-          element={
-            <ProtectedRoute allowedRoles={["ADMIN", "STUDENT", "TEACHER"]} />
-          }
-        >
-          <Route path="/home" element={<NavigationBar />}>
+                  <Route path="/teacher/discussion" element={<Discussion />} />
+                </Route>
+                <Route element={<ProtectedRoute allowedRoles={"STUDENT"} />}>
+                  <Route path="/" element={<StudentDashboard />} />
+                  <Route path="/student" element={<StudentDashboard />} />
+                  <Route path="/student/home" element={<StudentDashboard />} />
+                  <Route path="/student/exam" element={<ExamPage />} />
+                  <Route
+                    path="/studentƒ/exam/questions"
+                    element={<QuestionsPage />}
+                  />
 
-        {/* Admin Ony Pages */}
-        <Route element={<ProtectedRoute allowedRoles={"ADMIN"} />}>
-          <Route path="/admin/*" element={<AdminDasboard />} />
-          <Route path="/admin/studentsList" element={<Students />} />
-          {/* <Route path="/admin/addStudent" element={<AddStudent />} /> */}
-        </Route>
-
-              {/* Student Ony Pages */}
-              <Route element={<ProtectedRoute allowedRoles={"[STUDENT]"} />}>
-                <Route path="student/*" element={<StudentDashboard />} />
-                <Route path="exam-results" element={<ExamResults />} />
-            </Route>
-
-            {/* Teacher Ony Pages */}
-            <Route element={<ProtectedRoute allowedRoles={"[TEACHER]"} />}>
-              <Route path="teacher" element={<TeacherDashboard />} />
-            </Route>
-          </Route>
-        </Route>
-
-        <Route path="/unauthorized" element={<Unauthorized />} />
-        <Route path="*" element={<PageNotFound />} />
-        <Route path="teacher" element={<TeacherDashboard />} />
-
-        <Route path="/test" element={<StudentDashboard />}></Route>
-        <Route path="/addstudent" element={<AddStudent />}></Route>
-
-        <Route path="/addteacher" element={<AddTeacher />} />
-        <Route path="/studentlist" element={<Students />} />
-        <Route path="/examresults" element={<ExamResults />} />
-        <Route path="/nav" element={<NavigationBar />} />
-        {/* <Route path="/nav" element={<NavBarComponent />} /> */}
-        <Route path="/addsubject" element={<AddSubject />} />
-        <Route path="/reset" element={<ResetPassword  />}  />
-        <Route path="notice-board" element={<NoticeBoard  />} />
-        <Route path="/questionpage" element= {<QuestionsPage/>} />
-      </Routes>
+                  <Route path="/student/discussion" element={<Discussion />} />
+                  <Route
+                    path="/student/exam/questions"
+                    element={<QuestionsPage />}
+                  />
+                </Route>
+              </Routes>
+            </Card>
+          </>
+        ) : (
+          <Login />
+        )}
+      </Box>
     </>
   );
 }
