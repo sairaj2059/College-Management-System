@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Box, Stack, Paper } from "@mui/material";
+import { Box, Paper } from "@mui/material";
 import SAttendance from "../components/SAttendance";
 import StudentProfile from "../components/StudentProfile";
 import PerformanceChart from "../components/PerformanceChart";
@@ -7,10 +7,8 @@ import Calendars from "../components/Calendars";
 import Faculty from "../components/Faculty";
 import SubjectGraph from "../components/SubjectGraph";
 import NoticeBoardComponent from "../components/NoticeBoardComponent";
-import "../resources/css/StudentDashboard.css"; // Import styles
 
 function StudentDashboard() {
-
   const [regdNo, setRegdNo] = useState(null);
   const [semesterNumber, setSemesterNumber] = useState(null);
 
@@ -20,42 +18,68 @@ function StudentDashboard() {
   };
 
   return (
-    <Box sx={{ px: 1, py: 1, backgroundColor: "#f8fbff", minHeight: "100vh" }}>
-      <Stack spacing={1}>
-        
-        {/* Top Section - Profile, Attendance, Calendar */}
-        <Stack direction={{ xs: "column", md: "row" }} spacing={1} alignItems="stretch">
-          <Paper elevation={3} className="dashboard-card top-section-card">
-          <StudentProfile onProfileLoaded={handleProfileLoaded} />
+    <Box sx={{ width: "100%", minHeight: "100vh", p: 1, display: "flex", flexDirection: "column", gap: "8px" }}>
+
+      {/* Top Section */}
+      <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
+        {/* Student Profile */}
+        <Box sx={{ width: "30%", height: "30%" }}>
+          <Paper sx={{ flex: 1, padding: "10px" }}>
+            <StudentProfile onProfileLoaded={handleProfileLoaded} />
           </Paper>
-          <Paper elevation={3} className="dashboard-card top-section-card">
-            <SAttendance />
-          </Paper>
-          <Paper elevation={3} className="dashboard-card top-section-card">
+        </Box>
+
+        {/* Calendar - Moved to Center */}
+        <Box sx={{ width: "22%", height: "50%" }}>
+          <Paper sx={{ flex: 1, minWidth: "300px", padding: "10px" }}>
             <Calendars />
           </Paper>
-        </Stack>
+        </Box>
 
-        {/* Middle Section - PerformanceChart & SubjectGraph */}
-        <Stack direction={{ xs: "column", md: "row" }} spacing={1} alignItems="stretch">
-          <Paper elevation={3} className="dashboard-card mid-section-card">
+        {/* Attendance - Moved to Right */}
+        <Box sx={{ width: "20%", height: "20%" }}>
+          <Paper sx={{ flex: 1, minWidth: "300px", padding: "10px" }}>
+            <SAttendance />
+          </Paper>
+        </Box>
+      </Box>
+
+      {/* Middle Section */}
+      <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
+        {/* Subject Graph - Moved Left for Balance */}
+        <Box sx={{ width: "50%" }}>
+          <Paper sx={{ flex: 1, minWidth: "300px", padding: "10px" }}>
+            <SubjectGraph regdNo={regdNo} semesterNumber={semesterNumber} />
+          </Paper>
+        </Box>
+
+        {/* Performance Chart - Moved Right */}
+        <Box sx={{ width: "50%", height: "40%" }}>
+          <Paper sx={{ flex: 1, minWidth: "200px", padding: "10px" }}>
             <PerformanceChart />
           </Paper>
-          <Paper elevation={3} className="dashboard-card mid-section-card subject-graph">
-             <SubjectGraph regdNo={regdNo} semesterNumber={semesterNumber} />
-          </Paper>
-        </Stack>
-
-        {/* Faculty Section */}
-        <Paper elevation={3} className="dashboard-card faculty-section">
-          <Faculty />
-          <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-        <NoticeBoardComponent />
+        </Box>
       </Box>
-        </Paper>
-      </Stack>
+
+      {/* Faculty & Notice Board - Moved Faculty Left */}
+      <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
+        <Box sx={{ width: "50%" }}>
+          <Paper sx={{ flex: 2, minWidth: "300px", padding: "10px" }}>
+            <Faculty />
+          </Paper>
+        </Box>
+
+        {/* Notice Board - Moved Right */}
+        <Box sx={{ width: "50%" }}>
+          <Paper sx={{ flex: 1, minWidth: "300px", padding: "10px", display: "flex", justifyContent: "center" }}>
+            <NoticeBoardComponent />
+          </Paper>
+        </Box>
+      </Box>
+
     </Box>
   );
 }
 
 export default StudentDashboard;
+

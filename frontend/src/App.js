@@ -15,7 +15,7 @@ import { NavigationBar } from "./pages/NavigationBar";
 import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
 import ExamResults from "./components/ExamResults";
-//import AddStudent from "./components/AddStudent";
+import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
 import NoticeBoard from "./components/NoticeBoard";
 import AddStudent from "./components/AddStudent";
