@@ -12,7 +12,6 @@ import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import teacherIcon from "../resources/images/teacher.png";
 import { useNavigate } from "react-router-dom";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import NoticeBoard from "../components/NoticeBoard";
 
 const StrengthCard = ({ Strength, label, icon, gradient, imgSrc,route }) => {
   const navigate = useNavigate();
@@ -225,8 +224,7 @@ const AdminDashboard = () => {
           marginBottom:'100px'
         }}
       >
-        {/* <NoticeBoardComponent /> */}
-        <NoticeBoard/>
+        <NoticeBoardComponent />
       </Box>
     </Box>
   );

@@ -11,6 +11,7 @@ import {
   DialogContent,
   DialogActions,
   TextField,
+  DialogContentText,
   useTheme,
   useMediaQuery,
   Tooltip,
@@ -19,9 +20,17 @@ import { BellRing, Plus, Trash2, Calendar } from "lucide-react";
 import axios from "axios";
 import UserService from "../services/UserService";
 import { useSelector } from "react-redux";
+import Slide from "@mui/material/Slide";
+
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const NoticeCard = ({ notice, onDelete }) => {
   const theme = useTheme();
+  const { role } = useSelector((state) => state.auth || {});
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [selectedNoticeId, setSelectedNoticeId] = useState(null);
 
   const getRandomColor = (id) => {
     const colors = [
@@ -39,6 +48,11 @@ const NoticeCard = ({ notice, onDelete }) => {
       hash = id.charCodeAt(i) + ((hash << 5) - hash);
     }
     return colors[Math.abs(hash) % colors.length];
+  };
+
+  const handleDeleteClick = (id) => {
+    setSelectedNoticeId(id);
+    setDeleteDialogOpen(true);
   };
 
   return (
@@ -63,15 +77,41 @@ const NoticeCard = ({ notice, onDelete }) => {
           <Typography variant="h6" sx={{ ml: 1.5, flex: 1 }}>
             {notice.noticeTitle}
           </Typography>
-          <Tooltip title="Delete Notice">
-            <IconButton
-              size="small"
-              color="error"
-              onClick={() => onDelete(notice.id)}
-            >
-              <Trash2 size={18} />
-            </IconButton>
-          </Tooltip>
+
+          {role !== "STUDENT" && (
+            <Tooltip title="Delete Notice">
+              <IconButton
+                size="small"
+                color="error"
+                onClick={() => handleDeleteClick(notice.id)}
+              >
+                <Trash2 size={18} />
+              </IconButton>
+            </Tooltip>
+          )}
+
+          <Dialog
+            open={deleteDialogOpen}
+            onClose={() => setDeleteDialogOpen(false)}
+            slots={{ transition: Transition }}
+          >
+            <DialogTitle>Confirm Deletion</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Are you sure you want to delete this notice?
+              </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
+              <Button
+                variant="contained"
+                color="error"
+                onClick={() => onDelete(selectedNoticeId)}
+              >
+                Delete
+              </Button>
+            </DialogActions>
+          </Dialog>
         </Box>
 
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -92,6 +132,12 @@ const NoticeCard = ({ notice, onDelete }) => {
               dateStyle: "full",
             })}
           </Typography>
+          <Box sx={{ ml: 4, display: "flex", flexDirection: "column",width:'50%' }}>
+            <Typography variant="caption">
+              - {notice.issuedBy.firstName} {notice.issuedBy.lastName}
+            </Typography>
+            <Typography variant="caption"sx={{ ml: 1 }}>{notice.issuedBy.title}</Typography>
+          </Box>
         </Box>
       </CardContent>
     </Card>
@@ -105,7 +151,7 @@ const NoticeBoard = () => {
   const [newNotice, setNewNotice] = useState({ title: "", content: "" });
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
-
+  const { role } = useSelector((state) => state.auth || {});
   const token = useSelector((state) => state.auth.token);
 
   useEffect(() => {
@@ -132,9 +178,19 @@ const NoticeBoard = () => {
     fetchNotices();
   }, [token]);
 
-  const handleDeleteNotice = (id) => {
-    setNotices(Notices.filter((notice) => notice.id !== id));
-    //yet to implement
+  const handleDeleteNotice = async (id) => {
+    try {
+      await axios.delete(`${UserService.BASE_URL}/admin/deleteNotice/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      });
+
+      setNotices(Notices.filter((notice) => notice.id !== id));
+    } catch {
+      alert("Failed to delete notice. Please try again.");
+    }
   };
 
   const handleAddNotice = async () => {
@@ -175,7 +231,7 @@ const NoticeBoard = () => {
   return (
     <Box
       sx={{
-        height: "100vh",
+        height: "auto",
         bgcolor: "background.default",
         p: { xs: 2, sm: 3, md: 4 },
         display: "flex",
@@ -204,13 +260,15 @@ const NoticeBoard = () => {
         >
           Notice Board
         </Typography>
-        <Button
-          variant="contained"
-          startIcon={<Plus />}
-          onClick={() => setOpen(true)}
-        >
-          Add Notice
-        </Button>
+        {role !== "STUDENT" && (
+          <Button
+            variant="contained"
+            startIcon={<Plus />}
+            onClick={() => setOpen(true)}
+          >
+            Add Notice
+          </Button>
+        )}
       </Box>
 
       {/* Notices List */}

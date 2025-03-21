@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.*;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
+import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.service.TeacherService;
+import com.collegemanagementsystem.backend.service.NoticeService;
 import com.collegemanagementsystem.backend.service.StudentService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RequestMapping("/teacher")
@@ -25,6 +25,9 @@ public class TeacherController {
 
     @Autowired
     private StudentService studentService;
+
+    @Autowired
+    private NoticeService noticeService;
 
     @GetMapping("/")
     public String greetByTeacher() {
@@ -75,5 +78,15 @@ public class TeacherController {
         return teacherService.deleteExam(examId);
     }
     
+     @GetMapping("getNotices")
+    public ResponseEntity<List<Notices>> getNotices() {
+        List<Notices> notices = noticeService.getallNotices();
+        return ResponseEntity.ok(notices);
+    }
+
+    @DeleteMapping("deleteNotice/{id}") 
+    public ResponseEntity<String> deleteNotice(@PathVariable String id) {
+        return noticeService.deleteNotice(id);
+    }
 
 }
