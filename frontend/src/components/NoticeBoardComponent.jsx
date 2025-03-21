@@ -1,59 +1,66 @@
 import React from "react";
 import { BellRing } from "lucide-react";
-import { Paper, Box, Typography, Button, Stack } from "@mui/material";
+import { Paper, Box, Typography, Button, Stack, useTheme } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
-const notices = [
-  {
-    id: 1,
-    title: "New Syllabus Instructions",
-    date: "11 Mar 2024",
-    daysLeft: 20,
-    bgColor: "#eff6ff",
-    textColor: "#2563eb",
-  },
-  {
-    id: 2,
-    title: "World Environment Day Program",
-    date: "21 Apr 2024",
-    daysLeft: 15,
-    bgColor: "#f0fdf4",
-    textColor: "#16a34a",
-  },
-  {
-    id: 3,
-    title: "Exam Notification!",
-    date: "13 Mar 2024",
-    daysLeft: 12,
-    bgColor: "#fef2f2",
-    textColor: "#dc2626",
-  },
-  {
-    id: 4,
-    title: "Online Classes Prep",
-    date: "24 May 2024",
-    daysLeft: 2,
-    bgColor: "#ecfeff",
-    textColor: "#06b6d4",
-  },
-  {
-    id: 5,
-    title: "Exam Time Table Release",
-    date: "24 May 2024",
-    daysLeft: 6,
-    bgColor: "#fefce8",
-    textColor: "#ca8a04",
-  },
-];
+import axios from "axios";
+import UserService from "../services/UserService";
+import { useSelector } from "react-redux";
+import { useState, useEffect } from "react";
 
 const NoticeBoardComponent = () => {
   const navigate = useNavigate();
+  const [Notices, setNotices] = useState([]);
+  const [Error, setError] = useState(null);
+  const token = useSelector((state) => state.auth.token);
+  const theme = useTheme();
+
+  const getRandomColor = (id) => {
+    const colors = [
+      "primary",
+      "secondary",
+      "error",
+      "warning",
+      "info",
+      "success",
+    ];
+    if (!id) return colors[0];
+
+    let hash = 0;
+    for (let i = 0; i < id.length; i++) {
+      hash = id.charCodeAt(i) + ((hash << 5) - hash);
+    }
+    return colors[Math.abs(hash) % colors.length];
+  };
+
+  useEffect(() => {
+    const fetchNotices = async () => {
+      if (!token) return;
+
+      try {
+        const response = await axios.get(
+          `${UserService.BASE_URL}/admin/getNotices`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        setNotices(response.data);
+      } catch (err) {
+        setError("Failed to fetch notices");
+        console.log(err);
+      }
+    };
+
+    fetchNotices();
+  }, [token]);
 
   return (
     <Paper
       sx={{
         p: 1.5,
-        maxWidth: 400,
+        maxWidth: 600,
         borderRadius: 2,
         boxShadow: 1,
         backgroundColor: "#fff",
@@ -91,66 +98,70 @@ const NoticeBoardComponent = () => {
       </Box>
 
       {/* Notice List */}
-      <Stack spacing={1}>
-        {notices.map((notice) => (
-          <Paper
-            key={notice.id}
-            elevation={0}
-            sx={{
-              p: 1,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              borderRadius: 2,
-              transition: "background-color 0.15s",
-              "&:hover": { backgroundColor: "grey.100" },
-            }}
-          >
-            <Box sx={{ flex: 1 }}>
-              <Typography
-                variant="body2"
-                color="text.primary"
-                fontWeight={500}
-                sx={{ fontSize: 13 }}
-              >
-                {notice.title}
-              </Typography>
-              <Typography variant="caption" color="text.secondary">
-                {notice.date}
-              </Typography>
-            </Box>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
-              <Box
-                sx={{
-                  backgroundColor: notice.bgColor,
-                  px: 1,
-                  py: 0.2,
-                  borderRadius: 50,
-                }}
-              >
+      {Error ? (
+        <Typography color="error" variant="body1">
+          {Error}
+        </Typography>
+      ) : (
+        <Stack spacing={1}>
+          {Notices.map((notice) => (
+            <Paper
+              key={notice.id}
+              elevation={0}
+              sx={{
+                p: 1,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                borderRadius: 2,
+                transition: "background-color 0.15s",
+                "&:hover": { backgroundColor: "grey.100" },
+              }}
+            >
+              <Box sx={{ flex: 1 }}>
                 <Typography
-                  variant="caption"
+                  variant="body2"
+                  color="text.primary"
                   fontWeight={500}
-                  sx={{ color: notice.textColor, fontSize: 12 }}
+                  sx={{ fontSize: 13 }}
                 >
-                  {notice.daysLeft}d
+                  {notice.noticeTitle}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {new Date(notice.issueDate).toLocaleDateString("en-GB", {
+                    dateStyle: "full",
+                  })}
                 </Typography>
               </Box>
-              <Box
-                sx={{
-                  p: 0.3,
-                  backgroundColor: notice.bgColor,
-                  borderRadius: 2,
-                }}
-              >
-                <BellRing
-                  style={{ width: 14, height: 14, color: notice.textColor }}
-                />
+              <Box sx={{ display: "flex", alignItems: "center", gap: 0.5 }}>
+                <Box
+                  sx={{
+                    backgroundColor: notice.bgColor,
+                    px: 1,
+                    py: 0.2,
+                    borderRadius: 50,
+                  }}
+                ></Box>
+                <Box
+                  sx={{
+                    p: 0.3,
+                    backgroundColor: notice.bgColor,
+                    borderRadius: 2,
+                  }}
+                >
+                  <BellRing
+                    style={{
+                      width: 14,
+                      height: 14,
+                      color: theme.palette[getRandomColor(notice.id)].main,
+                    }}
+                  />
+                </Box>
               </Box>
-            </Box>
-          </Paper>
-        ))}
-      </Stack>
+            </Paper>
+          ))}
+        </Stack>
+      )}
     </Paper>
   );
 };
