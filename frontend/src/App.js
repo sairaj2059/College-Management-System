@@ -18,12 +18,12 @@ import ExamResults from "./components/ExamResults";
 import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
 import NoticeBoard from "./components/NoticeBoard";
-import AddStudent from "./components/AddStudent";
 import QuestionsPage from "./components/ExamComponents/QuestionsPage";
 import ExamPage from "./pages/ExamPage";
 import Card from "@mui/joy/Card";
 import Box from "@mui/joy/Box";
 import Discussion from "./pages/Discussion";
+import ExamList from "./components/ExamComponents/ExamList";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
@@ -49,9 +49,10 @@ function App() {
                 bottom: "1%",
                 zIndex: 10,
                 p: 1,
+                backgroundColor:'background.level1',
                 boxShadow: 3,
                 "--Card-radius": "15px",
-                overflow: "hidden",
+                overflow:"scroll"
               }}
             >
               <Routes>
@@ -66,11 +67,10 @@ function App() {
                   <Route path="/" element={<TeacherDashboard />} />
                   <Route path="/teacher" element={<TeacherDashboard />} />
                   <Route path="/teacher/home" element={<TeacherDashboard />} />
-                  <Route path="/teacher/exam" element={<ExamPage />} />
-                  <Route
-                    path="/teacher/exam/questions"
-                    element={<QuestionsPage />}
-                  />
+                  <Route path="/teacher/exam/" element={<ExamPage />}>
+                    <Route index element={<ExamList />} />
+                    <Route path="questions/:id" element={<QuestionsPage />} />
+                  </Route>
 
                   <Route path="/teacher/discussion" element={<Discussion />} />
                 </Route>
@@ -78,9 +78,9 @@ function App() {
                   <Route path="/" element={<StudentDashboard />} />
                   <Route path="/student" element={<StudentDashboard />} />
                   <Route path="/student/home" element={<StudentDashboard />} />
-                  <Route path="/student/exam" element={<ExamPage />} />
+                  <Route path="/student/exam" element={<ExamList />} />
                   <Route
-                    path="/studentƒ/exam/questions"
+                    path="/student/exam/questions/:id"
                     element={<QuestionsPage />}
                   />
 

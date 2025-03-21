@@ -27,8 +27,9 @@ function ExamList() {
   const navigate = useNavigate();
 
   const handleEdit = (record) => {
-    navigate("questions")
+    navigate(`/teacher/exam/questions/${record.id}`);
   };
+  
 
   // useEffect(()=>{
   //   async function getQuestions(){
@@ -50,7 +51,7 @@ function ExamList() {
 
   useEffect(() => {
     fetchExamList();
-  }, [refreshExamList]);
+  }, []);
 
   const handleDelete = async (id) => {
     try {
@@ -60,9 +61,9 @@ function ExamList() {
       console.error("Error deleting exam:", error);
     }
   };
-  const triggerRefresh = () => {
-    setRefreshExamList((prev) => !prev);
-  };
+  // const triggerRefresh = () => {
+  //   setRefreshExamList((prev) => !prev);
+  // };
 
 
   const columns = [
@@ -185,7 +186,7 @@ function ExamList() {
                   >
                     <AddExam
                       closeFunction={handleExam}
-                      refreshExamList={triggerRefresh}
+                      
                     />
                   </Box>
                 </Modal>

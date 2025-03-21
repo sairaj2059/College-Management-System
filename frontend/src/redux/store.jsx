@@ -1,10 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
-import authSlice from './slices/authSlice'
-import navSlice from './slices/navSlice'
+import authSliceReducer from './slices/authSlice'
+import navSliceReducer from './slices/navSlice'
+import examSliceReducer from './slices/examSlice'
+
 
 export const store = configureStore({
   reducer: {
-    auth: authSlice.reducer,
-    tabs: navSlice.reducer,
+    auth: authSliceReducer,
+    tabs: navSliceReducer,
+    questionsList: examSliceReducer,
   },
 })
