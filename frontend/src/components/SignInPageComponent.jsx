@@ -243,7 +243,7 @@ export default function SignInPageComponent({ serverError, setServerError }) {
       
       if (userData.success) {
         dispatch(login({ token: userData.token, role: userData.role }));
-        navigate("/home");
+        navigate(`${userData.role.toLowerCase()}`);
       } else {
         console.log("error password");
         setError(true);

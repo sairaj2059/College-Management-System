@@ -8,14 +8,20 @@ import AdminDashboard from "./pages/AdminDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import ResetPassword from "./pages/ResetPassword";
 import PageNotFound from "./pages/PageNotFound";
-import Discussion from "./pages/Discussion";
+
+import AddTeacher from "./components/AddTeacher";
+// import Discussion from "./pages/Discussion";
 import { NavigationBar } from "./pages/NavigationBar";
-import AddSubject from "./components/AddSubject";
 import Students from "./pages/Students";
 import ExamResults from "./components/ExamResults";
 import AddStudent from "./components/AddStudent";
 import Unauthorized from "./pages/Unauthorized";
 import NoticeBoard from "./components/NoticeBoard";
+import QuestionsPage from "./components/ExamComponents/QuestionsPage";
+import ExamPage from "./pages/ExamPage";
+import Card from "@mui/joy/Card";
+import Box from "@mui/joy/Box";
+import Discussion from "./pages/Discussion";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});

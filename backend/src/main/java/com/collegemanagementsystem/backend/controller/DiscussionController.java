@@ -3,6 +3,7 @@ package com.collegemanagementsystem.backend.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.collegemanagementsystem.backend.dto.AddMember;
+import com.collegemanagementsystem.backend.dto.CreateRoom;
 import com.collegemanagementsystem.backend.model.Discussion;
 import com.collegemanagementsystem.backend.service.DiscussionService;
 
@@ -25,29 +26,48 @@ public class DiscussionController {
     @Autowired
     DiscussionService discussionService;
 
-    @PostMapping("/create-room")
-    public ResponseEntity<?> createRoom(
-            @RequestBody Discussion discussion) {
-        return discussionService.createRoomById(discussion);
+    @GetMapping("/joinGroupByGroupId")
+    public ResponseEntity<?> joinGroupByGroupId(@RequestParam String groupId, @RequestParam String regdNo) {
+        return discussionService.joinRoomById(groupId, regdNo);
     }
 
-    @GetMapping("/join-room")
-    public ResponseEntity<?> joinRoomById(@RequestParam String groupId, @RequestParam String username) {
-        return discussionService.joinRoomById(groupId, username);
-    }
-
-    @PutMapping("remove-user/{groupId}")
+    @PutMapping("/teacher/remove-user/{groupId}")
     public ResponseEntity<?> removeMemberByUsername(@PathVariable String groupId, @RequestParam String username) {
         return discussionService.removeMemberByUsername(groupId, username);
     }
 
-    @PostMapping("/add-members/{groupId}")
+    @PostMapping("teacher/add-members/{groupId}")
     public ResponseEntity<?> addMemberToGroup(@PathVariable String groupId, @RequestBody AddMember details ){
        return discussionService.addMemberToGroup(groupId, details);
     }
 
     @GetMapping("/getMessages/{groupId}")
-    public ResponseEntity<List<Discussion.Message>> getMethodName(@PathVariable String groupId, @RequestParam String regdNo) {
+    public ResponseEntity<List<Discussion.Message>> getMessagesByStudent(@PathVariable String groupId, @RequestParam String regdNo) {
         return discussionService.getMessageByGroupId(groupId, regdNo);
+    }
+    @GetMapping("/teacher/getMessages/{groupId}")
+    public ResponseEntity<List<Discussion.Message>> getMessagesByTeacher(@PathVariable String groupId, @RequestParam String teacherId) {
+        return discussionService.getMessageByGroupIdByTeacher(groupId, teacherId);
+    }
+    @PostMapping("/teacher/createRoom")
+    public ResponseEntity<?> createRoom(@RequestBody CreateRoom createRoom) {
+        return discussionService.createRoomById(createRoom);
+    }
+
+    @GetMapping("/teacher/getCreatedRooms")
+    public ResponseEntity<?> getCreatedRooms(@RequestParam String teacherId) {
+        return discussionService.getCreatedRooms(teacherId);
+    }
+
+    @GetMapping("/getJoinedRooms")
+    public ResponseEntity<?> getJoinedRooms(@RequestParam String regdNo) {
+        return discussionService.getJoinedRooms(regdNo);
+    }
+    
+
+    @GetMapping("/getParticipants/{groupId}")
+    public ResponseEntity<?> getParticipants (@PathVariable String groupId) {
+        return discussionService.getParticipants(groupId);
+     
     }
 }

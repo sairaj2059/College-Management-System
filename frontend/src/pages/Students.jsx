@@ -144,16 +144,16 @@ function Students() {
 
   return (
     <>
-      <Box
+      {/* <Box
         sx={{
-          height: "100vh",
-          width: "100vw",
+          height: "100%",
+          width: "100%",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-        }}
-      >
-        <Card sx={{ height: "98%", width: "98%" }}>
+        }} */}
+      {/* > */}
+        <Card sx={{ height: "100%", width: "100%" }}>
           <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Box>
               <Typography level="title-lg" fontWeight="bold">
@@ -224,7 +224,7 @@ function Students() {
             </Card>
           </Box>
         </Card>
-      </Box>
+      {/* </Box> */}
     </>
   );
 }
