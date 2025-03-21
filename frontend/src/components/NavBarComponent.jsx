@@ -37,7 +37,7 @@ export default function NavBarComponent() {
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        height: "100%",
+        height: "80%",
         width: "100%",
       }}
     >

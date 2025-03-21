@@ -60,7 +60,7 @@ const NoticeBoardComponent = () => {
     <Paper
       sx={{
         p: 1.5,
-        maxWidth: 600,
+        width: "50%",
         borderRadius: 2,
         boxShadow: 1,
         backgroundColor: "#fff",
@@ -84,7 +84,7 @@ const NoticeBoardComponent = () => {
         </Typography>
         <Button
           variant="text"
-          onClick={() => navigate("notice-board")}
+          onClick={() => navigate("/admin/notice-board")}
           sx={{
             color: "primary.main",
             fontSize: 12,

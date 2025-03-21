@@ -231,7 +231,7 @@ const NoticeBoard = () => {
   return (
     <Box
       sx={{
-        height: "auto",
+        height: "100vh",
         bgcolor: "background.default",
         p: { xs: 2, sm: 3, md: 4 },
         display: "flex",
