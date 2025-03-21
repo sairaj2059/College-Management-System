@@ -61,7 +61,8 @@ function App() {
                   <Route path="/admin/home" element={<AdminDashboard />} />
                   <Route path="/admin/studentsList" element={<Students />} />
                   <Route path="/admin/addStudent" element={<AddStudent />} />
-                  
+                  <Route path="/admin/addTeacher" element={<AddTeacher />} />
+                  <Route path="/admin/notice-board" element={<NoticeBoard />} />
                 </Route>
                 <Route element={<ProtectedRoute allowedRoles={"TEACHER"} />}>
                   <Route path="/" element={<TeacherDashboard />} />
