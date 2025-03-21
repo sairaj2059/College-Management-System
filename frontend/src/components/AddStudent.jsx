@@ -34,6 +34,7 @@ import CourseService from "../services/CourseService";
 function AddStudent() {
   const [selectedImage, setSelectedImage] = useState(null);
   const [courses, setCourses] = useState([]);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const getOptionLabel = (option) => (option ? option.label : "");
 
@@ -97,33 +98,42 @@ function AddStudent() {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => setSelectedImage(e.target.result);
-      reader.readAsDataURL(file);
+      setSelectedImage(file); // ✅ Store file for upload
+      setPreviewImage(URL.createObjectURL(file)); // ✅ Show preview in UI
     }
   };
 
+  // ✅ Submit form with image & student details
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("studentDetails", new Blob([JSON.stringify(formData)], { type: "application/json" }));
+
+    if (selectedImage) {
+      formDataToSend.append("imageFile", selectedImage); // ✅ Attach the image file
+    }
+
     try {
-      const result = await UserService.addStudent(formData);
+      const result = await UserService.addStudent(formDataToSend);
+      console.log("Student added successfully:", result);
     } catch (error) {
-      console.log(error);
+      console.log("Error adding student:", error);
     }
   };
 
-  // useEffect(() => {
-  //   async function getCourses() {
-  //     const response = await CourseService.getCourses();      
-  //     setCourses(
-  //       response.map((course) => ({
-  //         label : course,
-  //       }))
-  //     );
-  //   }
-  //   getCourses();
+  useEffect(() => {
+    async function getCourses() {
+      const response = await CourseService.getCourses();      
+      setCourses(
+        response.map((course) => ({
+          label : course,
+        }))
+      );
+    }
+    getCourses();
     
-  // }, []);
+  }, []);
   return (
     <Card sx={{ width: "100%", height: "100%", m: 2, p: 5 }}>
       <Box
@@ -177,12 +187,9 @@ function AddStudent() {
           </Box>
           <Box sx={{ m: 3 }}>
             <Stack direction="row" spacing={1}>
-              <AspectRatio
-                ratio="1"
-                maxHeight={200}
-                sx={{ minWidth: 120, borderRadius: "100%" }}
-              >
-                <Avatar src={selectedImage} />
+                {/* ✅ Avatar updates when image is selected */}
+              <AspectRatio ratio="1" maxHeight={200} sx={{ minWidth: 120 }}>
+                <Avatar src={previewImage} sx={{ width: 120, height: 120 }} />
               </AspectRatio>
               <input
                 accept="image/*"

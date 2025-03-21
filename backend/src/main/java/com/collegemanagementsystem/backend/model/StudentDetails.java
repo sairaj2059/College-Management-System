@@ -14,7 +14,7 @@ public class StudentDetails {
 
     @Id
     private String id;
-    private String image;
+    private String imageId;
     private String title;
     private String firstName;
     private String lastName;

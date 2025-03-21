@@ -37,7 +37,7 @@ class UserService{
       const response = await axios.post(`${UserService.BASE_URL}/admin/addStudent`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+         "Content-Type": "multipart/form-data",
         },
       });
       return response.data;

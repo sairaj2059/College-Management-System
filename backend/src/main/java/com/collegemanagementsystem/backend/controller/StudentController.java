@@ -1,5 +1,6 @@
 package com.collegemanagementsystem.backend.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,9 @@ public ResponseEntity<?> getAttendanceMonth(
         return ResponseEntity.ok(savedResults);
     }
 
-    
+    @GetMapping("/studentImage/{regdNo}")
+    public ResponseEntity<?> getStudentImage(@PathVariable String regdNo) throws IOException {
+        return studentService.getStudentImage(regdNo);
+    }
     
 }

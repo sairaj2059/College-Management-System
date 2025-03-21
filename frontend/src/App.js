@@ -60,7 +60,7 @@ function App() {
         <Route path="/test" element={<StudentDashboard />}></Route>
         <Route path="/addstudent" element={<AddStudent />}></Route>
 
-        <Route path="/addteacher" element={<AddTeacher />} />
+        {/* <Route path="/addteacher" element={<AddTeacher />} /> */}
         <Route path="/studentlist" element={<Students />} />
         <Route path="/examresults" element={<ExamResults />} />
         <Route path="/nav" element={<NavigationBar />} />

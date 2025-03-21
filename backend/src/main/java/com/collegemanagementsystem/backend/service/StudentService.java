@@ -1,9 +1,11 @@
 package com.collegemanagementsystem.backend.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.collegemanagementsystem.backend.dto.StudentProfile;
@@ -21,6 +23,8 @@ public class StudentService {
     @Autowired
     private StudentDetailsRepository studentdetailsRepo;
 
+    @Autowired
+    private ImageService imageService;
     // Fetch student profile details
     public List<StudentProfile> getStudentProfiles() {
         return studentdetailsRepo.findAll()
@@ -38,6 +42,10 @@ public class StudentService {
     }
 
     private StudentProfile convertToStudentProfile(StudentDetails student) {
+        String imageurl = null;
+        if (student.getImageId() != null) {
+            imageurl = "http://localhost:8080/api/images/" + student.getImageId();  // ✅ Generate full URL
+        }
         return new StudentProfile(
             student.getId(),
             student.getFirstName(),
@@ -46,17 +54,17 @@ public class StudentService {
             student.getDepartment(),
             student.getCourse(),
             student.getYear(),
-            calSem(student.getYear())
+            student.getSemester(),
+            imageurl 
         );
     }
 
-    private int calSem(String year) {
-        try {
-            int yearNumber = Integer.parseInt(year);
-            return (yearNumber - 1) * 2 + 1; 
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid year format: " + year);
+     public ResponseEntity<?> getStudentImage(String regdNo) throws IOException {
+        StudentDetails student = studentdetailsRepo.findByRegdNo(regdNo);
+        if (student == null || student.getImageId() == null) {
+            return ResponseEntity.notFound().build();
         }
+        return imageService.getImage(student.getImageId());
     }
 
     public ClasswiseAttendance getStudentAttendanceByClassAndRegdNoAndMonth(String className, String regdNo, String month) {
