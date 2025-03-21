@@ -13,4 +13,4 @@ const navSlice = createSlice({
 
 
 export const  { setTab } = navSlice.actions;
-export default navSlice;
+export default navSlice.reducer;

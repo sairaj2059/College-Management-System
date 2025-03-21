@@ -13,10 +13,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Document(collection = "questions")
 public abstract class Question {
-
     @Id
     private String id;
-    
     private String examId;
     private String questionText;
     private int marks;

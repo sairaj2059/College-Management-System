@@ -492,13 +492,11 @@ function Discussion() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-
-        backgroundColor: "background.surface",
       }}
     >
-      <Stack direction="row" sx={{ width: "100%", height: "100%" }}>
+      <Stack direction="row" gap={2} sx={{ width: "100%", height: "100%" }}>
         {/* Sidebar */}
-        <Box
+        <Card
           sx={{
             width: "20vw",
             height: "100%",
@@ -603,7 +601,7 @@ function Discussion() {
               )}
             </Stack>
           </Box>
-        </Box>
+        </Card>
         <Modal open={toggleSmallWindow} onClose={handleSmallWindow}>
           {UserService.isTeacher() ? (
             <CreateRoom closeFunction={handleSmallWindow} />
@@ -611,7 +609,7 @@ function Discussion() {
             <JoinRoom closeFunction={handleSmallWindow} />
           )}
         </Modal>
-        <Box
+        <Card
           className="message-container"
           sx={{
             flex: 1,
@@ -788,7 +786,7 @@ function Discussion() {
               <SendIcon />
             </IconButton>
           </Box>
-        </Box>
+        </Card>
         {/* )} */}
         <Slide
           direction="left"

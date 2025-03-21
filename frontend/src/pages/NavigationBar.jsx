@@ -22,9 +22,12 @@ export const NavigationBar = () => {
     2: `/${role.toLowerCase()}/discussion`,
   }), [getDashboardRoute]);
 
-  useEffect(() => {
+  // useEffect(() => {
+  //   navigate(tabRoutes[tabValue] || "/login");
+  // }, [tabValue, tabRoutes, navigate]);
+ useEffect(() => {
     navigate(tabRoutes[tabValue] || "/login");
-  }, [tabValue, tabRoutes, navigate]);
+  }, [tabValue, tabRoutes,]);
 
   return (
     <Box

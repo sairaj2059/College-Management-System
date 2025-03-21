@@ -194,7 +194,7 @@ function Students() {
                 </Menu>
               </Dropdown>
 
-              <Link to={"/addstudent"}>
+              <Link to={"admin/addstudent"}>
                 <Button
                   variant="soft"
                   sx={{
