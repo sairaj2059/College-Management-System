@@ -44,7 +44,8 @@ public class StudentService {
     private StudentProfile convertToStudentProfile(StudentDetails student) {
         String imageurl = null;
         if (student.getImageId() != null) {
-            imageurl = "http://localhost:8080/api/images/" + student.getImageId();  // ✅ Generate full URL
+            imageurl = "http://localhost:8080/student/studentImage/" + student.getImageId();
+            System.out.println("Generated Image URL: " + imageurl); // ✅ Debugging URL
         }
         return new StudentProfile(
             student.getId(),
@@ -58,6 +59,7 @@ public class StudentService {
             imageurl 
         );
     }
+    
 
      public ResponseEntity<?> getStudentImage(String regdNo) throws IOException {
         StudentDetails student = studentdetailsRepo.findByRegdNo(regdNo);

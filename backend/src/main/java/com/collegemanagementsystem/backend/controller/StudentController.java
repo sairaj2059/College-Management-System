@@ -16,8 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.SemesterResults;
+import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
+import com.collegemanagementsystem.backend.service.NoticeService;
 
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -30,6 +32,9 @@ public class StudentController {
     private StudentService studentService;
     @Autowired
     private SemResultService semResultService;
+
+    @Autowired
+    private NoticeService noticeService;
 
     @GetMapping("/dashboard")
     public String greetByStudent() {
@@ -48,6 +53,12 @@ public class StudentController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+     @GetMapping("/getNotices")
+    public ResponseEntity<List<Notices>> getNotices() {
+        List<Notices> notices = noticeService.getallNotices();
+        return ResponseEntity.ok(notices);
     }
     @GetMapping("/get_Sattendance/{className}")
 public ResponseEntity<?> getAttendanceMonth(

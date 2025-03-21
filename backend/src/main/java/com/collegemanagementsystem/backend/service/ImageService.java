@@ -15,7 +15,6 @@ import com.mongodb.client.gridfs.model.GridFSFile;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.http.ResponseEntity;
-import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.MediaType;
 
 import net.coobird.thumbnailator.Thumbnails;
@@ -40,14 +39,20 @@ public class ImageService {
 
     /* Retrieve image from MongoDB */
    /* Retrieve image from MongoDB */
-public ResponseEntity<byte[]> getImage(String imageId) throws IOException {
+   public ResponseEntity<byte[]> getImage(String imageId) throws IOException {
     GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(imageId)));
-    byte[] imageBytes = gridFsTemplate.getResource(gridFSFile).getInputStream().readAllBytes();
+
+    // Read the image data properly
+    byte[] imageBytes = gridFsTemplate.getResource(gridFSFile).getContent().readAllBytes();
+
+    // Determine content type dynamically
+    String contentType = gridFSFile.getMetadata() != null ? gridFSFile.getMetadata().getString("_contentType") : "image/jpeg";
 
     return ResponseEntity.ok()
-            .contentType(MediaType.IMAGE_JPEG)
-            .body(imageBytes);  // ✅ Return byte[] instead of ByteArrayResource
+            .contentType(MediaType.parseMediaType(contentType))
+            .body(imageBytes);
 }
+
 
 
     /* Compress Image using Thumbnailator */

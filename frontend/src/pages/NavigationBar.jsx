@@ -27,7 +27,7 @@ export const NavigationBar = () => {
   // }, [tabValue, tabRoutes, navigate]);
  useEffect(() => {
     navigate(tabRoutes[tabValue] || "/login");
-  }, [tabValue, tabRoutes,]);
+  }, [tabValue, tabRoutes]);
 
   return (
     <Box
