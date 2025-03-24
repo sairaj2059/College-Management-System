@@ -29,7 +29,6 @@ public class Exam {
     private String duration;
     private String status;
     private String uploadedBy;
-
     private List<Question> questions;
 
 }

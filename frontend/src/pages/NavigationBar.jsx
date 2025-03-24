@@ -21,13 +21,10 @@ export const NavigationBar = () => {
     1: role === "ADMIN"? "/admin/studentsList" : `/${role.toLowerCase()}/exam`,
     2: `/${role.toLowerCase()}/discussion`,
   }), [getDashboardRoute]);
-
-  // useEffect(() => {
-  //   navigate(tabRoutes[tabValue] || "/login");
-  // }, [tabValue, tabRoutes, navigate]);
+  
  useEffect(() => {
     navigate(tabRoutes[tabValue] || "/login");
-  }, [tabValue, tabRoutes,]);
+  }, [tabValue, tabRoutes]);
 
   return (
     <Box
