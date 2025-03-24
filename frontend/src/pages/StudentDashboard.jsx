@@ -3,11 +3,9 @@ import { Box, Paper } from "@mui/material";
 import SAttendance from "../components/SAttendance";
 import StudentProfile from "../components/StudentProfile";
 import PerformanceChart from "../components/PerformanceChart";
-import Calendars from "../components/Calendars";
 import Faculty from "../components/Faculty";
 import SubjectGraph from "../components/SubjectGraph";
 import NoticeBoardComponent from "../components/NoticeBoardComponent";
-import AddStudent from "../components/AddStudent";
 
 function StudentDashboard() {
   const [regdNo, setRegdNo] = useState(null);

@@ -85,7 +85,7 @@ function StudentProfile({ onProfileLoaded }) {
     }
 
     fetchProfile();
-  }, []);
+  },[onProfileLoaded]); 
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography color="error">{error}</Typography>;

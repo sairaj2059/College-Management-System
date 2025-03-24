@@ -15,6 +15,29 @@ class UserService{
     }
   }
 
+  static async Register(username, password, role) {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(`${UserService.BASE_URL}/register`,  // ✅ Corrected endpoint
+        {
+          username,
+          password,
+          role
+        },
+        {
+          headers: {
+            Authorization:`Bearer ${token}`,
+            "Content-Type": "application/json",  // ✅ No token required
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Registration error:", error.response?.data || error.message);
+      return null;
+    }
+  }
+
   static async addTeacher(formData){
     const token = localStorage.getItem("token");
 

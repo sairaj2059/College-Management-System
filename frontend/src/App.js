@@ -6,9 +6,6 @@ import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
-import ResetPassword from "./pages/ResetPassword";
-import PageNotFound from "./pages/PageNotFound";
-
 import AddTeacher from "./components/AddTeacher";
 // import Discussion from "./pages/Discussion";
 import { NavigationBar } from "./pages/NavigationBar";

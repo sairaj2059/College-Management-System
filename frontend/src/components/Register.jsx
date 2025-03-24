@@ -15,7 +15,7 @@ import Visibility from "@mui/icons-material/Visibility";
 import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
-import login_logo from "../resources/images/Llogo.png";
+import login_logo from "../resources/images/Llogo.webp";
 import { Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import UserService from "../services/UserService";

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
+import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.service.TeacherService;
@@ -88,5 +89,12 @@ public class TeacherController {
     public ResponseEntity<String> deleteNotice(@PathVariable String id) {
         return noticeService.deleteNotice(id);
     }
+   
+    // @GetMapping("/getResults")
+    // public ResponseEntity<List<SemesterResults>> findBySubjectTeacherAndSubjectName(
+    //         @RequestParam String subjectTeacher,
+    //         @RequestParam String subjectName) {
+    //     return teacherService.findBySubjectTeacherAndSubjectName(subjectTeacher, subjectName);
+    // }
 
 }

@@ -106,22 +106,39 @@ function AddStudent() {
   // ✅ Submit form with image & student details
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const formDataToSend = new FormData();
-    formDataToSend.append("studentDetails", new Blob([JSON.stringify(formData)], { type: "application/json" }));
-
-    if (selectedImage) {
-      formDataToSend.append("imageFile", selectedImage); // ✅ Attach the image file
+  
+    const { regdNo } = formData; // Extract registration number
+  
+    if (!regdNo) {
+      console.error("Registration number is required");
+      return;
     }
-
+  
     try {
-      const result = await UserService.addStudent(formDataToSend);
-      console.log("Student added successfully:", result);
+      // Register the student using regdNo as the username
+      const registerResponse = await UserService.Register(regdNo, "omsrisairam", "STUDENT");
+  
+      if (registerResponse) {
+        console.log("User registered successfully:", registerResponse);
+  
+        // Proceed with adding student details
+        const formDataToSend = new FormData();
+        formDataToSend.append("studentDetails", new Blob([JSON.stringify(formData)], { type: "application/json" }));
+  
+        if (selectedImage) {
+          formDataToSend.append("imageFile", selectedImage);
+        }
+  
+        const result = await UserService.addStudent(formDataToSend);
+        console.log("Student added successfully:", result);
+      } else {
+        console.error("Failed to register the user.");
+      }
     } catch (error) {
-      console.log("Error adding student:", error);
+      console.error("Error during registration or student addition:", error);
     }
   };
-
+  
   useEffect(() => {
     async function getCourses() {
       const response = await CourseService.getCourses();      
