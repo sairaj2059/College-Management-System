@@ -1,73 +1,105 @@
 import React, { useState } from "react";
-import { Card, CardContent, Typography, Stack, IconButton } from "@mui/material";
+import { Card, Typography, Stack, IconButton, createTheme, ThemeProvider } from "@mui/material";
 import { AccessTime, ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
+const theme = createTheme({
+ palette: {
+   primary: {
+     main: "#1976d2", // A formal blue color
+   },
+   secondary: {
+     main: "#64b5f6", // A lighter blue color
+   },
+   background: {
+     paper: "#fff", // White background for cards
+   },
+   text: {
+     primary: "#212121", // Dark grey for primary text
+     secondary: "#757575", // Medium grey for secondary text
+   },
+   error: {
+     main: "#d32f2f",
+   },
+   warning: {
+     main: "#ed6c02",
+   },
+   info: {
+     main: "#0288d1",
+   },
+   success: {
+     main: "#2e7d32",
+   },
+ },
+});
+
 const classes = [
-  { time: "09:00 - 09:45", name: "1Bsc", color: "error" },
-  { time: "09:00 - 09:45", name: "2Bsc", color: "error" },
-  { time: "11:30 - 12:15", name: "3Bsc", color: "primary" },
-  { time: "01:30 - 02:15", name: "1Msc", color: "secondary" },
-  { time: "01:30 - 02:15", name: "1Msc", color: "secondary" }
+ { time: "09:00 - 09:45", name: "1Bsc", color: "error" },
+ { time: "09:00 - 09:45", name: "2Bsc", color: "warning" },
+ { time: "11:30 - 12:15", name: "3Bsc", color: "primary" },
+ { time: "01:30 - 02:15", name: "1Msc", color: "info" },
+ { time: "01:30 - 02:15", name: "1Msc", color: "success" }
 ];
 
 const TodayClasses = () => {
-  const [startIndex, setStartIndex] = useState(0);
-  const visibleCount = 4;
+ const [startIndex, setStartIndex] = useState(0);
+ const visibleCount = 4;
 
-  const handleNext = () => {
-    if (startIndex + visibleCount < classes.length) {
-      setStartIndex(startIndex + 1);
-    }
-  };
+ const handleNext = () => {
+   if (startIndex + visibleCount < classes.length) {
+     setStartIndex(startIndex + 1);
+   }
+ };
 
-  const handlePrev = () => {
-    if (startIndex > 0) {
-      setStartIndex(startIndex - 1);
-    }
-  };
+ const handlePrev = () => {
+   if (startIndex > 0) {
+     setStartIndex(startIndex - 1);
+   }
+ };
 
-  return (
-    <Card sx={{ p: 2 }}>
-      <Stack direction="row" justifyContent="space-between" alignItems="center">
-        <Typography variant="h6" fontWeight="bold">
-          Today's Classes
-        </Typography>
-        <Stack direction="row" spacing={1}>
-          <IconButton onClick={handlePrev}>
-            <ArrowBackIos fontSize="small" />
-          </IconButton>
-          <IconButton onClick={handleNext}>
-            <ArrowForwardIos fontSize="small" />
-          </IconButton>
-        </Stack>
-      </Stack>
+ return (
+   <ThemeProvider theme={theme}>
+     <Card sx={{ p: 2, bgcolor: theme.palette.background.paper }}>
+       <Stack direction="row" justifyContent="space-between" alignItems="center">
+         <Typography variant="h6" fontWeight="bold" color={theme.palette.primary.main}>
+           Today's Classes
+         </Typography>
+         <Stack direction="row" spacing={1}>
+           <IconButton onClick={handlePrev} color="primary">
+             <ArrowBackIos fontSize="small" />
+           </IconButton>
+           <IconButton onClick={handleNext} color="primary">
+             <ArrowForwardIos fontSize="small" />
+           </IconButton>
+         </Stack>
+       </Stack>
 
-      <Stack direction="row" spacing={2} sx={{ mt: 2 }} flexWrap="wrap">
-        {classes.slice(startIndex, startIndex + visibleCount).map((item, index) => (
-          <Card key={index} sx={{ p: 2, backgroundColor: "#f5f5f5", minWidth: 180 }}>
-            <Typography
-              variant="body1"
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                gap: 1,
-                backgroundColor: (theme) => theme.palette[item.color].main,
-                color: "#fff",
-                p: 1,
-                borderRadius: 1,
-              }}
-            >
-              <AccessTime fontSize="small" />
-              {item.time}
-            </Typography>
-            <Typography variant="body2" sx={{ mt: 1 }}>
-              {item.name}
-            </Typography>
-          </Card>
-        ))}
-      </Stack>
-    </Card>
-  );
+       <Stack direction="row" spacing={2} sx={{ mt: 2 }} flexWrap="wrap">
+         {classes.slice(startIndex, startIndex + visibleCount).map((item, index) => (
+           <Card key={index} sx={{ p: 2, bgcolor: theme.palette.secondary.light, minWidth: 180 }}>
+             <Typography
+               variant="body1"
+               sx={{
+                 display: "flex",
+                 alignItems: "center",
+                 gap: 1,
+                 backgroundColor: theme.palette[item.color].main,
+                 color: theme.palette.text.primary,
+                 p: 1,
+                 borderRadius: 1,
+               }}
+             >
+               <AccessTime fontSize="small" />
+               {item.time}
+             </Typography>
+             <Typography variant="body2" sx={{ mt: 1 }} color={theme.palette.text.secondary}>
+               {item.name}
+             </Typography>
+           </Card>
+         ))}
+       </Stack>
+     </Card>
+   </ThemeProvider>
+ );
 };
 
 export default TodayClasses;

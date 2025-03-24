@@ -1,5 +1,6 @@
 package com.collegemanagementsystem.backend.service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -44,6 +45,11 @@ public class StudentService {
     }
 
     private StudentProfile convertToStudentProfile(StudentDetails student) {
+        String imageurl = null;
+        if (student.getImageId() != null) {
+            imageurl = "http://localhost:8080/student/studentImage/" + student.getImageId();
+            System.out.println("Generated Image URL: " + imageurl); // ✅ Debugging URL
+        }
         return new StudentProfile(
                 student.getId(),
                 student.getFirstName(),
@@ -52,7 +58,8 @@ public class StudentService {
                 student.getDepartment(),
                 student.getCourse(),
                 student.getYear(),
-                calSem(student.getYear()));
+                student.getSemester(),
+            imageurl );
     }
 
     private int calSem(String year) {
@@ -62,6 +69,14 @@ public class StudentService {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid year format: " + year);
         }
+    
+
+     public ResponseEntity<?> getStudentImage(String regdNo) throws IOException {
+        StudentDetails student = studentdetailsRepo.findByRegdNo(regdNo);
+        if (student == null || student.getImageId() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return imageService.getImage(student.getImageId());
     }
 
     public ClasswiseAttendance getStudentAttendanceByClassAndRegdNoAndMonth(String className, String regdNo,

@@ -12,6 +12,7 @@ import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import teacherIcon from "../resources/images/teacher.png";
 import { useNavigate } from "react-router-dom";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+  
 
 const StrengthCard = ({ Strength, label, icon, gradient, imgSrc,route }) => {
   const navigate = useNavigate();
@@ -119,6 +120,7 @@ const AdminDashboard = () => {
         p: 0.8,
         background: "transparent",
         minHeight: "100vh",
+        maxWidth:'100%',
         display: "flex",
         flexDirection: "column",
         gap: 3,
@@ -182,7 +184,7 @@ const AdminDashboard = () => {
             label="Total Students"
             icon={<GroupsIcon fontSize="large" />}
             gradient="linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%)"
-            route="students"
+            route="/admin/studentsList"
           />
         </Grid>
         <Grid xs="auto">
@@ -191,7 +193,7 @@ const AdminDashboard = () => {
             label="Total Teachers"
             imgSrc={teacherIcon}
             gradient="linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)"
-            route="students"
+            route="/admin/addTeacher"
           />
         </Grid>
         <Grid xs="auto">

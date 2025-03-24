@@ -39,7 +39,7 @@ function AddTeacher() {
 
   const [formData, setFormData] = useState({
     image: selectedImage,
-    teacherId: "5764765",
+    teacherId: "",
     title: "",
     firstName: "",
     lastName: "",
@@ -84,14 +84,33 @@ function AddTeacher() {
   };
 
   const handleSubmit = async (event) => {
-
+    event.preventDefault();
+  
+    const { teacherId } = formData; // Extract teacher ID
+  
+    if (!teacherId) {
+      console.error("Teacher ID is required");
+      return;
+    }
+  
     try {
-      const result = await UserService.addTeacher(formData);
-
+      // Register the teacher using teacherId as username
+      const registerResponse = await UserService.Register(teacherId, "omsrisairam", "TEACHER");
+  
+      if (registerResponse) {
+        console.log("Teacher registered successfully:", registerResponse);
+  
+        // Proceed with adding teacher details
+        const result = await UserService.addTeacher(formData);
+        console.log("Teacher added successfully:", result);
+      } else {
+        console.error("Failed to register the teacher.");
+      }
     } catch (error) {
-      console.log(error);
+      console.error("Error during registration or teacher addition:", error);
     }
   };
+  
 
   const handleAutocompleteChange = (fieldName) => (event, newValue) => {
     setFormData((prevData) => ({
@@ -149,7 +168,7 @@ function AddTeacher() {
                 color="primary"
                 sx={{ fontWeight: 500, fontSize: 12 }}
               >
-                Add Students
+                Add Teacher
               </Typography>
             </Breadcrumbs>
           </Box>
@@ -247,6 +266,19 @@ function AddTeacher() {
                       onChange={handleInput}
                       size="sm"
                       placeholder="Enter Last Name"
+                      sx={{ minWidth: 230 }}
+                    />
+                  </FormControl>
+
+                  <FormControl sx={{ display: "flex" }}>
+                    <FormLabel>Teacher Id</FormLabel>
+                    <Input
+                      type="text"
+                      name="teacherId"
+                      value={formData.teacherId}
+                      onChange={handleInput}
+                      size="sm"
+                      placeholder="Enter Teacher Id"
                       sx={{ minWidth: 230 }}
                     />
                   </FormControl>

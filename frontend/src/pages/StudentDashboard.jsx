@@ -3,7 +3,6 @@ import { Box, Paper } from "@mui/material";
 import SAttendance from "../components/SAttendance";
 import StudentProfile from "../components/StudentProfile";
 import PerformanceChart from "../components/PerformanceChart";
-import Calendars from "../components/Calendars";
 import Faculty from "../components/Faculty";
 import SubjectGraph from "../components/SubjectGraph";
 import NoticeBoardComponent from "../components/NoticeBoardComponent";
@@ -23,21 +22,21 @@ function StudentDashboard() {
       {/* Top Section */}
       <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
         {/* Student Profile */}
-        <Box sx={{ width: "30%", height: "30%" }}>
+        <Box sx={{ width: "30%", height: "20%" }}>
           <Paper sx={{ flex: 1, padding: "10px" }}>
             <StudentProfile onProfileLoaded={handleProfileLoaded} />
           </Paper>
         </Box>
 
-        {/* Calendar - Moved to Center */}
-        <Box sx={{ width: "22%", height: "50%" }}>
-          <Paper sx={{ flex: 1, minWidth: "300px", padding: "10px" }}>
-            <Calendars />
+         {/* Notice Board - Moved Right */}
+         <Box sx={{ width: "20%" }}>
+          <Paper sx={{ flex: 1, minWidth: "100px", padding: "10px", display: "flex", justifyContent: "center" }}>
+            <NoticeBoardComponent />
           </Paper>
         </Box>
 
         {/* Attendance - Moved to Right */}
-        <Box sx={{ width: "20%", height: "20%" }}>
+        <Box sx={{ width: "20%", height: "25%" }}>
           <Paper sx={{ flex: 1, minWidth: "300px", padding: "10px" }}>
             <SAttendance />
           </Paper>
@@ -69,14 +68,9 @@ function StudentDashboard() {
           </Paper>
         </Box>
 
-        {/* Notice Board - Moved Right */}
-        <Box sx={{ width: "50%" }}>
-          <Paper sx={{ flex: 1, minWidth: "300px", padding: "10px", display: "flex", justifyContent: "center" }}>
-            <NoticeBoardComponent />
-          </Paper>
-        </Box>
+       
       </Box>
-
+      
     </Box>
   );
 }

@@ -14,6 +14,7 @@ public class StudentProfile {
     private String department;
     private String course;
     private String year;
-    private int semester;
+    private String imageurl;
+    private String semester;
 }
 

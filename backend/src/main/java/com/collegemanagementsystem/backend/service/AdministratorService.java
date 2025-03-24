@@ -1,5 +1,6 @@
 package com.collegemanagementsystem.backend.service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import com.collegemanagementsystem.backend.repository.ClasswiseStudentRepository
 import com.collegemanagementsystem.backend.repository.StudentDetailsRepository;
 import com.collegemanagementsystem.backend.repository.TeacherDetailsRepository;
 import com.collegemanagementsystem.backend.model.Student;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class AdministratorService {
@@ -27,11 +29,18 @@ public class AdministratorService {
     TeacherDetailsRepository teacherDetailsRepository;
 
     @Autowired
+    private ImageService imageService; 
+
+    @Autowired
     CourseService courseService;
 
-    public ResponseEntity<?> addStudentByForm(StudentDetails studentDetails) {
+    public ResponseEntity<?> addStudentByForm(StudentDetails studentDetails, MultipartFile imageFile) throws IOException {
         StudentDetails studentDetail = studentDetailsRepository.findByRegdNo(studentDetails.getRegdNo());
         if (studentDetail == null) {
+            if (imageFile != null && !imageFile.isEmpty()) {
+                String imageId = imageService.storeImage(imageFile);
+                studentDetails.setImageId(imageId);  // Save image ID
+            }
             studentDetailsRepository.save(studentDetails);
             ClasswiseStudent classwiseStudent = classwiseStudentRepository
                     .findByClassName(studentDetails.getCourse() + " " + studentDetails.getJoinYear());

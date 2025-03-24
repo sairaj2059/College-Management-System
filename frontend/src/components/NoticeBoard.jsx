@@ -66,6 +66,7 @@ const NoticeCard = ({ notice, onDelete }) => {
           transform: "scale(1.02)",
           boxShadow: "0 8px 16px rgba(0,0,0,0.15)",
         },
+        height: "fit-content",
       }}
     >
       <CardContent>
@@ -160,7 +161,7 @@ const NoticeBoard = () => {
 
       try {
         const response = await axios.get(
-          `${UserService.BASE_URL}/admin/getNotices`,
+          `${UserService.BASE_URL}/${role.toLowerCase()}/getNotices`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -180,7 +181,7 @@ const NoticeBoard = () => {
 
   const handleDeleteNotice = async (id) => {
     try {
-      await axios.delete(`${UserService.BASE_URL}/admin/deleteNotice/${id}`, {
+      await axios.delete(`${UserService.BASE_URL}/${role.toLowerCase()}/deleteNotice/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -209,7 +210,7 @@ const NoticeBoard = () => {
 
     try {
       const response = await axios.post(
-        `${UserService.BASE_URL}/admin/addNotice`,
+        `${UserService.BASE_URL}/${role.toLowerCase()}/addNotice`,
         newEntry,
         {
           headers: {
@@ -231,7 +232,7 @@ const NoticeBoard = () => {
   return (
     <Box
       sx={{
-        height: "auto",
+        height: "100vh",
         bgcolor: "background.default",
         p: { xs: 2, sm: 3, md: 4 },
         display: "flex",

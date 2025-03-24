@@ -46,7 +46,7 @@ export const NavigationBar = () => {
 
       <Box
         sx={{
-          width: "99.3%",
+          width: "90%",
           height: "100%",
           margin: "6px",
           overflow: "auto",

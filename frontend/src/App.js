@@ -6,9 +6,6 @@ import StudentDashboard from "./pages/StudentDashboard";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AdminDashboard from "./pages/AdminDashboard";
 import TeacherDashboard from "./pages/TeacherDashboard";
-import ResetPassword from "./pages/ResetPassword";
-import PageNotFound from "./pages/PageNotFound";
-
 import AddTeacher from "./components/AddTeacher";
 // import Discussion from "./pages/Discussion";
 import { NavigationBar } from "./pages/NavigationBar";
@@ -62,11 +59,14 @@ function App() {
                   <Route path="/admin/home" element={<AdminDashboard />} />
                   <Route path="/admin/studentsList" element={<Students />} />
                   <Route path="/admin/addStudent" element={<AddStudent />} />
+                  <Route path="/admin/addTeacher" element={<AddTeacher />} />
+                  <Route path="/admin/notice-board" element={<NoticeBoard />} />
                 </Route>
                 <Route element={<ProtectedRoute allowedRoles={"TEACHER"} />}>
                   <Route path="/" element={<TeacherDashboard />} />
                   <Route path="/teacher" element={<TeacherDashboard />} />
                   <Route path="/teacher/home" element={<TeacherDashboard />} />
+                  <Route path="/teacher/notice-board" element={<NoticeBoard />} />
                   <Route path="/teacher/exam/" element={<ExamPage />}>
                     <Route index element={<ExamList />} />
                     <Route path="questions/:id" element={<QuestionsPage />} />

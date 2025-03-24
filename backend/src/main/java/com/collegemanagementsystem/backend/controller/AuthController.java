@@ -20,17 +20,15 @@ public class AuthController {
     @Autowired
     private JWTService jwtService;
 
-    @PreAuthorize("hasAuthority('ADMIN')")
-
     @PostMapping("/register")
-    public UserAuth register(@RequestBody UserAuth student) {
-        return service.register(student);
+    public UserAuth register(@RequestBody UserAuth user) {
+        return service.register(user);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Map<String, Object>> login(@RequestBody UserAuth student) {
+    public ResponseEntity<Map<String, Object>> login(@RequestBody UserAuth user) {
         Map<String, Object> response = new HashMap<>();
-        String authenticate = service.verify(student);
+        String authenticate = service.verify(user);
 
         if (!authenticate.equals("fail")) {
             response.put("success", true);

@@ -24,7 +24,7 @@ const SubjectGraph = ({ regdNo }) => {
   }, [regdNo]);
 
   // Function to truncate label with "..."
-  const truncateLabel = (label) => {
+  const truncateLabel = (label) => { 
     return label.length > 10 ? `${label.substring(0, 7)}...` : label;
   };
 
