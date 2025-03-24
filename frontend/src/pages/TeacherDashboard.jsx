@@ -5,9 +5,9 @@ import React from "react";
  import StudentProgress from "../components/StudentProgress";
  import Attendance from "../components/Attendance";
  import StudentMarks from "../components/StudentMarks";
- import UpcomingEvents from "../components/UpcomingEvents";
  import TeacherProfile from "../components/TeacherProfile";
  import AddAttendanceForm from "../components/AddAttendanceForm";
+ import NoticeBoardComponent from "../components/NoticeBoardComponent";
 
  const theme = createTheme({
   palette: {
@@ -55,8 +55,8 @@ import React from "react";
           {/* Middle Row: Best Performers, Student Progress, Upcoming Events */}
           <Stack direction={{ xs: "column", md: "row" }} spacing={3}>
             <StudentProgress />
-            <UpcomingEvents />
             <Attendance />
+            <NoticeBoardComponent/>
           </Stack>
 
           {/* Bottom Row: Syllabus, Student Marks, Leave Status */}

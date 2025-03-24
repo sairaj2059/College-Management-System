@@ -79,13 +79,13 @@ public class TeacherController {
         return teacherService.deleteExam(examId);
     }
     
-     @GetMapping("getNotices")
+    @GetMapping("/getNotices")
     public ResponseEntity<List<Notices>> getNotices() {
         List<Notices> notices = noticeService.getallNotices();
         return ResponseEntity.ok(notices);
     }
 
-    @DeleteMapping("deleteNotice/{id}") 
+    @DeleteMapping("/deleteNotice/{id}") 
     public ResponseEntity<String> deleteNotice(@PathVariable String id) {
         return noticeService.deleteNotice(id);
     }

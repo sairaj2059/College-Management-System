@@ -12,6 +12,7 @@ const NoticeBoardComponent = () => {
   const [Notices, setNotices] = useState([]);
   const [Error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
+  const role = useSelector((state)=>state.auth.role);
   const theme = useTheme();
 
   const getRandomColor = (id) => {
@@ -38,7 +39,7 @@ const NoticeBoardComponent = () => {
 
       try {
         const response = await axios.get(
-          `${UserService.BASE_URL}/admin/getNotices`,
+          `${UserService.BASE_URL}/${role.toLowerCase()}/getNotices`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -84,7 +85,7 @@ const NoticeBoardComponent = () => {
         </Typography>
         <Button
           variant="text"
-          onClick={() => navigate("/admin/notice-board")}
+          onClick={() => navigate(`/${role.toLowerCase()}/notice-board`)}
           sx={{
             color: "primary.main",
             fontSize: 12,
@@ -104,7 +105,7 @@ const NoticeBoardComponent = () => {
         </Typography>
       ) : (
         <Stack spacing={1}>
-          {Notices.map((notice) => (
+          {Notices.slice(0, 4).map((notice) => (
             <Paper
               key={notice.id}
               elevation={0}
