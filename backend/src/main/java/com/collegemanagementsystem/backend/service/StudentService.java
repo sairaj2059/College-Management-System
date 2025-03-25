@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.StudentDetails;
+import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
+import com.collegemanagementsystem.backend.repository.ExamRepository;
 import com.collegemanagementsystem.backend.repository.StudentDetailsRepository;
 
 @Service
@@ -24,13 +26,14 @@ public class StudentService {
     private StudentDetailsRepository studentdetailsRepo;
 
     @Autowired
-    private ImageService imageService;
+    private ExamRepository examRepository;
+
     // Fetch student profile details
     public List<StudentProfile> getStudentProfiles() {
         return studentdetailsRepo.findAll()
-            .stream()
-            .map(this::convertToStudentProfile)
-            .collect(Collectors.toList());
+                .stream()
+                .map(this::convertToStudentProfile)
+                .collect(Collectors.toList());
     }
 
     public StudentProfile getStudentProfileByRegdNo(String regdNo) {
@@ -48,17 +51,24 @@ public class StudentService {
             System.out.println("Generated Image URL: " + imageurl); // ✅ Debugging URL
         }
         return new StudentProfile(
-            student.getId(),
-            student.getFirstName(),
-            student.getLastName(),
-            student.getRegdNo(),
-            student.getDepartment(),
-            student.getCourse(),
-            student.getYear(),
-            student.getSemester(),
-            imageurl 
-        );
+                student.getId(),
+                student.getFirstName(),
+                student.getLastName(),
+                student.getRegdNo(),
+                student.getDepartment(),
+                student.getCourse(),
+                student.getYear(),
+                student.getSemester(),
+            imageurl );
     }
+
+    private int calSem(String year) {
+        try {
+            int yearNumber = Integer.parseInt(year);
+            return (yearNumber - 1) * 2 + 1;
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("Invalid year format: " + year);
+        }
     
 
      public ResponseEntity<?> getStudentImage(String regdNo) throws IOException {
@@ -69,10 +79,13 @@ public class StudentService {
         return imageService.getImage(student.getImageId());
     }
 
-    public ClasswiseAttendance getStudentAttendanceByClassAndRegdNoAndMonth(String className, String regdNo, String month) {
-        ClasswiseAttendance studentAttendance = attendanceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(className, regdNo, month);
+    public ClasswiseAttendance getStudentAttendanceByClassAndRegdNoAndMonth(String className, String regdNo,
+            String month) {
+        ClasswiseAttendance studentAttendance = attendanceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(className,
+                regdNo, month);
         if (studentAttendance == null) {
-            throw new IllegalArgumentException("No attendance found for student " + regdNo + " in class " + className + " for month " + month);
+            throw new IllegalArgumentException(
+                    "No attendance found for student " + regdNo + " in class " + className + " for month " + month);
         }
         System.out.println(studentAttendance);
         return studentAttendance;
@@ -85,5 +98,24 @@ public class StudentService {
     public ClasswiseAttendance saveAttendance(ClasswiseAttendance attendance) {
         System.out.println("Attendance Data to be saved: " + attendance);
         return attendanceRepo.save(attendance);
+    }
+
+    public ResponseEntity<?> getExamList(String regdNo) {
+        StudentDetails studentDetails = studentdetailsRepo.findByRegdNo(regdNo);
+        if (studentDetails == null) {
+            return ResponseEntity.badRequest().body("Student with regdNo " + regdNo + " not found.");
+        }
+
+        try {
+            List<Exam> exams = examRepository
+                    .findExamByClassName(studentDetails.getCourse() + " " + studentDetails.getJoinYear());
+            List<Exam> filteredExams = exams.stream()
+                    .filter(exam -> exam.getStatus().equals("Published"))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(filteredExams);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error fetching exams: " + e.getMessage());
+        }
+
     }
 }

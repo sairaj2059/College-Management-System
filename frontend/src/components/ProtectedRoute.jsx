@@ -6,7 +6,6 @@ const ProtectedRoute = ({ allowedRoles }) => {
   
   if (!isLoggedIn) return <Navigate to="/login" />;
   if (!allowedRoles.includes(role)) return <Navigate to="/unauthorized" />;//add unauthorised
-  
   return <Outlet/>;
 }
 

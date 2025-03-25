@@ -242,7 +242,7 @@ export default function SignInPageComponent({ serverError, setServerError }) {
       const userData = await UserService.login(username, password);
       
       if (userData.success) {
-        dispatch(login({ token: userData.token, role: userData.role }));
+        dispatch(login({ token: userData.token, role: userData.role , username: username}));
         navigate(`${userData.role.toLowerCase()}`);
       } else {
         console.log("error password");

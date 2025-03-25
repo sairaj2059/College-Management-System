@@ -6,7 +6,7 @@ import Typography from "@mui/joy/Typography";
 import Sheet from "@mui/joy/Sheet";
 import Button from "@mui/joy/Button";
 import Box from "@mui/joy/Box";
-import "../resources/css/StudentProfile.css";
+import "../resources/css/studentprofile.css";
 import StudentDashboardService from "../services/StudentDashboardService";
 
 function StudentProfile({ onProfileLoaded }) {
