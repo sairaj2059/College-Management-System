@@ -29,7 +29,7 @@ const SubjectGraph = ({ regdNo }) => {
   };
 
   return (
-    <div style={{ width: "90%", height: 300, margin: "auto" }}>
+    <div style={{ width: "100%", height: 300, margin: "auto" }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={semGPA} margin={{ top: 10, right: 20, left: 10, bottom: 40 }}>
           <CartesianGrid strokeDasharray="3 3" />

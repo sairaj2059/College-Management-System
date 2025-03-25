@@ -74,7 +74,7 @@ const Faculty = () => {
         boxShadow: 2,  
         borderRadius: 2,
         border: "1px solid #0D47A1",
-        textAlign: "center"
+        textAlign: "center",
       }}
     >
       {/* Header Section */}

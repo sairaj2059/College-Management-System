@@ -55,7 +55,7 @@ public class StudentController {
         }
     }
 
-     @GetMapping("/getNotices")
+    @GetMapping("/getNotices")
     public ResponseEntity<List<Notices>> getNotices() {
         List<Notices> notices = noticeService.getallNotices();
         return ResponseEntity.ok(notices);
