@@ -26,6 +26,9 @@ public class TeacherController {
     private TeacherService teacherService;
 
     @Autowired
+    private SemResultService semResultService;
+
+    @Autowired
     private StudentService studentService;
 
     @Autowired
