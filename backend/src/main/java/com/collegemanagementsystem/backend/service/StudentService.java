@@ -28,6 +28,9 @@ public class StudentService {
     @Autowired
     private ExamRepository examRepository;
 
+    @Autowired
+    private ImageService imageService;
+
     // Fetch student profile details
     public List<StudentProfile> getStudentProfiles() {
         return studentdetailsRepo.findAll()
@@ -69,6 +72,7 @@ public class StudentService {
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException("Invalid year format: " + year);
         }
+    }
     
 
      public ResponseEntity<?> getStudentImage(String regdNo) throws IOException {

@@ -10,7 +10,9 @@ import "../resources/css/studentprofile.css";
 import StudentDashboardService from "../services/StudentDashboardService";
 
 function StudentProfile({ onProfileLoaded }) {
-  const regdNo = "224206"; // Hardcoded for now
+
+  const regdNo = localStorage.getItem("username");
+  // const regdNo = "224206"; // Hardcoded for now
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,7 +20,7 @@ function StudentProfile({ onProfileLoaded }) {
 
   useEffect(() => {
     async function fetchProfile() {
-      try {
+      try {        
         const data = await StudentDashboardService.getStudentProfilebyregdNo(regdNo);
         if (data) {
           setUserData(data);
@@ -41,6 +43,7 @@ function StudentProfile({ onProfileLoaded }) {
   if (!userData) return <Typography>No data available</Typography>;
 
   return (
+    
     <Card className="profile-card">
       {/* Profile Container */}
       <div className="profile-container">

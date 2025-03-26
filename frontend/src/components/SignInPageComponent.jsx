@@ -23,6 +23,7 @@ import UserService from "../services/UserService";
 import { useState, useRef, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { login } from "../redux/slices/authSlice";
+import { LogoDevSharp } from "@mui/icons-material";
 
 const providers = [{ id: "credentials", name: "Password and Username" }]; //name creates two fields in the ui
 
@@ -243,6 +244,7 @@ export default function SignInPageComponent({ serverError, setServerError }) {
       
       if (userData.success) {
         dispatch(login({ token: userData.token, role: userData.role , username: username}));
+        localStorage.setItem("username", username);
         navigate(`${userData.role.toLowerCase()}`);
       } else {
         console.log("error password");

@@ -21,6 +21,7 @@ import Box from "@mui/joy/Box";
 import Discussion from "./pages/Discussion";
 import ExamList from "./components/ExamComponents/ExamList";
 import QuestionDisplay from "./components/ExamComponents/QuestionDisplay";
+import ResultPage from "./components/ExamComponents/ResultPage";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
@@ -83,6 +84,7 @@ function App() {
                     path="/student/exam/questions/:id"
                     element={<QuestionDisplay />}
                   />
+                  <Route path="/student/exam/questions/:id/results" element={<ResultPage/>}/>
 
                   <Route path="/student/discussion" element={<Discussion />} />
                   <Route

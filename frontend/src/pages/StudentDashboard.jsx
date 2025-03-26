@@ -9,11 +9,12 @@ import NoticeBoardComponent from "../components/StudentNoticeBoardComponent";
 import ExamSchedule from "../components/ExamSchedule";
 
 function StudentDashboard() {
-  const [regdNo, setRegdNo] = useState(null);
+  const regdNo = localStorage.getItem("username");
+  // const [regdNo, setRegdNo] = useState(null);
   const [semesterNumber, setSemesterNumber] = useState(null);
 
   const handleProfileLoaded = (regdNo, semester) => {
-    setRegdNo(regdNo);
+    // setRegdNo(regdNo);
     setSemesterNumber(semester);
   };
 
