@@ -13,6 +13,7 @@ import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.service.TeacherService;
 import com.collegemanagementsystem.backend.service.NoticeService;
+import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
 
 
