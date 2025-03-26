@@ -20,6 +20,7 @@ import Card from "@mui/joy/Card";
 import Box from "@mui/joy/Box";
 import Discussion from "./pages/Discussion";
 import ExamList from "./components/ExamComponents/ExamList";
+import ExamMarks from "./components/ExamMarks";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
@@ -70,7 +71,7 @@ function App() {
                     <Route index element={<ExamList />} />
                     <Route path="questions/:id" element={<QuestionsPage />} />
                   </Route>
-
+                  <Route path="/teacher/exam-marks" element={<ExamMarks />} />
                   <Route path="/teacher/discussion" element={<Discussion />} />
                 </Route>
                 <Route element={<ProtectedRoute allowedRoles={"STUDENT"} />}>

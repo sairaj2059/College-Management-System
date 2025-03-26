@@ -94,6 +94,10 @@ public class TeacherController {
         return noticeService.deleteNotice(id);
     }
    
+    @GetMapping("/semResults/{regdNo}")
+    public SemesterResults getSemResultDetails(@PathVariable String regdNo){
+        return semResultService.getSemResultDetails(regdNo);
+    }
     // @GetMapping("/getResults")
     // public ResponseEntity<List<SemesterResults>> findBySubjectTeacherAndSubjectName(
     //         @RequestParam String subjectTeacher,
