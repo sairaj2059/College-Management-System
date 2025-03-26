@@ -45,9 +45,10 @@ public class StudentController {
     public List<StudentProfile> getAllStudentProfiles() {
         return studentService.getStudentProfiles();
     }
+
     @GetMapping("/studentProfile/{regdNo}")
-    public ResponseEntity<?>getStudentProfileByRegdNo(@PathVariable String regdNo) {
-        try{
+    public ResponseEntity<?> getStudentProfileByRegdNo(@PathVariable String regdNo) {
+        try {
             StudentProfile profile = studentService.getStudentProfileByRegdNo(regdNo);
             return ResponseEntity.ok(profile);
         } catch (IllegalArgumentException e) {
@@ -55,43 +56,49 @@ public class StudentController {
         }
     }
 
-     @GetMapping("/getNotices")
+    @GetMapping("/getNotices")
     public ResponseEntity<List<Notices>> getNotices() {
         List<Notices> notices = noticeService.getallNotices();
         return ResponseEntity.ok(notices);
     }
+
     @GetMapping("/get_Sattendance/{className}")
-public ResponseEntity<?> getAttendanceMonth(
-        @PathVariable String className,  // Changed from @RequestParam to @PathVariable
-        @RequestParam String regdNo,
-        @RequestParam String month) {
-    System.out.println("classname: " + className);
-    System.out.println("regdNo: " + regdNo);
-    System.out.println("month: " + month);
-    ClasswiseAttendance attendanceMonth = studentService.getStudentAttendanceByClassAndRegdNoAndMonth(className, regdNo, month);
-    if (attendanceMonth == null || attendanceMonth.getStudents().isEmpty()) {
-        return ResponseEntity.status(404).body("No attendance record found");
+    public ResponseEntity<?> getAttendanceMonth(
+            @PathVariable String className, // Changed from @RequestParam to @PathVariable
+            @RequestParam String regdNo,
+            @RequestParam String month) {
+        System.out.println("classname: " + className);
+        System.out.println("regdNo: " + regdNo);
+        System.out.println("month: " + month);
+        ClasswiseAttendance attendanceMonth = studentService.getStudentAttendanceByClassAndRegdNoAndMonth(className,
+                regdNo, month);
+        if (attendanceMonth == null || attendanceMonth.getStudents().isEmpty()) {
+            return ResponseEntity.status(404).body("No attendance record found");
+        }
+        if (attendanceMonth.getStudents().get(0).getAttendance().isEmpty()) {
+            return ResponseEntity.status(404).body("No attendance data available for this student");
+        }
+        return ResponseEntity.ok(attendanceMonth.getStudents().get(0).getAttendance().get(0));
     }
-    if (attendanceMonth.getStudents().get(0).getAttendance().isEmpty()) {
-        return ResponseEntity.status(404).body("No attendance data available for this student");
-    }
-    return ResponseEntity.ok(attendanceMonth.getStudents().get(0).getAttendance().get(0));
-}
 
     @GetMapping("/semResults/{regdNo}")
-    public SemesterResults getSemResultDetails(@PathVariable String regdNo){
+    public SemesterResults getSemResultDetails(@PathVariable String regdNo) {
         return semResultService.getSemResultDetails(regdNo);
     }
 
     @PostMapping("/semResults")
-    public ResponseEntity<SemesterResults> setSemResultDetails(@RequestBody SemesterResults semesterResults){
+    public ResponseEntity<SemesterResults> setSemResultDetails(@RequestBody SemesterResults semesterResults) {
         SemesterResults savedResults = semResultService.saveSemesterResult(semesterResults);
         return ResponseEntity.ok(savedResults);
     }
 
+    @GetMapping("/getExamList/{regdNo}")
+    public ResponseEntity<?> getExamList(@PathVariable String regdNo) {
+        return studentService.getExamList(regdNo);
+    }
     @GetMapping("/studentImage/{regdNo}")
     public ResponseEntity<?> getStudentImage(@PathVariable String regdNo) throws IOException {
         return studentService.getStudentImage(regdNo);
     }
-    
+
 }

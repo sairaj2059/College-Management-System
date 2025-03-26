@@ -65,7 +65,6 @@ import { useNavigate } from "react-router-dom";
           {/* Bottom Row: Syllabus, Student Marks, Leave Status */}
           <Stack direction={{ xs: "column", md: "row" }} spacing={3}>
             <LessonPlan />
-            <StudentMarks />
             <AddAttendanceForm />
           </Stack>
             <StudentMarks />

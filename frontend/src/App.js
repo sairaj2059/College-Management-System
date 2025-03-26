@@ -20,6 +20,7 @@ import Card from "@mui/joy/Card";
 import Box from "@mui/joy/Box";
 import Discussion from "./pages/Discussion";
 import ExamList from "./components/ExamComponents/ExamList";
+import QuestionDisplay from "./components/ExamComponents/QuestionDisplay";
 import ExamMarks from "./components/ExamMarks";
 
 function App() {
@@ -49,7 +50,7 @@ function App() {
                 backgroundColor:'background.level1',
                 boxShadow: 3,
                 "--Card-radius": "15px",
-                overflow:"scroll"
+                overflow: "auto",
               }}
             >
               <Routes>
@@ -81,7 +82,7 @@ function App() {
                   <Route path="/student/exam" element={<ExamList />} />
                   <Route
                     path="/student/exam/questions/:id"
-                    element={<QuestionsPage />}
+                    element={<QuestionDisplay />}
                   />
 
                   <Route path="/student/discussion" element={<Discussion />} />

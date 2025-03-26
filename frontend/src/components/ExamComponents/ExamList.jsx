@@ -17,33 +17,66 @@ import QuestionsPage from "./QuestionsPage";
 import AddExam from "./AddExam";
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
-function ExamList() {
-  const [examListData, setExamListData] = useState([]);
-  const [addExamToggle, setAddExamToggle] = useState(false);
-  const [teacherId, setTeacherId] = useState("abc"); //Need to get from the redux
-  const [selectedRecord, setSelectedRecord] = useState(null);
-  const [refreshExamList, setRefreshExamList] = useState(false);
-  const [examDetails, setExamDetails] = useState({});
-  const navigate = useNavigate();
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setExamList,
+  setQuestionList,
+  setSelectedExam,
+  clearQuestions,
+} from "../../redux/slices/examSlice";
 
-  const handleEdit = (record) => {
+function ExamList() {
+  const examListData = useSelector((state) => state.examList.exams);
+  const [addExamToggle, setAddExamToggle] = useState(false);
+  // const userId = useSelector((state) => state.auth.username);
+  const userId = "224206";
+  const selectedExam = useSelector((state) => state.examList.selectedExam);
+
+  const role = useSelector((state) => state.auth.role);
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const questions = useSelector((state) => state.questionsList.questions);
+
+  const handleEdit = async (record) => {
+    dispatch(clearQuestions());
+    dispatch(setSelectedExam(record));
     navigate(`/teacher/exam/questions/${record.id}`);
   };
-  
 
-  // useEffect(()=>{
-  //   async function getQuestions(){
-  //     const response = await ExamService.getQuestionsByTeacher(selectedRecord);
-  //   }
-  //   getQuestions();
-  // })
+  const handleJoin = (record)=>{
+    dispatch(clearQuestions());
+    dispatch(setSelectedExam(record));
+    
+    navigate(`/student/exam/questions/${record.id}`);
+  }
+
+  useEffect(() => {
+    async function fetchQuestions() {
+      if (selectedExam?.id) {
+        await getQuestionsByTeacher(selectedExam.id);
+      }
+    }
+    fetchQuestions();
+  }, [selectedExam]);
+
+  const getQuestionsByTeacher = async (examId) => {
+    const response = await ExamService.getQuestionsByTeacher(userId, examId);
+    if (response) {
+      dispatch(setQuestionList(response));
+    }
+  };
   const handleExam = () => {
     setAddExamToggle((prev) => !prev);
   };
   const fetchExamList = async () => {
     try {
-      const response = await ExamService.getExamListByTeacher(teacherId);
-      setExamListData(response);
+      const response =
+        role === "TEACHER"
+          ? await ExamService.getExamListByTeacher(userId)
+          : await ExamService.getExamListByStudent(userId);
+      dispatch(setExamList(response));
     } catch (error) {
       console.error("Error fetching exam list:", error);
     }
@@ -61,11 +94,16 @@ function ExamList() {
       console.error("Error deleting exam:", error);
     }
   };
-  // const triggerRefresh = () => {
-  //   setRefreshExamList((prev) => !prev);
-  // };
-
-
+  const handlePublishExam = async (record) => {
+    try {
+      const response = await ExamService.publishExam(record.id);
+      if (response) {
+        fetchExamList();
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const columns = [
     {
       title: "Title",
@@ -124,10 +162,15 @@ function ExamList() {
       title: "Duration(In Minutes)",
       dataIndex: "duration",
     },
-    {
-      title: "Status",
-      dataIndex: "status",
-    },
+
+    ...(role === "TEACHER"
+      ? [
+          {
+            title: "Status",
+            dataIndex: "status",
+          },
+        ]
+      : []),
     {
       title: "Uploaded By",
       dataIndex: "uploadedBy",
@@ -140,16 +183,24 @@ function ExamList() {
       dataIndex: "action",
       render: (_, record) => (
         <Stack direction="row" spacing={1}>
-            <IconButton onClick={() => handleEdit(record)}>
-              <EditIcon />
-            </IconButton>
+          {role === "TEACHER" ? (
+            <>
+              <IconButton onClick={() => handleEdit(record)}>
+                <EditIcon />
+              </IconButton>
 
-          <IconButton onClick={() => handleDelete(record.id)}>
-            <DeleteIcon />
-          </IconButton>
-          <IconButton>
-            <SendIcon />
-          </IconButton>
+              <IconButton onClick={() => handleDelete(record.id)}>
+                <DeleteIcon />
+              </IconButton>
+              <IconButton onClick={() => handlePublishExam(record)}>
+                <SendIcon />
+              </IconButton>
+            </>
+          ) : (
+            <>
+              <Button onClick={() =>  handleJoin(record)}>Join</Button>
+            </>
+          )}
         </Stack>
       ),
     },
@@ -159,8 +210,9 @@ function ExamList() {
     <>
       <Box sx={{ width: "100%", height: "100%" }}>
         <Card>
-          <Box>
-            <Button onClick={handleExam}>Add Exam</Button>
+          <Box sx={{ display:'flex', justifyContent: "space-between"}}>
+            <Typography>Exam List</Typography>
+            <Button sx={{display: role === "TEACHER" ? "flex" : "none"}} onClick={handleExam}>Add Exam</Button>
           </Box>
 
           <Box>
@@ -184,10 +236,7 @@ function ExamList() {
                       transform: "translate(-50%, -50%)",
                     }}
                   >
-                    <AddExam
-                      closeFunction={handleExam}
-                      
-                    />
+                    <AddExam closeFunction={handleExam} />
                   </Box>
                 </Modal>
               )}

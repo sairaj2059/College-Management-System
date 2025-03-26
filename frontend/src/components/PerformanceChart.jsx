@@ -61,7 +61,7 @@ const PerformanceChart = () => {
             </Typography>
           </IconButton>
         </div>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={320}>
           <LineChart data={data} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
             <XAxis dataKey="name" stroke="#64748b" tick={{ fill: "#64748b" }} />

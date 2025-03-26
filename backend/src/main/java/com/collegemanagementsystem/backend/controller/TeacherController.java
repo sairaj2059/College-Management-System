@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.collegemanagementsystem.backend.dto.QuestionList;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
 import com.collegemanagementsystem.backend.model.SemesterResults;
@@ -15,6 +16,10 @@ import com.collegemanagementsystem.backend.service.TeacherService;
 import com.collegemanagementsystem.backend.service.NoticeService;
 import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RequestMapping("/teacher")
@@ -68,18 +73,34 @@ public class TeacherController {
         }
     }
 
-    @GetMapping("/getExamList/{teacherName}")
-    public ResponseEntity<List<Exam>> getExamList(@PathVariable String teacherName) {
-        return teacherService.getExamList(teacherName);
+    @GetMapping("/getQuestionsByTeacher")
+    public ResponseEntity<?> getQuestionsByTeacher(@RequestParam String teacherId, @RequestParam String examId) {
+        return teacherService.getQuestionsByTeacher(teacherId, examId);
+    }
+
+    @PostMapping("/addQuestion")
+    public ResponseEntity<?> addQuestion(@RequestBody QuestionList questions) {
+        return teacherService.addQuestion(questions);
+    }
+
+    @GetMapping("/publishExam/{examId}")
+    public ResponseEntity<?> publishExam(@PathVariable String examId) {
+        System.out.println("From Publish controller");
+        return teacherService.publishExam(examId);
+    }
+
+    @GetMapping("/getExamList/{teacherId}")
+    public ResponseEntity<List<Exam>> getExamList(@PathVariable String teacherId) {
+        return teacherService.getExamList(teacherId);
     }
 
     @PostMapping("/addExam")
-    public ResponseEntity<?> addExam(@RequestBody Exam exam){
+    public ResponseEntity<?> addExam(@RequestBody Exam exam) {
         return teacherService.addExam(exam);
     }
 
     @DeleteMapping("/deleteExam/{examId}")
-    public ResponseEntity<?> deleteExam(@PathVariable String examId){
+    public ResponseEntity<?> deleteExam(@PathVariable String examId) {
         return teacherService.deleteExam(examId);
     }
     

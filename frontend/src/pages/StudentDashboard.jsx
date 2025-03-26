@@ -5,7 +5,8 @@ import StudentProfile from "../components/StudentProfile";
 import PerformanceChart from "../components/PerformanceChart";
 import Faculty from "../components/Faculty";
 import SubjectGraph from "../components/SubjectGraph";
-import NoticeBoardComponent from "../components/NoticeBoardComponent";
+import NoticeBoardComponent from "../components/StudentNoticeBoardComponent";
+import ExamSchedule from "../components/ExamSchedule";
 
 function StudentDashboard() {
   const [regdNo, setRegdNo] = useState(null);
@@ -22,53 +23,57 @@ function StudentDashboard() {
       {/* Top Section */}
       <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
         {/* Student Profile */}
-        <Box sx={{ width: "30%", height: "20%" }}>
-          <Paper sx={{ flex: 1, padding: "10px" }}>
+        <Box sx={{  height: "20%",width: "50%" }}>
+          <Paper sx={{ flex: 1, padding: "10px",width: "100%" }}>
             <StudentProfile onProfileLoaded={handleProfileLoaded} />
           </Paper>
         </Box>
-
-         {/* Notice Board - Moved Right */}
-         <Box sx={{ width: "20%" }}>
-          <Paper sx={{ flex: 1, minWidth: "100px", padding: "10px", display: "flex", justifyContent: "center" }}>
-            <NoticeBoardComponent />
-          </Paper>
-        </Box>
-
-        {/* Attendance - Moved to Right */}
-        <Box sx={{ width: "20%", height: "25%" }}>
-          <Paper sx={{ flex: 1, minWidth: "300px", padding: "10px" }}>
-            <SAttendance />
-          </Paper>
-        </Box>
-      </Box>
-
-      {/* Middle Section */}
-      <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
-        {/* Subject Graph - Moved Left for Balance */}
-        <Box sx={{ width: "50%" }}>
-          <Paper sx={{ flex: 1, minWidth: "300px", padding: "10px" }}>
+         {/* Subject Graph - Moved Left for Balance */}
+         <Box sx={{ width: "50%" }}>
+          <Paper sx={{ flex: 1, minWidth: "250px", padding: "10px" }}>
             <SubjectGraph regdNo={regdNo} semesterNumber={semesterNumber} />
           </Paper>
         </Box>
+       
+      </Box>
+
+      {/* Middle Section */}
+      <Box sx={{ display: "flex", width: "100%", gap: "8px" ,marginTop: "-90px"}}>
+       
 
         {/* Performance Chart - Moved Right */}
-        <Box sx={{ width: "50%", height: "40%" }}>
-          <Paper sx={{ flex: 1, minWidth: "200px", padding: "10px" }}>
+        <Box sx={{ width: "50%", height: "100%" }}>
+          <Paper sx={{ flex: 1, minWidth: "200px", padding: "10px",height: "100%" }}>
             <PerformanceChart />
           </Paper>
         </Box>
-      </Box>
-
-      {/* Faculty & Notice Board - Moved Faculty Left */}
-      <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
-        <Box sx={{ width: "50%" }}>
+        <Box sx={{ width: "50%",marginTop: "90px" }}>
           <Paper sx={{ flex: 2, minWidth: "300px", padding: "10px" }}>
             <Faculty />
           </Paper>
         </Box>
+      </Box>
 
-       
+     {/* Faculty & Notice Board - Moved Faculty Left */}
+<Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
+  
+  {/* Notice Board - Adjusted Width */}
+  <Box sx={{ width: "30%", display: "flex", justifyContent: "center" }}>
+      <NoticeBoardComponent />
+    
+  </Box>
+
+  {/* Attendance - Moved to Right */}
+  <Box sx={{ width: "20%", height: "25%" }}>
+    <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px",marginLeft: "-15px" }}>
+      <SAttendance />
+    </Paper>
+  </Box>
+  <Box sx={{ width: "50%", height: "25%" }}>
+    <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px",marginLeft: "-15px" }}>
+      <ExamSchedule />
+    </Paper>
+  </Box>
       </Box>
       
     </Box>

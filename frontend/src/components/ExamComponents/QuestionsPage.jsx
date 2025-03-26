@@ -20,8 +20,9 @@ import Input from "@mui/joy/Input";
 import Typography from "@mui/joy/Typography";
 import Button from "@mui/joy/Button";
 
-import { setQuestionList } from "../../redux/slices/examSlice";
+import { addQuestion } from "../../redux/slices/examSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ExamService from "../../services/ExamService";
 
 const questionTypes = [
   { value: "multiple_choice", label: "Multiple Choice" },
@@ -33,60 +34,57 @@ const questionTypes = [
 
 function QuestionsPage() {
   const { id } = useParams(); // exam id if needed
-  const { state } = useLocation();//not for redux
+  const { state } = useLocation(); //not for redux
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const teacherId = useSelector((state)=> state.username);
-
+  const teacherId = useSelector((state) => state.auth.username);
+  const selectedExam = useSelector((state) => state.examList.selectedExam);
   const questions = useSelector((state) => state.questionsList.questions);
 
   const exam = state?.exam; // exam details passed from ExamList
 
   const [currentQuestion, setCurrentQuestion] = useState({
-    type: "multiple_choice",
+    questionType: "multiple_choice",
     text: "",
     options: ["", "", "", ""],
-    correctAnswer: "",
-    points: 1,
+    correctAnswer: [],
+    marks: 1,
   });
-
-  // const handleTypeChange = (e) => {
-  //   setCurrentQuestion({
-  //     ...currentQuestion,
-  //     type: e.target.value,
-  //     options: e.target.value === "multiple_choice" ? ["", "", "", ""] : [],
-  //     correctAnswer: "",
-  //   });
-  // };
 
   const handleTypeChange = (event, newValue) => {
     setCurrentQuestion({
       ...currentQuestion,
-      type: newValue,
+      questionType: newValue,
       options:
         newValue === "multiple_choice" || newValue === "multi_select"
           ? ["", "", "", ""]
           : [],
-      correctAnswer: newValue === "multiple_select" ? [] : "",
     });
-  };
-
-  const handleOptionChange = (index, value) => {
-    const newOptions = [...currentQuestion.options];
-    newOptions[index] = value;
-    setCurrentQuestion({ ...currentQuestion, options: newOptions });
   };
 
   const handleAddQuestion = () => {
-    dispatch(setQuestionList(currentQuestion));
+    dispatch(addQuestion(currentQuestion));
     setCurrentQuestion({
-      type: "multiple_choice",
-      text: "",
+      questionType: "multiple_choice",
+      questionText: "",
       options: ["", "", "", ""],
-      correctAnswer: "",
-      points: 1,
+      correctAnswer: [],
+      marks: 1,
     });
+  };
+
+  const handleSaveQuestion = async () => {
+    const questionList = {
+      examId: selectedExam.id,
+      questions: questions,
+    };
+    try {
+      const response = await ExamService.setQuestionsByTeacher(questionList);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -94,30 +92,33 @@ function QuestionsPage() {
       <IconButton onClick={() => navigate(-1)}>
         <ArrowBackIcon />
       </IconButton>
-      <Box sx={{ mt: 2, mb: 2, overflow: "scroll" }}>
+      <Box sx={{ mt: 2 }}>
         <Stack
           direction={"row"}
           spacing={2}
-          sx={{ mb: 2, justifyContent: "space-between" }}
+          sx={{ justifyContent: "space-between" }}
         >
           <Card
             sx={{
               backgroundColor: "background.level1",
               p: 2,
-              width: "30%",
-              height: "70%",
-              overflow: "scroll",
+              width: "25%",
+              height: "60%",
             }}
           >
             <Stack direction={"column"} spacing={3}>
               <FormControl>
                 <FormLabel>Exam Name</FormLabel>
-                <Input sx={{ p: 1.5 }} />
+                <Input
+                  disabled={true}
+                  value={selectedExam.examTitle}
+                  sx={{ p: 1.5 }}
+                />
               </FormControl>
               <FormControl>
                 <FormLabel>Question Type</FormLabel>
                 <Select
-                  value={currentQuestion.type}
+                  value={currentQuestion.questionType}
                   onChange={handleTypeChange}
                   placeholder="Choose one…"
                   sx={{ p: 1.5 }}
@@ -134,18 +135,18 @@ function QuestionsPage() {
                 <FormLabel>Question Text</FormLabel>
                 <Textarea
                   sx={{ p: 1.5 }}
-                  minRows={3}
+                  minRows={2}
                   placeholder="Enter question text..."
-                  value={currentQuestion.text}
+                  value={currentQuestion.questionText}
                   onChange={(event) => {
                     setCurrentQuestion({
                       ...currentQuestion,
-                      text: event.target.value,
+                      questionText: event.target.value,
                     });
                   }}
                 />
               </FormControl>
-              {currentQuestion.type === "multiple_choice" && (
+              {currentQuestion.questionType === "multiple_choice" && (
                 <>
                   {currentQuestion.options.map((option, index) => (
                     <>
@@ -162,18 +163,17 @@ function QuestionsPage() {
                             options: newOptions,
                           });
                         }}
-                        sx={{ mb: 1 }}
                       />
                     </>
                   ))}
                   <FormControl fullWidth>
                     <FormLabel>Correct Answer</FormLabel>
                     <Select
-                      value={currentQuestion.correctAnswer}
+                      value={currentQuestion.correctAnswer[0] || ""}
                       onChange={(_, newValue) => {
                         setCurrentQuestion({
                           ...currentQuestion,
-                          correctAnswer: newValue,
+                          correctAnswer: [newValue], // store as an array with one element
                         });
                       }}
                       sx={{ p: 1.5 }}
@@ -188,15 +188,15 @@ function QuestionsPage() {
                 </>
               )}
 
-              {currentQuestion.type === "true_false" && (
+              {currentQuestion.questionType === "true_false" && (
                 <FormControl fullWidth sx={{ mb: 2 }}>
                   <FormLabel>Correct Answer</FormLabel>
                   <Select
-                    value={currentQuestion.correctAnswer}
+                    value={currentQuestion.correctAnswer[0] || ""}
                     onChange={(e, newValue) =>
                       setCurrentQuestion({
                         ...currentQuestion,
-                        correctAnswer: newValue,
+                        correctAnswer: [newValue],
                       })
                     }
                     sx={{ p: 1.5 }}
@@ -207,14 +207,25 @@ function QuestionsPage() {
                 </FormControl>
               )}
 
-              {currentQuestion.type === "one_word" && (
+              {currentQuestion.questionType === "one_word" && (
                 <FormControl>
                   <FormLabel>Correct Answer</FormLabel>
-                  <Input placeholder="Answer" multiline sx={{ p: 1.5 }} />
+                  <Input
+                    placeholder="Answer"
+                    multiline
+                    sx={{ p: 1.5 }}
+                    value={currentQuestion.correctAnswer[0] || ""}
+                    onChange={(event) => {
+                      setCurrentQuestion({
+                        ...currentQuestion,
+                        correctAnswer: [event.target.value],
+                      });
+                    }}
+                  />
                 </FormControl>
               )}
 
-              {currentQuestion.type === "multi_select" && (
+              {currentQuestion.questionType === "multi_select" && (
                 <>
                   {currentQuestion.options.map((option, index) => (
                     <Input
@@ -241,8 +252,12 @@ function QuestionsPage() {
                       renderValue={(selected) => (
                         <Box sx={{ display: "flex", gap: "0.25rem" }}>
                           {selected.map((selectedOption) => (
-                            <Chip variant="soft" color="primary">
-                              {selectedOption.label}
+                            <Chip
+                              key={selectedOption}
+                              variant="soft"
+                              color="primary"
+                            >
+                              {selectedOption.label || selectedOption}
                             </Chip>
                           ))}
                         </Box>
@@ -264,72 +279,90 @@ function QuestionsPage() {
                 </>
               )}
               <Input
-                placeholder="Points"
+                placeholder="Marks"
                 type="number"
-                value={currentQuestion.points}
+                value={currentQuestion.marks}
                 onChange={(e, newValue) =>
-                  setCurrentQuestion({ ...currentQuestion, points: newValue })
+                  setCurrentQuestion({ ...currentQuestion, marks: newValue })
                 }
                 sx={{ mb: 2, width: 100, p: 1.5 }}
               />
-              <Button
-                onClick={() => {
-                  handleAddQuestion();
-                  console.log(questions);
-                }}
-              >
-                Add Question
-              </Button>
+              <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Button
+                  onClick={() => {
+                    handleSaveQuestion();
+                  }}
+                >
+                  Save
+                </Button>
+                <Button
+                  onClick={() => {
+                    handleAddQuestion();
+                  }}
+                >
+                  Add Question
+                </Button>
+              </Box>
             </Stack>
           </Card>
-
-          <Card
-            sx={{
-              backgroundColor: "background.level1",
-              p: 2,
-              width: "70%",
-              overflow: "scroll",
-            }}
-          >
-            <Typography>Questions</Typography>
-            <Box overflow={"scroll"}>
-              {questions != null && questions.length > 0 ? (
-                questions.map((question, index) => (
-                  <Card key={index} sx={{ p: 2, mb: 2 }}>
-                    <Typography variant="body1">{question.text}</Typography>
-                    {question.type === "multiple_choice" && (
-                      <Box>
-                        <Typography>Options</Typography>
-                        {question.options.map((option, index) => (
-                          <>
-                            <Typography key={index}>
-                              {index + 1}. {option}
+          <Box sx={{ width: "80%", height: "60%" }}>
+            <Card
+              sx={{
+                backgroundColor: "background.level1",
+                p: 2,
+                width: "100%",
+                maxHeight: "100%",
+              }}
+            >
+              <Typography>Questions</Typography>
+              <Box overflow={"scroll"}>
+                {questions != null &&
+                  questions.length > 0 &&
+                  questions.map(
+                    (question, index) =>
+                      question !== undefined && (
+                        <Box>
+                          {question.correctAnswer !== null &&
+                          <Card key={index} sx={{ p: 2, mb: 2 }}>
+                            {console.log(question)}
+                            <Typography variant="body1">
+                              {question.questionText}
                             </Typography>
-                          </>
-                        ))}
-                      </Box>
-                    )}
+                            {question.questionType === "multiple_choice" && (
+                              <Box>
+                                <Typography>Options</Typography>
+                                {question.options.map((option, idx) => (
+                                  <Typography key={idx}>
+                                    {idx + 1}. {option}
+                                  </Typography>
+                                ))}
+                              </Box>
+                            )}
 
-                    {question.type === "multi_select" ? (
-                       <>
-                       Correct Answers:
-                       {question.correctAnswer.map((option, index) => (
-                         <Typography>{option}</Typography>
-                       ))}
-                     </>
-                      
-                    ) : (
-                      <Typography>
-                      Correct Answer: {question.correctAnswer}
-                    </Typography>
-                    )}
-                  </Card>
-                ))
-              ) : (
-                <Box>No questions yet</Box>
-              )}
-            </Box>
-          </Card>
+                            {question.questionType === "multi_select" ? (
+                              <>
+                                <Typography>Correct Answers:</Typography>
+                                {Array.isArray(question.correctAnswer) &&
+                                  question.correctAnswer.map((option, idx) => (
+                                    <Typography key={idx}>{option}</Typography>
+                                  ))}
+                              </>
+                            ) : (
+                              <Typography>
+                                Correct Answer:
+                                {Array.isArray(question.correctAnswer) &&
+                                question.correctAnswer.length > 0
+                                  ? question.correctAnswer[0]
+                                  : "No Answer"}
+                              </Typography>
+                            )}
+                          </Card>}
+                        </Box>
+                      )
+                  )}
+              </Box>
+            </Card>
+          </Box>
         </Stack>
       </Box>
     </Box>

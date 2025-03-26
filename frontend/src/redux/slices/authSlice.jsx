@@ -4,7 +4,8 @@ const initialState = {
   isLoggedIn: !!localStorage.getItem("token"), //!!forces binary
   token: localStorage.getItem("token") || null,
   role: localStorage.getItem("role") || null,
-  username: localStorage.getItem("username") || null,
+  username:  "abc",
+  
 };
 
 const authSlice = createSlice({
