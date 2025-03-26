@@ -21,6 +21,7 @@ import Box from "@mui/joy/Box";
 import Discussion from "./pages/Discussion";
 import ExamList from "./components/ExamComponents/ExamList";
 import QuestionDisplay from "./components/ExamComponents/QuestionDisplay";
+import ExamMarks from "./components/ExamMarks";
 import ResultPage from "./components/ExamComponents/ResultPage";
 
 function App() {
@@ -72,7 +73,7 @@ function App() {
                     <Route index element={<ExamList />} />
                     <Route path="questions/:id" element={<QuestionsPage />} />
                   </Route>
-
+                  <Route path="/teacher/exam-marks" element={<ExamMarks />} />
                   <Route path="/teacher/discussion" element={<Discussion />} />
                 </Route>
                 <Route element={<ProtectedRoute allowedRoles={"STUDENT"} />}>

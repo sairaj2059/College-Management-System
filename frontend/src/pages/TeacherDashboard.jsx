@@ -8,6 +8,8 @@ import React from "react";
  import TeacherProfile from "../components/TeacherProfile";
  import AddAttendanceForm from "../components/AddAttendanceForm";
  import NoticeBoardComponent from "../components/NoticeBoardComponent";
+import { Button } from "antd";
+import { useNavigate } from "react-router-dom";
 
  const theme = createTheme({
   palette: {
@@ -29,6 +31,7 @@ import React from "react";
  });
 
  const TeacherDashboard = () => {
+  const navigate = useNavigate();
   return (
     <ThemeProvider theme={theme}>
       <Box sx={{ p: 3, bgcolor: theme.palette.background.default, minHeight: "100vh" }}>
@@ -66,6 +69,7 @@ import React from "react";
           </Stack>
             <StudentMarks />
         </Stack>
+        <Button onClick={() => navigate("/teacher/exam-marks")}>Open Exam</Button>
       </Box>
     </ThemeProvider>
   );

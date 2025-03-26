@@ -14,6 +14,7 @@ import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.service.TeacherService;
 import com.collegemanagementsystem.backend.service.NoticeService;
+import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,6 +29,9 @@ public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
+
+    @Autowired
+    private SemResultService semResultService;
 
     @Autowired
     private StudentService studentService;
@@ -111,6 +115,10 @@ public class TeacherController {
         return noticeService.deleteNotice(id);
     }
    
+    @GetMapping("/semResults/{regdNo}")
+    public SemesterResults getSemResultDetails(@PathVariable String regdNo){
+        return semResultService.getSemResultDetails(regdNo);
+    }
     // @GetMapping("/getResults")
     // public ResponseEntity<List<SemesterResults>> findBySubjectTeacherAndSubjectName(
     //         @RequestParam String subjectTeacher,
