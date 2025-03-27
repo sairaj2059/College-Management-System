@@ -23,6 +23,29 @@ static async addAttendance(attendancedata) {
       return null;
     }
   }
+
+  static async getTeacherProfilebyteacherId( teacherId){
+    const token = localStorage.getItem("token");
+    console.log("inside the getTeacherProfile before fetch")
+    try {
+      const response = await axios.get(
+        `${this.BASE_URL}/teacher/teacherProfile/${teacherId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("inside the getTeacherProfile after fetch")
+      console.log(response)
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
+
   // static async getResultsBySubjectTeacherAndSubjectName(subjectTeacher, subjectName) {
   //   const token = localStorage.getItem("token");
   //   console.log("Retrieved Token:", token); // Debugging

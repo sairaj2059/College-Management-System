@@ -1,5 +1,6 @@
 package com.collegemanagementsystem.backend.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,18 +8,15 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.collegemanagementsystem.backend.dto.QuestionList;
+import com.collegemanagementsystem.backend.dto.StudentProfile;
+import com.collegemanagementsystem.backend.dto.TeacherProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
-import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.service.TeacherService;
 import com.collegemanagementsystem.backend.service.NoticeService;
 import com.collegemanagementsystem.backend.service.StudentService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 
 @RequestMapping("/teacher")
@@ -109,6 +107,22 @@ public class TeacherController {
     @DeleteMapping("/deleteNotice/{id}") 
     public ResponseEntity<String> deleteNotice(@PathVariable String id) {
         return noticeService.deleteNotice(id);
+    }
+
+     @GetMapping("/teacherProfile/{teacherId}")
+    public ResponseEntity<?> getStudentProfileByRegdNo(@PathVariable String teacherId) {
+        try {
+            TeacherProfile profile = teacherService.getTeacherProfileByTeacherId(teacherId);
+            return ResponseEntity.ok(profile);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        
+    }
+
+    @GetMapping("/teacherImage/{teacherId}")
+    public ResponseEntity<?> getTeacherImage(@PathVariable String teacherId) throws IOException {
+        return teacherService.getTeacherImage(teacherId);
     }
    
     // @GetMapping("/getResults")

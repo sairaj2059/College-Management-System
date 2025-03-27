@@ -238,6 +238,7 @@ export default function SignInPageComponent({ serverError, setServerError }) {
 
   const SignIn = async (provider, formData) => {
     const { username, password } = Object.fromEntries(formData);
+    localStorage.setItem("username", username);
     try {
       const userData = await UserService.login(username, password);
       

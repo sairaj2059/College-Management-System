@@ -10,7 +10,7 @@ import "../resources/css/StudentProfile.css";
 import StudentDashboardService from "../services/StudentDashboardService";
 
 function StudentProfile({ onProfileLoaded }) {
-  const regdNo = "224206"; // Hardcoded for now
+  const regdNo = 224206;
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

@@ -1,5 +1,6 @@
 package com.collegemanagementsystem.backend.service;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -10,11 +11,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.collegemanagementsystem.backend.dto.QuestionList;
+import com.collegemanagementsystem.backend.dto.StudentProfile;
+import com.collegemanagementsystem.backend.dto.TeacherProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.examModel.Question;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
 import com.collegemanagementsystem.backend.model.SemesterResults;
+import com.collegemanagementsystem.backend.model.StudentDetails;
+import com.collegemanagementsystem.backend.model.Subject;
+import com.collegemanagementsystem.backend.model.TeacherDetails;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
 import com.collegemanagementsystem.backend.repository.ExamRepository;
 import com.collegemanagementsystem.backend.repository.ResultsRepository;
@@ -30,6 +36,10 @@ public class TeacherService {
 
     @Autowired
     ExamRepository examRepository;
+
+    @Autowired
+    private ImageService imageService;
+
 
      @Autowired
     private ResultsRepository resultsRepository;
@@ -99,6 +109,40 @@ public class TeacherService {
             return ResponseEntity.notFound().build();
         }
     }
+
+    public TeacherProfile getTeacherProfileByTeacherId(String teacherId) {
+        TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
+        if (teacher == null) {
+            throw new IllegalArgumentException("Student with regdNo " + teacherId + " not found.");
+        }
+        return convertToTeacherProfile(teacher);
+    }
+    private TeacherProfile convertToTeacherProfile(TeacherDetails teacher) {
+        String imageurl = null;
+        if (teacher.getImageId() != null) {
+            imageurl = "http://localhost:8080/teacher/teacherImage/" + teacher.getImageId();
+            System.out.println("Generated Image URL: " + imageurl); // ✅ Debugging URL
+        }
+        return new TeacherProfile(
+                teacher.getId(),
+                teacher.getTeacherId(),
+                imageurl,
+                teacher.getFirstName(),
+                teacher.getLastName(),
+                teacher.getClassmentor(),
+                teacher.getSubjects()
+               ) ;
+    }
+
+     public ResponseEntity<?> getTeacherImage(String teacherId) throws IOException {
+        TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
+        if (teacher == null || teacher.getImageId() == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return imageService.getImage(teacher.getImageId());
+    }
+
+
 //   public ResponseEntity<List<SemesterResults>> findBySubjectTeacherAndSubjectName(String subjectTeacher, String subjectName) {
 //     try {
 //         // Fetch results from the repository
