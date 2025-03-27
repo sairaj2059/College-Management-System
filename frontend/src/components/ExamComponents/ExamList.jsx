@@ -1,20 +1,27 @@
+import React, { useEffect, useState } from "react";
+
+import { Table } from "antd";
+
 import Box from "@mui/joy/Box";
 import Card from "@mui/joy/Card";
-import { Table } from "antd";
+import Stack from "@mui/joy/Stack";
 import Button from "@mui/joy/Button";
 import Typography from "@mui/joy/Typography";
 import IconButton from "@mui/joy/IconButton";
-import React, { useEffect, useState } from "react";
-import Stack from "@mui/joy/Stack";
+import Tooltip from "@mui/joy/Tooltip";
+
 import { Modal } from "@mui/material";
 
-import ExamService from "../../services/ExamService";
-
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import SendIcon from "@mui/icons-material/Send";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
+
+import ExamService from "../../services/ExamService";
+
 import QuestionsPage from "./QuestionsPage";
 import AddExam from "./AddExam";
+
 import { Link, Outlet, useNavigate } from "react-router-dom";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -23,13 +30,14 @@ import {
   setQuestionList,
   setSelectedExam,
   clearQuestions,
+  addQuestion,
 } from "../../redux/slices/examSlice";
 
 function ExamList() {
   const examListData = useSelector((state) => state.examList.exams);
   const [addExamToggle, setAddExamToggle] = useState(false);
   // const userId = useSelector((state) => state.auth.username);
-  const userId = "224206";
+  const userId = "abc";
   const selectedExam = useSelector((state) => state.examList.selectedExam);
 
   const role = useSelector((state) => state.auth.role);
@@ -45,12 +53,23 @@ function ExamList() {
     navigate(`/teacher/exam/questions/${record.id}`);
   };
 
-  const handleJoin = (record)=>{
+  const handleJoin = (record) => {
     dispatch(clearQuestions());
     dispatch(setSelectedExam(record));
-    
+
+    record.questions.forEach((question) => {
+      const questionObject = {
+        questionDetails: question,
+        isAttempted: false,
+        isCorrect: false,
+        marksAwarded: 0,
+        userAnswer: [],
+      };
+
+      dispatch(addQuestion(questionObject));
+    });
     navigate(`/student/exam/questions/${record.id}`);
-  }
+  };
 
   useEffect(() => {
     async function fetchQuestions() {
@@ -185,20 +204,41 @@ function ExamList() {
         <Stack direction="row" spacing={1}>
           {role === "TEACHER" ? (
             <>
-              <IconButton onClick={() => handleEdit(record)}>
-                <EditIcon />
-              </IconButton>
+              <Tooltip title="Edit" placement="top">
+                <IconButton
+                  aria-label="edit"
+                  onClick={() => handleEdit(record)}
+                >
+                  <EditIcon />
+                </IconButton>
+              </Tooltip>
 
-              <IconButton onClick={() => handleDelete(record.id)}>
-                <DeleteIcon />
-              </IconButton>
-              <IconButton onClick={() => handlePublishExam(record)}>
-                <SendIcon />
-              </IconButton>
+              <Tooltip title="Delete" placement="top">
+                <IconButton
+                  onClick={() => handleDelete(record.id)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              </Tooltip >
+              {record.status === "YET_TO_BE_PUBLISHED" ? (
+                <Tooltip title="Publish" placement="top">
+                  <IconButton onClick={() => handlePublishExam(record)}>
+                    <SendIcon />
+                  </IconButton>
+                </Tooltip>
+              ) : record.status === "PUBLISHED" ? (
+                <></>
+              ) : (
+                <Tooltip title="View Results" placement="top">
+                  <IconButton onClick={() => handlePublishExam(record)}>
+                    <VisibilityIcon />
+                  </IconButton>
+                </Tooltip>
+              )}
             </>
           ) : (
             <>
-              <Button onClick={() =>  handleJoin(record)}>Join</Button>
+              <Button onClick={() => handleJoin(record)}>Join</Button>
             </>
           )}
         </Stack>
@@ -210,9 +250,14 @@ function ExamList() {
     <>
       <Box sx={{ width: "100%", height: "100%" }}>
         <Card>
-          <Box sx={{ display:'flex', justifyContent: "space-between"}}>
+          <Box sx={{ display: "flex", justifyContent: "space-between" }}>
             <Typography>Exam List</Typography>
-            <Button sx={{display: role === "TEACHER" ? "flex" : "none"}} onClick={handleExam}>Add Exam</Button>
+            <Button
+              sx={{ display: role === "TEACHER" ? "flex" : "none" }}
+              onClick={handleExam}
+            >
+              Add Exam
+            </Button>
           </Box>
 
           <Box>

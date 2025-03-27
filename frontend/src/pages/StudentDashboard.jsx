@@ -17,7 +17,7 @@ function StudentDashboard() {
   }, [regdNo]);
 
   const handleProfileLoaded = (regdNo, semester) => {
-    setRegdNo(regdNo);
+    // setRegdNo(regdNo);
     setSemesterNumber(semester);
   };
 

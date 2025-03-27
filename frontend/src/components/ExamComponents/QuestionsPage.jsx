@@ -69,7 +69,7 @@ function QuestionsPage() {
       questionType: "multiple_choice",
       questionText: "",
       options: ["", "", "", ""],
-      correctAnswer: [],
+      correctAnswer: ["testing"],
       marks: 1,
     });
   };
