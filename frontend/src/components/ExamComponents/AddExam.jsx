@@ -11,11 +11,12 @@ import CourseService from "../../services/CourseService";
 import ClassService from "../../services/ClassService";
 import Autocomplete from "@mui/material/Autocomplete"
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { useSelector } from "react-redux";
 
 function AddExam({closeFunction, refreshExamList}) {
   const [subjects, setSubjects] = useState([]);
   const [classes, setClasses] = useState([]);
-  const [teacherId, setTeacherId] = useState("abc"); //Need to get from the redux
+  const teacherId = useSelector((state)=> state.auth.username);
   const [addExamData, setAddExamData] = useState({
     examTitle: "",
     subject: [],
@@ -23,8 +24,8 @@ function AddExam({closeFunction, refreshExamList}) {
     startDate: "",
     endDate: "",
     duration: "",
-    status: "Yet to publish",
-    uploadedBy: teacherId, //Yet to be done; should be teacherID
+    status: "YET_TO_BE_PUBLISHED",
+    uploadedBy: "", 
   });
 
   const calculateDuration = (startDate, endDate) => {
@@ -53,6 +54,10 @@ function AddExam({closeFunction, refreshExamList}) {
 
   const handleSubmit = async (event) => {
     try {
+      console.log(teacherId);
+      
+      addExamData.uploadedBy = teacherId;
+      console.log(addExamData);
       const result = await ExamService.addExam(addExamData);
     } catch (error) {
       console.log(error);

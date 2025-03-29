@@ -470,9 +470,9 @@ function AddTeacher() {
                     <Autocomplete
                       placeholder="Select Class"
                       value={classes.find(
-                        (className) => classes.label === formData.classmentor
+                        (className) =>  classes.label === formData.classmentor
                       )}
-                      onChange={handleAutocompleteChange("classes")}
+                      onChange={handleAutocompleteChange("classmentor")}
                       options={classes}
                       size="sm"
                       getOptionLabel={getOptionLabel}
