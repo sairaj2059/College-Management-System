@@ -12,13 +12,13 @@ import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.dto.TeacherProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
+import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.service.TeacherService;
 import com.collegemanagementsystem.backend.service.NoticeService;
 import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
-
 
 @RequestMapping("/teacher")
 @RestController
@@ -101,19 +101,19 @@ public class TeacherController {
     public ResponseEntity<?> deleteExam(@PathVariable String examId) {
         return teacherService.deleteExam(examId);
     }
-    
+
     @GetMapping("/getNotices")
     public ResponseEntity<List<Notices>> getNotices() {
         List<Notices> notices = noticeService.getallNotices();
         return ResponseEntity.ok(notices);
     }
 
-    @DeleteMapping("/deleteNotice/{id}") 
+    @DeleteMapping("/deleteNotice/{id}")
     public ResponseEntity<String> deleteNotice(@PathVariable String id) {
         return noticeService.deleteNotice(id);
     }
 
-     @GetMapping("/teacherProfile/{teacherId}")
+    @GetMapping("/teacherProfile/{teacherId}")
     public ResponseEntity<?> getStudentProfileByRegdNo(@PathVariable String teacherId) {
         try {
             TeacherProfile profile = teacherService.getTeacherProfileByTeacherId(teacherId);
@@ -121,23 +121,25 @@ public class TeacherController {
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
-        
+
     }
 
     @GetMapping("/teacherImage/{teacherId}")
     public ResponseEntity<?> getTeacherImage(@PathVariable String teacherId) throws IOException {
         return teacherService.getTeacherImage(teacherId);
     }
-   
+
     @GetMapping("/semResults/{regdNo}")
-    public SemesterResults getSemResultDetails(@PathVariable String regdNo){
+    public SemesterResults getSemResultDetails(@PathVariable String regdNo) {
         return semResultService.getSemResultDetails(regdNo);
     }
     // @GetMapping("/getResults")
-    // public ResponseEntity<List<SemesterResults>> findBySubjectTeacherAndSubjectName(
-    //         @RequestParam String subjectTeacher,
-    //         @RequestParam String subjectName) {
-    //     return teacherService.findBySubjectTeacherAndSubjectName(subjectTeacher, subjectName);
+    // public ResponseEntity<List<SemesterResults>>
+    // findBySubjectTeacherAndSubjectName(
+    // @RequestParam String subjectTeacher,
+    // @RequestParam String subjectName) {
+    // return teacherService.findBySubjectTeacherAndSubjectName(subjectTeacher,
+    // subjectName);
     // }
 
 }

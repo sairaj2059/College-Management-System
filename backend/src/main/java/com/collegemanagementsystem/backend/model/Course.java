@@ -22,6 +22,7 @@ public class Course {
     private String courseName;
     private String courseType;
     private List<Semester> semestersList;
+    
     public Semester getSemesterBySemesterNumber(String semesterNumber) {
        return semestersList.stream().filter(semester -> semester.getSemesterNumber().equals(semesterNumber)).findFirst().orElse(null);
     }
