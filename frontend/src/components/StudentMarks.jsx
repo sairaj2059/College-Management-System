@@ -42,13 +42,10 @@ const StudentMarks = () => {
   };
 
   // Prepare chart data based on selected subject
-  const chartData =
-    selectedSubject !== ""
-      ? constData.students.map((student) => ({
-          name: student.name,
-          GPA: student[selectedSubject] || 0, // Ensure no undefined values
-        }))
-      : [];
+  const chartData = constData.students.map((student) => ({
+    name: student.name,
+    GPA: selectedSubject ? student[selectedSubject] || 0 : 0, // Ensure values exist
+  }));
 
   return (
     <Card sx={{ p: 2, borderRadius: 2, boxShadow: 3, bgcolor: "white" }}>
@@ -73,7 +70,7 @@ const StudentMarks = () => {
             <Select
               value={selectedSubject}
               onChange={(e) => setSelectedSubject(e.target.value)}
-              sx={{ bgcolor: "white", marginTop: "10px" }}
+              sx={{ bgcolor: "white", marginTop: "5px" }}
             >
               {constData.subjects.map((sub) => (
                 <MenuItem key={sub} value={sub}>
@@ -95,33 +92,31 @@ const StudentMarks = () => {
           </IconButton>
         </div>
 
-        {/* Line Chart for Selected Subject */}
-        {selectedSubject && (
-          <ResponsiveContainer width="100%" height={300}>
-            <LineChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-              <XAxis dataKey="name" stroke="#64748b" tick={{ fill: "#64748b" }} />
-              <YAxis domain={[0, 10]} stroke="#64748b" tick={{ fill: "#64748b" }} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: "white",
-                  border: "none",
-                  borderRadius: "8px",
-                  boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
-                }}
-              />
-              <Legend wrapperStyle={{ paddingTop: "20px" }} />
-              <Line
-                type="monotone"
-                dataKey="GPA"
-                stroke="#1e40af"
-                strokeWidth={2}
-                dot={{ fill: "#1e40af", r: 5 }}
-                activeDot={{ r: 8, fill: "#1e40af" }}
-              />
-            </LineChart>
-          </ResponsiveContainer>
-        )}
+        {/* Line Chart (Always Visible) */}
+        <ResponsiveContainer width="100%" height={300}>
+          <LineChart data={chartData} margin={{ top: 20, right: 20, left: 0, bottom: 0 }}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+            <XAxis dataKey="name" stroke="#64748b" tick={{ fill: "#64748b" }} />
+            <YAxis domain={[0, 10]} stroke="#64748b" tick={{ fill: "#64748b" }} />
+            <Tooltip
+              contentStyle={{
+                backgroundColor: "white",
+                border: "none",
+                borderRadius: "8px",
+                boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)",
+              }}
+            />
+            <Legend wrapperStyle={{ paddingTop: "20px" }} />
+            <Line
+              type="monotone"
+              dataKey="GPA"
+              stroke={selectedSubject ? "#1e40af" : "#94a3b8"} // Dim color when no subject
+              strokeWidth={2}
+              dot={{ fill: "#1e40af", r: 5 }}
+              activeDot={{ r: 8, fill: "#1e40af" }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </CardContent>
     </Card>
   );
