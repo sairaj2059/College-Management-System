@@ -193,7 +193,7 @@ const AdminDashboard = () => {
             label="Total Teachers"
             imgSrc={teacherIcon}
             gradient="linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)"
-            route="/admin"
+            route="/admin/addTeacher"
           />
         </Grid>
         <Grid xs="auto">

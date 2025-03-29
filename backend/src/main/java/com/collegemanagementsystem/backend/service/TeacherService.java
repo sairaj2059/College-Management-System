@@ -12,11 +12,13 @@ import org.springframework.stereotype.Service;
 import com.collegemanagementsystem.backend.dto.QuestionList;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
+import com.collegemanagementsystem.backend.model.examModel.ExamResult;
 import com.collegemanagementsystem.backend.model.examModel.Question;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
 import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
 import com.collegemanagementsystem.backend.repository.ExamRepository;
+import com.collegemanagementsystem.backend.repository.ExamResultsRepository;
 import com.collegemanagementsystem.backend.repository.ResultsRepository;
 import com.collegemanagementsystem.backend.repository.TeacherDetailsRepository;
 
@@ -27,6 +29,9 @@ public class TeacherService {
 
     @Autowired
     TeacherDetailsRepository teacherDetailsRepository;
+
+    @Autowired
+    ExamResultsRepository examResultsRepository;
 
     @Autowired
     ExamRepository examRepository;
@@ -55,8 +60,16 @@ public class TeacherService {
     }
 
     public ResponseEntity<?> addExam(Exam exam) {
-        examRepository.save(exam);
-        return ResponseEntity.ok().body("Exam added successfully");
+        try {
+            examRepository.save(exam);
+            ExamResult examResult = new ExamResult();
+            examResult.setExamId(exam.getId());
+            examResultsRepository.save(examResult);
+            return ResponseEntity.ok().body("Exam added successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add exam");
+        }
+       
     }
 
     public ResponseEntity<?> deleteExam(String examId) {
@@ -89,10 +102,12 @@ public class TeacherService {
         }
     }
 
+
+
     public ResponseEntity<?> publishExam(String examId) {
         Exam exam = examRepository.findExamById(examId);
         if(exam!=null){
-            exam.setStatus("Published");
+            exam.setStatus("PUBLISHED");
             examRepository.save(exam);
             return ResponseEntity.ok().body("Exam published Successfully");
         }else{
@@ -103,6 +118,21 @@ public class TeacherService {
 //     try {
 //         // Fetch results from the repository
 //         List<SemesterResults> results = resultsRepository.findBySubjectTeacherAndSubjectName(subjectTeacher, subjectName);
+
+public ResponseEntity<?> getResultList(String examId) {
+    try {
+        ExamResult examResults = examResultsRepository.findByExamId(examId);
+        if (examResults == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                                 .body("Exam with id " + examId + " not found.");
+        }
+        return ResponseEntity.ok().body(examResults.getStudentExamDetails());
+    } catch (Exception e) {
+        e.printStackTrace(); // Log the exception for debugging
+        return ResponseEntity.internalServerError().build();
+    }
+}
+
 
 //         // Check if results are empty
 //         if (results.isEmpty()) {

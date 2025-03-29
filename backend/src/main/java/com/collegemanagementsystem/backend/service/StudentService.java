@@ -1,6 +1,7 @@
 package com.collegemanagementsystem.backend.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -12,8 +13,11 @@ import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
+import com.collegemanagementsystem.backend.model.examModel.ExamResult;
+import com.collegemanagementsystem.backend.model.examModel.StudentExamDetail;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
 import com.collegemanagementsystem.backend.repository.ExamRepository;
+import com.collegemanagementsystem.backend.repository.ExamResultsRepository;
 import com.collegemanagementsystem.backend.repository.StudentDetailsRepository;
 
 @Service
@@ -27,6 +31,9 @@ public class StudentService {
 
     @Autowired
     private ExamRepository examRepository;
+
+    @Autowired
+    private ExamResultsRepository examResultsRepository;
 
     @Autowired
     private ImageService imageService;
@@ -62,7 +69,7 @@ public class StudentService {
                 student.getCourse(),
                 student.getYear(),
                 student.getSemester(),
-            imageurl );
+                imageurl);
     }
 
     private int calSem(String year) {
@@ -73,14 +80,17 @@ public class StudentService {
             throw new IllegalArgumentException("Invalid year format: " + year);
         }
     }
-    
 
-     public ResponseEntity<?> getStudentImage(String regdNo) throws IOException {
-        StudentDetails student = studentdetailsRepo.findByRegdNo(regdNo);
-        if (student == null || student.getImageId() == null) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<?> getStudentImage(String regdNo) throws IOException {
+        try {
+            StudentDetails student = studentdetailsRepo.findByRegdNo(regdNo);
+            if (student == null || student.getImageId() == null) {
+                return ResponseEntity.notFound().build();
+            }
+            return imageService.getImage(student.getImageId());
+        } catch (IOException e) {
+            return ResponseEntity.internalServerError().body("Error retrieving image");
         }
-        return imageService.getImage(student.getImageId());
     }
 
     public ClasswiseAttendance getStudentAttendanceByClassAndRegdNoAndMonth(String className, String regdNo,
@@ -114,7 +124,7 @@ public class StudentService {
             List<Exam> exams = examRepository
                     .findExamByClassName(studentDetails.getCourse() + " " + studentDetails.getJoinYear());
             List<Exam> filteredExams = exams.stream()
-                    .filter(exam -> exam.getStatus().equals("Published"))
+                    .filter(exam -> exam.getStatus().equals("PUBLISHED"))
                     .collect(Collectors.toList());
             return ResponseEntity.ok(filteredExams);
         } catch (Exception e) {
@@ -122,4 +132,25 @@ public class StudentService {
         }
 
     }
+
+    public ResponseEntity<?> submitExam(String examId, StudentExamDetail studentExamDetail) {
+        try {
+            ExamResult examResult = examResultsRepository.findByExamId(examId);
+            if (examResult == null) {
+                return ResponseEntity.badRequest().body("Exam with id " + examId + " not found.");
+            }
+
+            if (examResult.getStudentExamDetails() == null) {
+                examResult.setStudentExamDetails(new ArrayList<>());
+            }
+
+            examResult.getStudentExamDetails().add(studentExamDetail);
+            examResultsRepository.save(examResult);
+
+            return ResponseEntity.ok("Exam submitted successfully.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error submitting exam: " + e.getMessage());
+        }
+    }
+
 }

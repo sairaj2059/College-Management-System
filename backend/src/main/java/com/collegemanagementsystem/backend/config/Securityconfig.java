@@ -3,6 +3,8 @@ package com.collegemanagementsystem.backend.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -37,6 +39,7 @@ public class Securityconfig {
                 .requestMatchers("/student/**").hasRole("STUDENT")
                 .requestMatchers("/chat/**").permitAll()
                 .requestMatchers("/courses/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/student/studentImage/**").permitAll()
                 .anyRequest().authenticated());
 
         http.httpBasic(Customizer.withDefaults());

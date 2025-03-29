@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.SemesterResults;
+import com.collegemanagementsystem.backend.model.examModel.StudentExamDetail;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
@@ -64,7 +65,7 @@ public class StudentController {
 
     @GetMapping("/get_Sattendance/{className}")
     public ResponseEntity<?> getAttendanceMonth(
-            @PathVariable String className, // Changed from @RequestParam to @PathVariable
+            @PathVariable String className, 
             @RequestParam String regdNo,
             @RequestParam String month) {
         System.out.println("classname: " + className);
@@ -100,5 +101,11 @@ public class StudentController {
     public ResponseEntity<?> getStudentImage(@PathVariable String regdNo) throws IOException {
         return studentService.getStudentImage(regdNo);
     }
+
+    @PostMapping("/submitExam/{examId}")
+    public ResponseEntity<?> submitExam(@PathVariable String examId, @RequestBody StudentExamDetail studentExamDetail) {
+        return studentService.submitExam(examId, studentExamDetail);
+    }
+    
 
 }

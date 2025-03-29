@@ -36,8 +36,7 @@ import {
 function ExamList() {
   const examListData = useSelector((state) => state.examList.exams);
   const [addExamToggle, setAddExamToggle] = useState(false);
-  // const userId = useSelector((state) => state.auth.username);
-  const userId = "abc";
+  const userId = useSelector((state)=> state.auth.username);
   const selectedExam = useSelector((state) => state.examList.selectedExam);
 
   const role = useSelector((state) => state.auth.role);
@@ -105,9 +104,9 @@ function ExamList() {
     fetchExamList();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (record) => {
     try {
-      await ExamService.deleteExam(id);
+      await ExamService.deleteExam(record.id);
       fetchExamList();
     } catch (error) {
       console.error("Error deleting exam:", error);
@@ -123,6 +122,11 @@ function ExamList() {
       console.log(error);
     }
   };
+
+  const handleViewResultList = (record) => {   
+    dispatch(setSelectedExam(record));
+    navigate(`/teacher/exam/results/${record.id}`);
+  }
   const columns = [
     {
       title: "Title",
@@ -215,7 +219,7 @@ function ExamList() {
 
               <Tooltip title="Delete" placement="top">
                 <IconButton
-                  onClick={() => handleDelete(record.id)}
+                  onClick={() => handleDelete(record)}
                 >
                   <DeleteIcon />
                 </IconButton>
@@ -226,11 +230,9 @@ function ExamList() {
                     <SendIcon />
                   </IconButton>
                 </Tooltip>
-              ) : record.status === "PUBLISHED" ? (
-                <></>
-              ) : (
+              ) : record.status === "PUBLISHED" && (
                 <Tooltip title="View Results" placement="top">
-                  <IconButton onClick={() => handlePublishExam(record)}>
+                  <IconButton onClick={() => handleViewResultList(record)}>
                     <VisibilityIcon />
                   </IconButton>
                 </Tooltip>

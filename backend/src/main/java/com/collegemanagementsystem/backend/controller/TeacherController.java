@@ -114,6 +114,12 @@ public class TeacherController {
     public ResponseEntity<String> deleteNotice(@PathVariable String id) {
         return noticeService.deleteNotice(id);
     }
+
+    @GetMapping("/getResultList/{examId}")
+    public ResponseEntity<?> getResultList(@PathVariable String examId) {
+        return teacherService.getResultList(examId);
+    }
+    
    
     @GetMapping("/semResults/{regdNo}")
     public SemesterResults getSemResultDetails(@PathVariable String regdNo){
