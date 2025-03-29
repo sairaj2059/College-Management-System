@@ -1,64 +1,84 @@
-.profile-card {
+.teacher-profile-card {
   width: 100%;
-  overflow: hidden;
+  max-width: 1000px;
   background-color: white;
-  --Card-radius: 16px;
+  border-radius: 16px;
+  padding: 1rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.profile-image {
+/* Flex container to place image on left and details on right */
+.teacher-profile-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Profile Image */
+.teacher-profile-image-container {
+  flex-shrink: 0;
+}
+
+.teacher-profile-image {
+  width: 120px;
+  height: 120px;
   object-fit: cover;
   border-radius: 8px;
 }
 
-.profile-name {
-  font-size: 1.25rem;
-  font-weight: bold;
-  color: #1e40af;
-  margin-bottom: 0.5rem;
+/* Profile Content */
+.teacher-profile-content {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
 }
 
-.profile-id {
+/* Profile Details */
+.teacher-profile-id {
   color: #2563eb;
   background-color: #f0f9ff;
   padding: 0.375rem 0.75rem;
   border-radius: 20px;
-  display: inline-block;
   font-size: 0.875rem;
   font-weight: 500;
-  margin-bottom: 1rem;
+  display: inline-block;
 }
 
-.info-sheet {
+.teacher-profile-name {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #1e40af;
+}
+
+.teacher-info-sheet {
   background-color: #f8fafc;
   border-radius: 12px;
   padding: 0.75rem;
-  margin-bottom: 1rem;
   display: flex;
   gap: 1rem;
+  justify-content: space-between;
 }
 
-.info-label {
+.teacher-info-label {
   color: #64748b;
-  margin-bottom: 0.25rem;
-  font-weight: 500;
   font-size: 0.75rem;
 }
 
-.info-value {
+.teacher-info-value {
   color: #1e40af;
   font-weight: bold;
 }
 
-.edit-button {
+/* Edit Button */
+.teacher-edit-button {
   background-color: #2563eb;
   color: white;
   border-radius: 8px;
-  text-transform: none;
   font-weight: 500;
-  padding: 0.5rem 0;
+  padding: 0.5rem;
   width: 100%;
 }
 
-.edit-button:hover {
+.teacher-edit-button:hover {
   background-color: #1e40af;
 }

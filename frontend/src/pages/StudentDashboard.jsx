@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Paper } from "@mui/material";
 import SAttendance from "../components/SAttendance";
 import StudentProfile from "../components/StudentProfile";
@@ -9,9 +9,12 @@ import NoticeBoardComponent from "../components/StudentNoticeBoardComponent";
 import ExamSchedule from "../components/ExamSchedule";
 
 function StudentDashboard() {
-  const regdNo = localStorage.getItem("username");
-  // const [regdNo, setRegdNo] = useState(null);
+  const [regdNo, setRegdNo] = useState(localStorage.getItem("username") || ""); // Get username from localStorage
   const [semesterNumber, setSemesterNumber] = useState(null);
+
+  useEffect(() => {
+    console.log("Registered Number:", regdNo); // Debugging
+  }, [regdNo]);
 
   const handleProfileLoaded = (regdNo, semester) => {
     // setRegdNo(regdNo);
@@ -20,66 +23,60 @@ function StudentDashboard() {
 
   return (
     <Box sx={{ width: "100%", minHeight: "100vh", p: 1, display: "flex", flexDirection: "column", gap: "8px" }}>
-
       {/* Top Section */}
       <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
         {/* Student Profile */}
-        <Box sx={{  height: "20%",width: "50%" }}>
-          <Paper sx={{ flex: 1, padding: "10px",width: "100%" }}>
+        <Box sx={{ height: "20%", width: "50%" }}>
+          <Paper sx={{ flex: 1, padding: "10px", width: "100%" }}>
             <StudentProfile onProfileLoaded={handleProfileLoaded} />
           </Paper>
         </Box>
-         {/* Subject Graph - Moved Left for Balance */}
-         <Box sx={{ width: "50%" }}>
+        {/* Subject Graph */}
+        <Box sx={{ width: "50%" }}>
           <Paper sx={{ flex: 1, minWidth: "250px", padding: "10px" }}>
             <SubjectGraph regdNo={regdNo} semesterNumber={semesterNumber} />
           </Paper>
         </Box>
-       
       </Box>
 
       {/* Middle Section */}
-      <Box sx={{ display: "flex", width: "100%", gap: "8px" ,marginTop: "-90px"}}>
-       
-
-        {/* Performance Chart - Moved Right */}
+      <Box sx={{ display: "flex", width: "100%", gap: "8px", marginTop: "-90px" }}>
+        {/* Performance Chart */}
         <Box sx={{ width: "50%", height: "100%" }}>
-          <Paper sx={{ flex: 1, minWidth: "200px", padding: "10px",height: "100%" }}>
+          <Paper sx={{ flex: 1, minWidth: "200px", padding: "10px", height: "100%" }}>
             <PerformanceChart />
           </Paper>
         </Box>
-        <Box sx={{ width: "50%",marginTop: "90px" }}>
+        <Box sx={{ width: "50%", marginTop: "90px" }}>
           <Paper sx={{ flex: 2, minWidth: "300px", padding: "10px" }}>
             <Faculty />
           </Paper>
         </Box>
       </Box>
 
-     {/* Faculty & Notice Board - Moved Faculty Left */}
-<Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
-  
-  {/* Notice Board - Adjusted Width */}
-  <Box sx={{ width: "30%", display: "flex", justifyContent: "center" }}>
-      <NoticeBoardComponent />
-    
-  </Box>
+      {/* Bottom Section */}
+      <Box sx={{ display: "flex", width: "100%", gap: "8px" }}>
+        {/* Notice Board */}
+        <Box sx={{ width: "30%", display: "flex", justifyContent: "center" }}>
+          <NoticeBoardComponent />
+        </Box>
 
-  {/* Attendance - Moved to Right */}
-  <Box sx={{ width: "20%", height: "25%" }}>
-    <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px",marginLeft: "-15px" }}>
-      <SAttendance />
-    </Paper>
-  </Box>
-  <Box sx={{ width: "50%", height: "25%" }}>
-    <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px",marginLeft: "-15px" }}>
-      <ExamSchedule />
-    </Paper>
-  </Box>
+        {/* Attendance */}
+        <Box sx={{ width: "20%", height: "25%" }}>
+          <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px", marginLeft: "-15px" }}>
+            <SAttendance />
+          </Paper>
+        </Box>
+
+        {/* Exam Schedule */}
+        <Box sx={{ width: "50%", height: "25%" }}>
+          <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px", marginLeft: "-15px" }}>
+            <ExamSchedule />
+          </Paper>
+        </Box>
       </Box>
-      
     </Box>
   );
 }
 
 export default StudentDashboard;
-

@@ -17,7 +17,7 @@ public class TeacherDetails {
     private String id;
     private String teacherId;
     private String username;
-    private String image;
+    private String imageId;
     private String title;
     private String firstName;
     private String lastName;
