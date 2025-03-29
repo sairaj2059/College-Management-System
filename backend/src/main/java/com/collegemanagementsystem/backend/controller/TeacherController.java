@@ -8,9 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.collegemanagementsystem.backend.dto.QuestionList;
-import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.dto.TeacherProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
+import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
 import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.examModel.Exam;

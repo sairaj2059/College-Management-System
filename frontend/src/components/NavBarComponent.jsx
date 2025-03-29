@@ -40,7 +40,8 @@ export default function NavBarComponent() {
 
   const fetchImage = async () => {
     const response = await ImageServive.getImageByStudent("224210");
-    return response;
+    const imageUrl = URL.createObjectURL(response);
+    return imageUrl;
   };
 
   useEffect(()=>{

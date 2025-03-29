@@ -41,10 +41,11 @@ import Input from "@mui/joy/Input";
 import Autocomplete from "@mui/material/Autocomplete";
 import Slide from "@mui/material/Slide";
 import ClassService from "../services/ClassService";
+import { useSelector } from "react-redux";
 
 function JoinRoom({ closeFunction }) {
   const [groupIdData, setGroupIdData] = useState("");
-  const [regdNo, setRegdNo] = useState("224206"); //need to get from redux
+  const regdNo = useSelector((state)=> state.auth.username);
   const [error, setError] = useState(false);
 
   const handleSubmit = async () => {
@@ -135,7 +136,7 @@ function JoinRoom({ closeFunction }) {
 function CreateRoom({ closeFunction, groupData, disableGroupInfo }) {
   const [classes, setClasses] = useState([]);
   const [indRegdNo, setIndRegdNo] = useState("");
-  const [teacherId, setTeacherId] = useState("teacher123"); //need to get from redux
+  const teacherId = useSelector((state)=> state.auth.username);
   const [createRoomData, setCreateRoomData] = useState({
     groupName: "",
     groupId: "",
@@ -332,7 +333,8 @@ function Discussion() {
   const [groupId, setgroupId] = useState("");
   const [stompClient, setStompClient] = useState(null);
   const [input, setInput] = useState("");
-  const [userId, setUserId] = useState("teacher123"); //need to get from redux
+  const userId = useSelector((state)=> state.auth.username);
+  // const [userId, setUserId] = useState("teacher123"); //need to get from redux
   const [messages, setMessages] = useState([]);
   const [participants, setParticipants] = useState([]);
   const [addMemberWindow, setAddMemberWindow] = useState(false);

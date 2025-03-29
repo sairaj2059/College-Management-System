@@ -24,6 +24,7 @@ import QuestionDisplay from "./components/ExamComponents/QuestionDisplay";
 import ExamMarks from "./components/ExamMarks";
 import ResultPage from "./components/ExamComponents/ResultPage";
 import AddCourse from "./components/AddCourse";
+import ResultsList from "./components/ExamComponents/ResultsList";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
@@ -49,7 +50,7 @@ function App() {
                 bottom: "1%",
                 zIndex: 10,
                 p: 1,
-                backgroundColor:'background.level1',
+                backgroundColor: "background.level1",
                 boxShadow: 3,
                 "--Card-radius": "15px",
                 overflow: "auto",
@@ -70,10 +71,14 @@ function App() {
                   <Route path="/" element={<TeacherDashboard />} />
                   <Route path="/teacher" element={<TeacherDashboard />} />
                   <Route path="/teacher/home" element={<TeacherDashboard />} />
-                  <Route path="/teacher/notice-board" element={<NoticeBoard />} />
+                  <Route
+                    path="/teacher/notice-board"
+                    element={<NoticeBoard />}
+                  />
                   <Route path="/teacher/exam/" element={<ExamPage />}>
                     <Route index element={<ExamList />} />
                     <Route path="questions/:id" element={<QuestionsPage />} />
+                    <Route path="results/:id" element={<ResultsList />} />
                   </Route>
                   <Route path="/teacher/exam-marks" element={<ExamMarks />} />
                   <Route path="/teacher/discussion" element={<Discussion />} />
@@ -87,7 +92,10 @@ function App() {
                     path="/student/exam/questions/:id"
                     element={<QuestionDisplay />}
                   />
-                  <Route path="/student/exam/questions/:id/results" element={<ResultPage/>}/>
+                  <Route
+                    path="/student/exam/questions/:id/results"
+                    element={<ResultPage />}
+                  />
 
                   <Route path="/student/discussion" element={<Discussion />} />
                   <Route

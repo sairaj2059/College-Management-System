@@ -22,6 +22,45 @@ class ExamService {
     }
   }
 
+  static async getResultList(examId) {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        `${this.BASE_URL}/teacher/getResultList/${examId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  static async submitExam(studentExamDetails, examId) {
+    const token = localStorage.getItem("token");
+    console.log(token);
+
+    try {
+      const response = await axios.post(
+        `${this.BASE_URL}/student/submitExam/${examId}`,
+        studentExamDetails,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   static async setQuestionsByTeacher(questions) {
     const token = localStorage.getItem("token");
     try {
@@ -95,15 +134,18 @@ class ExamService {
     }
   }
 
-  static async getExamListByStudent(regdNo){
+  static async getExamListByStudent(regdNo) {
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(`${this.BASE_URL}/student/getExamList/${regdNo}`, {
-        headers:{
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      const response = await axios.get(
+        `${this.BASE_URL}/student/getExamList/${regdNo}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
-      })
+      );
       return response.data;
     } catch (error) {
       console.log(error);

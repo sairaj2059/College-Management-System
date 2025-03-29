@@ -18,8 +18,7 @@ function TeacherProfile({ teacherId }) {
     async function fetchProfile() {
       try {
         const data = await TeacherDashboardService.getTeacherProfilebyteacherId(teacherId);
-        console.log("inside the teacher profile after the service returned");
-        console.log(data);
+        console.log("inside the teacher profile after the service returned", data);
         if (data) {
           setTeacherData(data);
         } else {
@@ -66,12 +65,12 @@ function TeacherProfile({ teacherId }) {
           <Sheet className="teacher-info-sheet">
             <div>
               <Typography className="teacher-info-label">Class Mentor</Typography>
-              <Typography className="teacher-info-value">{teacherData.classmentor}</Typography>
+              <Typography className="teacher-info-value">{teacherData.classmentor || "N/A"}</Typography>
             </div>
             <div>
               <Typography className="teacher-info-label">Subjects</Typography>
               <Typography className="teacher-info-value">
-                {teacherData.subjects?.map((subject) => subject.name).join(", ")}
+                {teacherData.subjects?.map((subject) => subject.subjectName).join(", ") || "N/A"}
               </Typography>
             </div>
           </Sheet>
@@ -85,3 +84,4 @@ function TeacherProfile({ teacherId }) {
 }
 
 export default TeacherProfile;
+

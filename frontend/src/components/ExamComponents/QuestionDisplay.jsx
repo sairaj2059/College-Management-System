@@ -1,6 +1,4 @@
-
 import React, { useState } from "react";
-
 
 import { useNavigate } from "react-router-dom";
 
@@ -20,12 +18,15 @@ import Option from "@mui/joy/Option";
 import Button from "@mui/joy/Button";
 import Input from "@mui/joy/Input";
 import Textarea from "@mui/joy/Textarea";
+import ExamService from "../../services/ExamService";
 
 function QuestionDisplay() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const questionsList = useSelector((state) => state.questionsList.questions);
   const [selectedQuestion, setSelectedQuestion] = useState(questionsList[0]);
+  const selectedExam = useSelector((state) => state.examList.selectedExam);
+  const regdNo = useSelector((state) => state.auth.username);
 
   const [currentQuestion, setCurrentQuestion] = useState({
     questionDetails: null,
@@ -39,9 +40,25 @@ function QuestionDisplay() {
     setSelectedQuestion(question);
   };
 
-  const handleSubmit = () => {
-    console.log(questionsList);
+  const handleSubmit = async () => {
+    const studentExamDetail = {
+      regdNo: regdNo,
+      studentName: regdNo,
+      attemptedQuestions: questionsList.length, 
+      correctAnswers: questionsList.filter((question) => question.isCorrect).length,
+      totalMarks: questionsList
+        .map((question) => question.marksAwarded || 0) 
+        .reduce((a, b) => a + b, 0),
+      attemptedQuestionsList: questionsList,
+    };
+  
+    try {
+      const response = await ExamService.submitExam(studentExamDetail, selectedExam.id);
+    } catch (error) {
+      console.error("Error submitting exam:", error);
+    }
   };
+  
 
   const handleAttemptQuestion = (questionDetails, userAnswer) => {
     const updatedQuestion = {
@@ -52,7 +69,7 @@ function QuestionDisplay() {
         questionDetails.correctAnswer === userAnswer
           ? questionDetails.marks
           : 0,
-      userAnswer: userAnswer,
+      userAnswer: [userAnswer],
     };
 
     setCurrentQuestion(updatedQuestion);
