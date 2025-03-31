@@ -154,7 +154,7 @@ const AddCourse = () => {
         );
       }
     }
-    // Remove course from local state
+   
     const newCourses = [...courses];
     newCourses.splice(courseIndex, 1);
     setCourses(newCourses);
@@ -263,12 +263,12 @@ const AddCourse = () => {
                   <Box
                     sx={{
                       background: "linear-gradient(to right, #4F46E5, #6D28D9)",
-                      p: 2,
+                      p: 1,
                       borderRadius: 2,
                     }}
                   >
                     <Typography
-                      variant="h4"
+                      variant="h5"
                       sx={{ fontWeight: "bold", color: "#fff" }}
                     >
                       Course {courseIndex + 1}
