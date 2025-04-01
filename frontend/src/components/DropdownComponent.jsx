@@ -90,7 +90,7 @@ export const DropdownComponent = () => {
     >
       <span style={{ cursor: "pointer" }}>
         <Space>
-          <ExpandMoreIcon />
+          <ExpandMoreIcon  sx={{ color: "white" }}/>
         </Space>
       </span>
     </Dropdown>

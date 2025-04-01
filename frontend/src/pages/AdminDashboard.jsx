@@ -202,7 +202,7 @@ const AdminDashboard = () => {
             label="Total Courses"
             icon={<AutoStoriesIcon fontSize="large" />}
             gradient="linear-gradient(135deg, #ff9966 0%, #ff5e62 100%)"
-             route="/students"
+             route="/admin/add-course"
           />
         </Grid>
         <Grid xs="auto">

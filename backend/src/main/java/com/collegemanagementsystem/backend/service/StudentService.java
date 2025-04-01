@@ -69,7 +69,7 @@ public class StudentService {
                 student.getCourse(),
                 student.getYear(),
                 student.getSemester(),
-                imageurl) ;
+                imageurl);
     }
 
     private int calSem(String year) {

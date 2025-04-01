@@ -44,13 +44,13 @@ export default function NavBarComponent() {
     return imageUrl;
   };
 
-  useEffect(()=>{
-    async function getImage(){
-      const image = await fetchImage();
-      setImage(image);
-    }
-    getImage();
-  }, [])
+  // useEffect(()=>{
+  //   async function getImage(){
+  //     const image = await fetchImage();
+  //     setImage(image);
+  //   }
+  //   getImage();
+  // }, [])
 
   const handleChange = (event, newValue) => {
     dispatch(setTab(newValue));
@@ -184,7 +184,7 @@ export default function NavBarComponent() {
                       justifyContent: "center",
                     }}
                   >
-                    <FormatListBulletedIcon />
+                    <FormatListBulletedIcon  sx={{ color: "white" }}/>
                     {value === 1 && (
                       <Typography
                         variant="caption"
