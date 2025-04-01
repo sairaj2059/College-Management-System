@@ -3,8 +3,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { DropdownComponent } from "./DropdownComponent";
 import { Avatar, Box, Typography } from "@mui/material";
-import home from "../resources/images/home.png";
-import examIcon from "../resources/images/exam.png";
+//import home from "../resources/images/home.png";
+//import examIcon from "../resources/images/exam.png";
 
 import logo from "../resources/images/SSSIHL-Logo_White.png";
 import SchoolSharpIcon from "@mui/icons-material/SchoolSharp";

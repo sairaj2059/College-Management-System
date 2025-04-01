@@ -1,9 +1,7 @@
 package com.collegemanagementsystem.backend.service;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,17 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.collegemanagementsystem.backend.dto.QuestionList;
-import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.dto.TeacherProfile;
+import com.collegemanagementsystem.backend.model.ClassSchedule;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.examModel.ExamResult;
-import com.collegemanagementsystem.backend.model.examModel.Question;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
-import com.collegemanagementsystem.backend.model.SemesterResults;
-import com.collegemanagementsystem.backend.model.StudentDetails;
-import com.collegemanagementsystem.backend.model.Subject;
 import com.collegemanagementsystem.backend.model.TeacherDetails;
+import com.collegemanagementsystem.backend.repository.ClassScheduleRepository;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
 import com.collegemanagementsystem.backend.repository.ExamRepository;
 import com.collegemanagementsystem.backend.repository.ExamResultsRepository;
@@ -47,7 +42,36 @@ public class TeacherService {
 
 
      @Autowired
-    private ResultsRepository resultsRepository;
+    private ClassScheduleRepository scheduleRepository;
+
+    public ClassSchedule getClassScheduleByClassName(String className) {
+        return scheduleRepository.findByClassName(className);
+    }
+    
+    public ResponseEntity<?> setClassSchedule(ClassSchedule schedule) {
+        try {
+            // Save or update the schedule
+            ClassSchedule savedSchedule = scheduleRepository.save(schedule);
+            return ResponseEntity.ok().body(savedSchedule);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save schedule");
+        }
+    }  
+    
+    public ResponseEntity<?> deleteClassSchedule(String className) {
+        try {
+            ClassSchedule schedule = scheduleRepository.findByClassName(className);
+            if (schedule != null) {
+                scheduleRepository.deleteByClassName(className);
+                return ResponseEntity.ok().body("Class schedule deleted successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Class schedule not found.");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete class schedule.");
+        }
+    }
+    
 
     public ClasswiseAttendance setStudentAttendanceByRegdNo(String className, String regdNo, String month, int newAbsentDays,
             AbsentDay absentDay) {

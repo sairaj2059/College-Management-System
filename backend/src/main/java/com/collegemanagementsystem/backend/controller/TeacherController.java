@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.collegemanagementsystem.backend.dto.QuestionList;
 import com.collegemanagementsystem.backend.dto.TeacherProfile;
+import com.collegemanagementsystem.backend.model.ClassSchedule;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
@@ -133,11 +134,18 @@ public class TeacherController {
     public SemesterResults getSemResultDetails(@PathVariable String regdNo){
         return semResultService.getSemResultDetails(regdNo);
     }
-    // @GetMapping("/getResults")
-    // public ResponseEntity<List<SemesterResults>> findBySubjectTeacherAndSubjectName(
-    //         @RequestParam String subjectTeacher,
-    //         @RequestParam String subjectName) {
-    //     return teacherService.findBySubjectTeacherAndSubjectName(subjectTeacher, subjectName);
-    // }
+    @GetMapping("/classShedule/{className}")
+    public ClassSchedule getClassSchedule(@PathVariable String className) {
+        return teacherService.getClassScheduleByClassName(className);
+    }
 
+    @PostMapping("/addSchedule")
+    public ResponseEntity<?> setClassSchedule(@RequestBody ClassSchedule schedule) {
+        return teacherService.setClassSchedule(schedule);
+    }
+
+    @DeleteMapping("/deleteSchedule/{className}")
+    public ResponseEntity<?> deleteClassSchedule(@PathVariable String className) {
+        return teacherService.deleteClassSchedule(className);
+    }
 }
