@@ -78,8 +78,8 @@ const NoticeBoardComponent = () => {
       >
         <Typography
           variant="h6"
-          color="text.primary"
-          sx={{ fontSize: 16, fontWeight: 600 }}
+          color="blue"
+          sx={{ fontSize: 18, fontWeight: 700 }}
         >
           Notice Board
         </Typography>

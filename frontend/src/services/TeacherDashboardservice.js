@@ -26,7 +26,6 @@ static async addAttendance(attendancedata) {
 
   static async getTeacherProfilebyteacherId( teacherId){
     const token = localStorage.getItem("token");
-    console.log("inside the getTeacherProfile before fetch")
     try {
       const response = await axios.get(
         `${this.BASE_URL}/teacher/teacherProfile/${teacherId}`,
@@ -37,8 +36,6 @@ static async addAttendance(attendancedata) {
           },
         }
       );
-      console.log("inside the getTeacherProfile after fetch")
-      console.log(response)
       return response.data;
     } catch (error) {
       console.log(error);

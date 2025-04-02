@@ -23,6 +23,7 @@ import ExamList from "./components/ExamComponents/ExamList";
 import QuestionDisplay from "./components/ExamComponents/QuestionDisplay";
 import ExamMarks from "./components/ExamMarks";
 import ResultPage from "./components/ExamComponents/ResultPage";
+import AddCourse from "./components/AddCourse";
 import ResultsList from "./components/ExamComponents/ResultsList";
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
                   <Route path="/admin/addStudent" element={<AddStudent />} />
                   <Route path="/admin/addTeacher" element={<AddTeacher />} />
                   <Route path="/admin/notice-board" element={<NoticeBoard />} />
+                  <Route path="/admin/add-course" element={<AddCourse />} />
                 </Route>
                 <Route element={<ProtectedRoute allowedRoles={"TEACHER"} />}>
                   <Route path="/" element={<TeacherDashboard />} />

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -79,6 +80,19 @@ public class CourseService {
             }
         }
         return ResponseEntity.badRequest().body("Subject Not Found");
+    }
+
+    public void saveOrUpdateCourses(List<Course> courses) {
+        courseRepository.saveAll(courses);
+    }
+
+    public ResponseEntity<String> deleteCourse(String id) {
+        if (courseRepository.existsById(id)) {
+            courseRepository.deleteById(id);
+            return ResponseEntity.ok("Course deleted successfully");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Course not found");
+        }
     }
 
 }

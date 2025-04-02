@@ -3,8 +3,8 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { DropdownComponent } from "./DropdownComponent";
 import { Avatar, Box, Typography } from "@mui/material";
-import home from "../resources/images/home.png";
-import examIcon from "../resources/images/exam.png";
+//import home from "../resources/images/home.png";
+//import examIcon from "../resources/images/exam.png";
 
 import logo from "../resources/images/SSSIHL-Logo_White.png";
 import SchoolSharpIcon from "@mui/icons-material/SchoolSharp";
@@ -44,13 +44,13 @@ export default function NavBarComponent() {
     return imageUrl;
   };
 
-  useEffect(()=>{
-    async function getImage(){
-      const image = await fetchImage();
-      setImage(image);
-    }
-    getImage();
-  }, [])
+  // useEffect(()=>{
+  //   async function getImage(){
+  //     const image = await fetchImage();
+  //     setImage(image);
+  //   }
+  //   getImage();
+  // }, [])
 
   const handleChange = (event, newValue) => {
     dispatch(setTab(newValue));
@@ -184,7 +184,7 @@ export default function NavBarComponent() {
                       justifyContent: "center",
                     }}
                   >
-                    <FormatListBulletedIcon />
+                    <FormatListBulletedIcon  sx={{ color: "white" }}/>
                     {value === 1 && (
                       <Typography
                         variant="caption"

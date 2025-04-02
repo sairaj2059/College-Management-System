@@ -38,9 +38,6 @@ public class StudentService {
     @Autowired
     private ImageService imageService;
 
-    @Autowired
-    private ImageService imageService;
-
     // Fetch student profile details
     public List<StudentProfile> getStudentProfiles() {
         return studentdetailsRepo.findAll()
@@ -72,7 +69,7 @@ public class StudentService {
                 student.getCourse(),
                 student.getYear(),
                 student.getSemester(),
-                imageurl) ;
+                imageurl);
     }
 
     private int calSem(String year) {
