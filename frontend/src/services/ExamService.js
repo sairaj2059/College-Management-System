@@ -40,10 +40,27 @@ class ExamService {
     }
   }
 
+  static async modifyAnswerList(answerList, examId) {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.put(
+        `${this.BASE_URL}/teacher/modifyAnswerList/${examId}`,
+        answerList,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
   static async submitExam(studentExamDetails, examId) {
     const token = localStorage.getItem("token");
-    console.log(token);
-
     try {
       const response = await axios.post(
         `${this.BASE_URL}/student/submitExam/${examId}`,
