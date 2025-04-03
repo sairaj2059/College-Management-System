@@ -11,14 +11,16 @@ import ExamSchedule from "../components/ExamSchedule";
 function StudentDashboard() {
   const [regdNo, setRegdNo] = useState(localStorage.getItem("username") || ""); // Get username from localStorage
   const [semesterNumber, setSemesterNumber] = useState(null);
+  const [courseName, setCourseName] = useState("");
 
   useEffect(() => {
     console.log("Registered Number:", regdNo); // Debugging
   }, [regdNo]);
 
-  const handleProfileLoaded = (regdNo, semester) => {
+  const handleProfileLoaded = (regdNo, semester,course) => {
     // setRegdNo(regdNo);
     setSemesterNumber(semester);
+    setCourseName(course);
   };
 
   return (
@@ -34,7 +36,7 @@ function StudentDashboard() {
         {/* Subject Graph */}
         <Box sx={{ width: "50%" }}>
           <Paper sx={{ flex: 1, minWidth: "250px", padding: "10px" }}>
-            <SubjectGraph regdNo={regdNo} semesterNumber={semesterNumber} />
+            <SubjectGraph regdNo={regdNo} />
           </Paper>
         </Box>
       </Box>
@@ -44,12 +46,12 @@ function StudentDashboard() {
         {/* Performance Chart */}
         <Box sx={{ width: "50%", height: "100%" }}>
           <Paper sx={{ flex: 1, minWidth: "200px", padding: "10px", height: "100%" }}>
-            <PerformanceChart />
+            <PerformanceChart regdNo={regdNo} />
           </Paper>
         </Box>
         <Box sx={{ width: "50%", marginTop: "90px" }}>
           <Paper sx={{ flex: 2, minWidth: "300px", padding: "10px" }}>
-            <Faculty />
+            <Faculty courseName={courseName}/>
           </Paper>
         </Box>
       </Box>
@@ -64,7 +66,7 @@ function StudentDashboard() {
         {/* Attendance */}
         <Box sx={{ width: "20%", height: "25%" }}>
           <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px", marginLeft: "-15px" }}>
-            <SAttendance />
+            <SAttendance regdNo={regdNo} />
           </Paper>
         </Box>
 

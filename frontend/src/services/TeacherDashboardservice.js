@@ -43,37 +43,65 @@ static async addAttendance(attendancedata) {
     }
   }
 
-  // static async getResultsBySubjectTeacherAndSubjectName(subjectTeacher, subjectName) {
-  //   const token = localStorage.getItem("token");
-  //   console.log("Retrieved Token:", token); // Debugging
+  static async getClassSchedule(className) {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        `${this.BASE_URL}/teacher/classShedule/${className}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 
-  //   try {
-  //     const response = await axios.get(
-  //       `${this.BASE_URL}/teacher/getResults`,
-  //       {
-  //         params: {
-  //           subjectTeacher: subjectTeacher,
-  //           subjectName: subjectName,
-  //         },
-  //         headers: {
-  //           Authorization: `Bearer ${token}`,
-  //           "Content-Type": "application/json",
-  //         },
-  //       }
-  //     );
+  // 2️⃣ Add or update class schedule
+  static async addClassSchedule(scheduleData) {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        `${this.BASE_URL}/teacher/addSchedule`,
+        scheduleData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 
-  //     console.log("Full API Response:", response.data); // Debugging response
-
-  //     if (!response.data || !Array.isArray(response.data)) {
-  //       console.error("Unexpected API response format:", response.data);
-  //       return []; // Return an empty array to prevent errors
-  //     }
-
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("Error fetching results:", error.response?.status, error.response?.data);
-  //     return [];
-  //   }
-  // }
+  // 3️⃣ Delete class schedule
+  static async deleteClassSchedule(className) {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.delete(
+        `${this.BASE_URL}/teacher/deleteSchedule/${className}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
+  }
 }
+
 export default TeacherDashboardservice;

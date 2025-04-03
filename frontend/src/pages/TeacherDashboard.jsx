@@ -1,12 +1,10 @@
 import React from "react";
 import { Box, Paper } from "@mui/material";
 import TodayClasses from "../components/TodayClasses";
-import LessonPlan from "../components/LessonPlan";
 import StudentProgress from "../components/StudentProgress";
 import Attendance from "../components/Attendance";
 import StudentMarks from "../components/StudentMarks";
 import TeacherProfile from "../components/TeacherProfile";
-import AddAttendanceForm from "../components/AddAttendanceForm";
 import NoticeBoardComponent from "../components/NoticeBoardComponent";
 
 const TeacherDashboard = () => {
@@ -14,6 +12,7 @@ const TeacherDashboard = () => {
 
   return (
     <Box sx={{ width: "100%", minHeight: "100vh", p: 2, display: "flex", flexDirection: "column", gap: 2 }}>
+      
       {/* Top Section */}
       <Box sx={{ display: "flex", width: "100%", gap: 2 }}>
         <Paper sx={{ flex: 1, padding: 2 }}>
