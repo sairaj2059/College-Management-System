@@ -58,7 +58,7 @@ const TodayClasses = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <Card sx={{ p: 2, bgcolor: theme.palette.background.paper,height:"20%" }}>
+      <Card sx={{ p: 2, bgcolor: theme.palette.background.paper,height:"100%" }}>
         <Stack direction="row" justifyContent="space-between" alignItems="center">
           <Typography variant="h6" fontWeight="bold" color={theme.palette.primary.main}>
             Today's Classes

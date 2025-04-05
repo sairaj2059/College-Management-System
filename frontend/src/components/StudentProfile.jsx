@@ -19,15 +19,13 @@ function StudentProfile({ onProfileLoaded }) {
   const [imageUrl, setImageUrl] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [imageError, setImageError] = useState(false);
 
   useEffect(() => {
     async function fetchProfile() {
       try {        
         const data = await StudentDashboardService.getStudentProfilebyregdNo(regdNo);
         if (data) {
-          
-          onProfileLoaded(data.regdNo, data.semester);
+          onProfileLoaded(data.regdNo, data.semester, data.course);
           setUserData(data);
         } else {
           setError("Failed to load student profile.");
@@ -38,24 +36,24 @@ function StudentProfile({ onProfileLoaded }) {
         setLoading(false);
       }
     }
-
     fetchProfile();
-  }, [onProfileLoaded]);
-
-  useEffect(()=>{
+  }, [regdNo, onProfileLoaded]);
+  
+  useEffect(() => {
     async function fetchImage() {
+      if (!userData) return;
       try {
         const response = await ImageService.getImageByStudent(userData.regdNo);
         console.log(response);
         const imageUrl = URL.createObjectURL(response);
         setImageUrl(imageUrl);
-        return imageUrl;
       } catch (error) {
-        console.log(error); 
+        console.log(error);
       }
     }
-  fetchImage();
-  }, [imageUrl]);
+    fetchImage();
+  }, [userData]);  // Fixed infinite loop issue
+  
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography color="error">{error}</Typography>;

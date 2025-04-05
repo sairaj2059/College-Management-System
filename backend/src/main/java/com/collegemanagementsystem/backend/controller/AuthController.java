@@ -43,4 +43,32 @@ public class AuthController {
             return ResponseEntity.ok(response);
         }
     }
+
+    @PostMapping("/change-password")
+public ResponseEntity<Map<String, Object>> changePassword(@RequestBody Map<String, String> passwordData) {
+    Map<String, Object> response = new HashMap<>();
+
+    if (!passwordData.containsKey("username") || !passwordData.containsKey("oldPassword") || !passwordData.containsKey("newPassword")) {
+        response.put("success", false);
+        response.put("message", "Missing required fields");
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    String username = passwordData.get("username");
+    String oldPassword = passwordData.get("oldPassword");
+    String newPassword = passwordData.get("newPassword");
+
+    boolean isUpdated = service.changePassword(username, oldPassword, newPassword);
+
+    if (isUpdated) {
+        response.put("success", true);
+        response.put("message", "Password updated successfully.");
+        return ResponseEntity.ok(response);
+    } else {
+        response.put("success", false);
+        response.put("message", "Invalid old password.");
+        return ResponseEntity.badRequest().body(response);
+    }
+}
+
 }

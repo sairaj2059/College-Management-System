@@ -5,7 +5,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import FacultyCard from "./FacultyCard";
 import APIService from "../services/StudentDashboardService"; // Import API service
 
-const Faculty = () => {
+const Faculty = ({courseName}) => {
   const [facultyData, setFacultyData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -13,19 +13,17 @@ const Faculty = () => {
   const isSmallScreen = useMediaQuery("(max-width: 600px)");
   const visibleCount = isSmallScreen ? 1 : 3;
 
-  // Fetch Faculty Data from API
   useEffect(() => {
     const fetchFacultyData = async () => {
+      if (!courseName) return; // Ensure courseName is available before calling API
       setLoading(true);
       setError(null);
-
-      const courseName = "Computer Science and Data Science";
-      const semesterNumber = "1"; // Ensure this matches MongoDB schema
-
+      const semesterNumber = "2"; 
+  
       try {
         const data = await APIService.getSemesterData(courseName, semesterNumber);
         console.log("🔹 API Response:", data);
-
+  
         if (data && data.semesterNumber === String(semesterNumber) && data.subjects) {
           const facultyList = data.subjects.map(subject => ({
             name: subject.subjectTeacher,
@@ -37,7 +35,7 @@ const Faculty = () => {
           setFacultyData(facultyList);
         } else {
           console.warn("⚠️ No valid semester data found for:", semesterNumber);
-          setFacultyData([]); // Ensure facultyData is reset if no valid data is found
+          setFacultyData([]);
         }
       } catch (err) {
         console.error("❌ Error fetching faculty data:", err);
@@ -46,9 +44,9 @@ const Faculty = () => {
         setLoading(false);
       }
     };
-
+  
     fetchFacultyData();
-  }, []);
+  }, [courseName]); // Added courseName as a dependency  
 
   // Pagination Handlers
   const handleNext = () => {

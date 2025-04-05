@@ -8,18 +8,21 @@ import SubjectGraph from "../components/SubjectGraph";
 import NoticeBoardComponent from "../components/StudentNoticeBoardComponent";
 import ExamSchedule from "../components/ExamSchedule";
 import ExamResults from "../components/ExamResults";
+import ExamResults from "../components/ExamResults";
 
 function StudentDashboard() {
   const [regdNo, setRegdNo] = useState(localStorage.getItem("username") || ""); // Get username from localStorage
   const [semesterNumber, setSemesterNumber] = useState(null);
+  const [courseName, setCourseName] = useState("");
 
   useEffect(() => {
     console.log("Registered Number:", regdNo); // Debugging
   }, [regdNo]);
 
-  const handleProfileLoaded = (regdNo, semester) => {
+  const handleProfileLoaded = (regdNo, semester,course) => {
     // setRegdNo(regdNo);
     setSemesterNumber(semester);
+    setCourseName(course);
   };
 
   return (
@@ -44,7 +47,7 @@ function StudentDashboard() {
         {/* Subject Graph */}
         <Box sx={{ width: "50%" }}>
           <Paper sx={{ flex: 1, minWidth: "250px", padding: "10px" }}>
-            <SubjectGraph regdNo={regdNo} semesterNumber={semesterNumber} />
+            <SubjectGraph regdNo={regdNo} />
           </Paper>
         </Box>
       </Box>
@@ -55,15 +58,13 @@ function StudentDashboard() {
       >
         {/* Performance Chart */}
         <Box sx={{ width: "50%", height: "100%" }}>
-          <Paper
-            sx={{ flex: 1, minWidth: "200px", padding: "10px", height: "100%" }}
-          >
-            <PerformanceChart />
+          <Paper sx={{ flex: 1, minWidth: "200px", padding: "10px", height: "100%" }}>
+            <PerformanceChart regdNo={regdNo} />
           </Paper>
         </Box>
         <Box sx={{ width: "50%", marginTop: "90px" }}>
           <Paper sx={{ flex: 2, minWidth: "300px", padding: "10px" }}>
-            <Faculty />
+            <Faculty courseName={courseName}/>
           </Paper>
         </Box>
       </Box>
@@ -77,15 +78,8 @@ function StudentDashboard() {
 
         {/* Attendance */}
         <Box sx={{ width: "20%", height: "25%" }}>
-          <Paper
-            sx={{
-              width: "100%",
-              minWidth: "300px",
-              padding: "10px",
-              marginLeft: "-15px",
-            }}
-          >
-            <SAttendance />
+          <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px", marginLeft: "-15px" }}>
+            <SAttendance regdNo={regdNo} />
           </Paper>
         </Box>
 
@@ -103,6 +97,11 @@ function StudentDashboard() {
           </Paper>
         </Box>
       </Box>
+      <Box sx={{ width: "100%", height: "25%" }}>
+          <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px", marginLeft: "-15px" }}>
+            <ExamResults/>
+          </Paper>
+        </Box>
     </Box>
   );
 }

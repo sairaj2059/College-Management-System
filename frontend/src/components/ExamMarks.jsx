@@ -30,7 +30,7 @@ const initialStudents = [
   },
   {
     id: '35015',
-    name: 'Sarah Johnson',
+    name: 'Sarah Johnson',  
     class: '10A',
     subjectInfo: 'CHE301 - Chemistry',
     cie1: '',

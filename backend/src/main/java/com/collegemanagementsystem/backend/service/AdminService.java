@@ -61,5 +61,21 @@ public String verify(UserAuth student) {
     }
 }
 
+
+public boolean changePassword(String username, String oldPassword, String newPassword) {
+    UserAuth user = repo.findByUsername(username);
+    if (user == null || !encoder.matches(oldPassword, user.getPassword())) {
+        logger.error("Password change failed for user: " + username + " (Incorrect old password)");
+        return false;
+    }
+
+    // Encrypt the new password
+    user.setPassword(encoder.encode(newPassword));
+    repo.save(user);
+    
+    logger.info("Password updated successfully for user: " + username);
+    return true;
+}
+
 }
 
