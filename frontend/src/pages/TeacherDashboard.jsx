@@ -7,6 +7,7 @@ import Attendance from "../components/Attendance";
 import StudentMarks from "../components/StudentMarks";
 import TeacherProfile from "../components/TeacherProfile";
 import AddAttendanceForm from "../components/AddAttendanceForm";
+import ExamMarks from "../components/ExamMarks"
 import NoticeBoardComponent from "../components/NoticeBoardComponent";
 
 const TeacherDashboard = () => {
@@ -43,6 +44,9 @@ const TeacherDashboard = () => {
           <NoticeBoardComponent />
         </Paper>
       </Box>
+      <Paper sx={{ flex: 1, padding: 2 }}>
+        <ExamMarks/>
+        </Paper>
     </Box>
   );
 };

@@ -7,6 +7,7 @@ import Faculty from "../components/Faculty";
 import SubjectGraph from "../components/SubjectGraph";
 import NoticeBoardComponent from "../components/StudentNoticeBoardComponent";
 import ExamSchedule from "../components/ExamSchedule";
+import ExamResults from "../components/ExamResults";
 
 function StudentDashboard() {
   const [regdNo, setRegdNo] = useState(localStorage.getItem("username") || ""); // Get username from localStorage
@@ -75,6 +76,11 @@ function StudentDashboard() {
           </Paper>
         </Box>
       </Box>
+      <Box sx={{ width: "100%", height: "25%" }}>
+          <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px", marginLeft: "-15px" }}>
+            <ExamResults/>
+          </Paper>
+        </Box>
     </Box>
   );
 }

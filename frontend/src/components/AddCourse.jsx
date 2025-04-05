@@ -218,7 +218,7 @@ const AddCourse = () => {
               >
                 Edit Courses
               </Typography>
-              {loading && (
+              {!loading && (
                 <Button
                   onClick={addCourse}
                   sx={{
