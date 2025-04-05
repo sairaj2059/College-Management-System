@@ -37,6 +37,23 @@
   font-weight: 500;
 }
 
+/* Styled Dropdown */
+.semester-dropdown {
+  background-color: #f0f9ff;
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  border: none;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #1e40af;
+  cursor: pointer;
+}
+
+.semester-dropdown:hover {
+  background-color: #dbeafe;
+}
+
+/* Chart Styles */
 .chart-grid {
   stroke: #e5e7eb;
 }
