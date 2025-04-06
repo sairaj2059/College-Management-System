@@ -16,5 +16,6 @@ public class StudentProfile {
     private String year;
     private String imageurl;
     private String semester;
+    private String emailAddress;
 }
 

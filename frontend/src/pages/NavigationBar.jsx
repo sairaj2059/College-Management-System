@@ -16,11 +16,20 @@ export const NavigationBar = () => {
     return "/login";
   },[role]);
 
-  const tabRoutes = useMemo(() =>({
-    0: getDashboardRoute(),
-    1: role === "ADMIN"? "/admin/studentsList" : `/${role.toLowerCase()}/exam`,
-    2: `/${role.toLowerCase()}/discussion`,
-  }), [getDashboardRoute]);
+  const tabRoutes = useMemo(() => {
+    const base = {
+      0: getDashboardRoute(),
+      1: role === "ADMIN" ? "/admin/studentsList" : `/${role.toLowerCase()}/exam`,
+      2: `/${role.toLowerCase()}/discussion`,
+    };
+  
+    if (role === "STUDENT") {
+      base[3] = "/student/examresults";
+    }
+  
+    return base;
+  }, [getDashboardRoute]);
+  
   
  useEffect(() => {
     navigate(tabRoutes[tabValue] || "/login");

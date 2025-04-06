@@ -1,6 +1,7 @@
 package com.collegemanagementsystem.backend.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,18 +10,25 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.collegemanagementsystem.backend.dto.QuestionList;
+import com.collegemanagementsystem.backend.dto.StudentSubjectCieDTO;
 import com.collegemanagementsystem.backend.dto.TeacherProfile;
+import com.collegemanagementsystem.backend.model.CieMarks;
+import com.collegemanagementsystem.backend.model.SubjectMarks;
 import com.collegemanagementsystem.backend.model.ClassSchedule;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.examModel.ExamResult;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
+import com.collegemanagementsystem.backend.model.SemesterMarks;
+import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.TeacherDetails;
 import com.collegemanagementsystem.backend.repository.ClassScheduleRepository;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
 import com.collegemanagementsystem.backend.repository.ExamRepository;
 import com.collegemanagementsystem.backend.repository.ExamResultsRepository;
+import com.collegemanagementsystem.backend.repository.ResultsRepository;
 import com.collegemanagementsystem.backend.repository.TeacherDetailsRepository;
+
 
 @Service
 public class TeacherService {
@@ -39,9 +47,39 @@ public class TeacherService {
     @Autowired
     private ImageService imageService;
 
-
      @Autowired
     private ClassScheduleRepository scheduleRepository;
+
+    @Autowired
+    private ResultsRepository resultsRepository;
+
+    public List<StudentSubjectCieDTO> getAllStudentsBySubject(String subjectName) {
+        List<SemesterResults> allStudents = resultsRepository.findAll();
+
+        List<StudentSubjectCieDTO> result = new ArrayList<>();
+
+        for (SemesterResults student : allStudents) {
+            String regNo = student.getRegdNo();
+
+            for (SemesterMarks sem : student.getSemesters()) {
+                for (SubjectMarks mark : sem.getSubjectMarks()) {
+                    if (mark.getSubject().getSubjectName().equalsIgnoreCase(subjectName)) {
+                        CieMarks cie = mark.getCieMarks();
+                        result.add(new StudentSubjectCieDTO(
+                            regNo,
+                            subjectName,
+                            cie.getCie1(),
+                            cie.getCie2(),
+                            cie.getCie3(),
+                            cie.getEse_gpa()
+                        ));
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
 
     public ClassSchedule getClassScheduleByClassName(String className) {
         return scheduleRepository.findByClassName(className);
@@ -180,12 +218,6 @@ public class TeacherService {
         return imageService.getImage(teacher.getImageId());
     }
 
-
-//   public ResponseEntity<List<SemesterResults>> findBySubjectTeacherAndSubjectName(String subjectTeacher, String subjectName) {
-//     try {
-//         // Fetch results from the repository
-//         List<SemesterResults> results = resultsRepository.findBySubjectTeacherAndSubjectName(subjectTeacher, subjectName);
-
 public ResponseEntity<?> getResultList(String examId) {
     try {
         ExamResult examResults = examResultsRepository.findByExamId(examId);
@@ -199,20 +231,4 @@ public ResponseEntity<?> getResultList(String examId) {
         return ResponseEntity.internalServerError().build();
     }
 }
-
-
-//         // Check if results are empty
-//         if (results.isEmpty()) {
-//             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                                  .body(Collections.emptyList()); // Return empty list with 404 status
-//         }
-//         // Return results with 200 OK status
-//         return ResponseEntity.ok(results);
-//     } catch (Exception e) {
-//         // Log the exception and return a 500 Internal Server Error response
-//         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                              .body(Collections.emptyList());
-//     }
-//}
-    
 }

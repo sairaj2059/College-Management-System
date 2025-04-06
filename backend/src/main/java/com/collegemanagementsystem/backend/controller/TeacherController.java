@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.collegemanagementsystem.backend.dto.QuestionList;
+import com.collegemanagementsystem.backend.dto.StudentSubjectCieDTO;
 import com.collegemanagementsystem.backend.dto.TeacherProfile;
 import com.collegemanagementsystem.backend.model.ClassSchedule;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
@@ -40,6 +41,14 @@ public class TeacherController {
     @GetMapping("/")
     public String greetByTeacher() {
         return "Hello Teacher From Teacher Dashboard";
+    }
+
+     @GetMapping("/by-subject")
+    public ResponseEntity<List<StudentSubjectCieDTO>> getStudentsBySubject(
+        @RequestParam String subjectName
+    ) {
+        List<StudentSubjectCieDTO> result = teacherService.getAllStudentsBySubject(subjectName);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/sendattendence")

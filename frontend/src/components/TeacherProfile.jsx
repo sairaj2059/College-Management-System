@@ -8,7 +8,7 @@ import Box from "@mui/joy/Box";
 import "../resources/css/TeacherProfile.css";
 import TeacherDashboardService from "../services/TeacherDashboardservice.js";
 
-function TeacherProfile({ teacherId }) {
+function TeacherProfile({ teacherId, onSubjectsLoaded }) {
   const [teacherData, setTeacherData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,9 +18,14 @@ function TeacherProfile({ teacherId }) {
     async function fetchProfile() {
       try {
         const data = await TeacherDashboardService.getTeacherProfilebyteacherId(teacherId);
-        console.log("inside the teacher profile after the service returned", data);
         if (data) {
           setTeacherData(data);
+
+          // ✅ Extract subject names and pass to parent component
+          if (onSubjectsLoaded && data.subjects) {
+            const subjectNames = data.subjects.map((subject) => subject.subjectName);
+            onSubjectsLoaded(subjectNames);
+          }
         } else {
           setError("Failed to load teacher profile.");
         }
@@ -34,7 +39,7 @@ function TeacherProfile({ teacherId }) {
     if (teacherId) {
       fetchProfile();
     }
-  }, [teacherId]);
+  }, [teacherId, onSubjectsLoaded]);
 
   if (loading) return <Typography>Loading...</Typography>;
   if (error) return <Typography color="error">{error}</Typography>;

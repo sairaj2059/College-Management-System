@@ -69,6 +69,7 @@ public class StudentService {
                 student.getCourse(),
                 student.getYear(),
                 student.getSemester(),
+                student.getEmailAddress(),
                 imageurl);
     }
 

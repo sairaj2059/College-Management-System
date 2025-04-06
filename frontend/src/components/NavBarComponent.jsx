@@ -7,15 +7,15 @@ import { Avatar, Box, Typography } from "@mui/material";
 //import examIcon from "../resources/images/exam.png";
 
 import logo from "../resources/images/SSSIHL-Logo_White.png";
-import SchoolSharpIcon from "@mui/icons-material/SchoolSharp";
+import DescriptionIcon from '@mui/icons-material/Description';
 import Divider from "@mui/material/Divider";
 import { MessageOutlined } from "@ant-design/icons";
 import Tooltip from "@mui/material/Tooltip";
 import { useDispatch, useSelector } from "react-redux";
 import { setTab } from "../redux/slices/navSlice";
-import { Link } from "react-router-dom";
-import { InfoRounded } from "@mui/icons-material";
-import listIcon from "../resources/images/listIcon.png";
+// import { Link } from "react-router-dom";
+// import { InfoRounded } from "@mui/icons-material";
+// import listIcon from "../resources/images/listIcon.png";
 
 import HomeIcon from "@mui/icons-material/Home";
 import AssignmentIcon from "@mui/icons-material/Assignment";
@@ -28,7 +28,6 @@ import Card from "@mui/joy/Card";
 import ImageServive from "../services/ImageService";
 import { useEffect } from "react";
 import { useState } from "react";
-
 export default function NavBarComponent() {
   //const [value, setValue] = React.useState(0);
   const [image, setImage] = useState(null);
@@ -233,6 +232,38 @@ export default function NavBarComponent() {
               aria-label="mesaages"
             />
           </Tooltip>
+          <Tooltip title="Exam Results">
+  <Tab
+    sx={{
+      borderRadius: value === 3 ? "15px" : "",
+      backgroundColor: value === 3 ? "#294c6d" : "",
+    }}
+    icon={
+      <Box
+        sx={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <DescriptionIcon style={{ fontSize: "24px", color: "white" }} />
+        {value === 3 && (
+          <Typography
+            variant="caption"
+            sx={{ ml: 1, color: "white" }}
+          >
+            Exam Results
+          </Typography>
+        )}
+      </Box>
+    }
+    aria-label="examresults"
+  />
+</Tooltip>
+
         </Tabs>
       </Box>
 

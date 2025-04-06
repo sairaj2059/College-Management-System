@@ -3,6 +3,27 @@ import axios from "axios";
 class TeacherDashboardservice {
 static BASE_URL = "http://localhost:8080";
 
+static async getStudentsBySubject(subjectName) {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get(
+      `${this.BASE_URL}/teacher/by-subject`,
+      {
+        params: { subjectName }, 
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.log("Error fetching students by subject:", error);
+    return null;
+  }
+}
+
+
 static async addAttendance(attendancedata) {
     const token = localStorage.getItem("token");
     console.log("Token being sent:", token); // Added logging for the token
