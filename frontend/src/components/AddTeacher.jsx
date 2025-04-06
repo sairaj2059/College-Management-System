@@ -4,27 +4,18 @@ import Box from "@mui/joy/Box";
 import Button from "@mui/joy/Button";
 import FormControl from "@mui/joy/FormControl";
 import FormLabel from "@mui/joy/FormLabel";
-
 import Input from "@mui/joy/Input";
 import IconButton from "@mui/joy/IconButton";
-
 import Stack from "@mui/joy/Stack";
-
 import Typography from "@mui/joy/Typography";
-
 import Breadcrumbs from "@mui/joy/Breadcrumbs";
-
 import Card from "@mui/joy/Card";
-
 import { Link } from "react-router-dom";
-
 import HomeRoundedIcon from "@mui/icons-material/HomeRounded";
 import ChevronRightRoundedIcon from "@mui/icons-material/ChevronRightRounded";
 import EmailRoundedIcon from "@mui/icons-material/EmailRounded";
 import InfoIcon from "@mui/icons-material/Info";
-
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-
 import Autocomplete from "@mui/joy/Autocomplete";
 import Avatar from "@mui/joy/Avatar";
 import { countries, departments, qualifications } from "../resources/DataList";
@@ -33,12 +24,13 @@ import CourseService from "../services/CourseService";
 import ClassService from "../services/ClassService";
 
 function AddTeacher() {
+  // State for the file to be uploaded and its preview
   const [selectedImage, setSelectedImage] = useState(null);
+  const [previewImage, setPreviewImage] = useState(null);
   const [classes, setClasses] = useState([]);
   const [subjects, setSubjects] = useState([]);
 
   const [formData, setFormData] = useState({
-    image: selectedImage,
     teacherId: "",
     title: "",
     firstName: "",
@@ -62,16 +54,16 @@ function AddTeacher() {
   });
 
   const getOptionLabel = (option) => (option ? option.label : "");
-
   const isOptionEqualToValue = (option, value) =>
     option?.label === value?.label;
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => setSelectedImage(e.target.result);
-      reader.readAsDataURL(file);
+      // Store the actual File object for uploading
+      setSelectedImage(file);
+      // Create a preview URL for displaying the image in the UI
+      setPreviewImage(URL.createObjectURL(file));
     }
   };
 
@@ -85,29 +77,25 @@ function AddTeacher() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-  
-    const { teacherId } = formData; // Extract registration number
-  
+    const { teacherId } = formData;
     if (!teacherId) {
-      console.error("Registration number is required");
+      console.error("Teacher Id is required");
       return;
     }
-  
     try {
-      // Register the student using regdNo as the username
+      // Register the teacher using teacherId as the username
       const registerResponse = await UserService.Register(teacherId, "omsrisairam", "TEACHER");
-  
       if (registerResponse) {
         console.log("User registered successfully:", registerResponse);
-  
-        // Proceed with adding student details
         const formDataToSend = new FormData();
-        formDataToSend.append("teacherDetails", new Blob([JSON.stringify(formData)], { type: "application/json" }));
-  
+        formDataToSend.append(
+          "teacherDetails",
+          new Blob([JSON.stringify(formData)], { type: "application/json" })
+        );
+        // Append the file; your ImageService will then compress and store it.
         if (selectedImage) {
           formDataToSend.append("imageFile", selectedImage);
         }
-  
         const result = await UserService.addTeacher(formDataToSend);
         console.log("Teacher added successfully:", result);
       } else {
@@ -136,6 +124,7 @@ function AddTeacher() {
     }
     getClasses();
   }, []);
+
   useEffect(() => {
     async function getSubjects() {
       const response = await CourseService.getAllSubjects();
@@ -143,6 +132,7 @@ function AddTeacher() {
     }
     getSubjects();
   }, []);
+
   return (
     <Box margin={2}>
 
@@ -170,10 +160,7 @@ function AddTeacher() {
               <Link to="/admin" sx={{ fontSize: 12, fontWeight: 500 }}>
                 Admin Dashboard
               </Link>
-              <Typography
-                color="primary"
-                sx={{ fontWeight: 500, fontSize: 12 }}
-              >
+              <Typography color="primary" sx={{ fontWeight: 500, fontSize: 12 }}>
                 Add Teacher
               </Typography>
             </Breadcrumbs>
@@ -200,12 +187,8 @@ function AddTeacher() {
             </Box>
             <Box sx={{ m: 3 }}>
               <Stack direction="row" spacing={1}>
-                <AspectRatio
-                  ratio="1"
-                  maxHeight={200}
-                  sx={{ minWidth: 120, borderRadius: "100%" }}
-                >
-                  <Avatar src={selectedImage} />
+                <AspectRatio ratio="1" maxHeight={200} sx={{ minWidth: 120, borderRadius: "100%" }}>
+                  <Avatar src={previewImage} />
                 </AspectRatio>
                 <input
                   accept="image/*"
@@ -250,7 +233,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>First Name</FormLabel>
                     <Input
@@ -264,7 +246,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>Last Name</FormLabel>
                     <Input
@@ -278,7 +259,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>Teacher Id</FormLabel>
                     <Input
@@ -292,7 +272,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>Date of Birth</FormLabel>
                     <Input
@@ -305,7 +284,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>Department</FormLabel>
                     <Autocomplete
@@ -340,7 +318,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>City</FormLabel>
                     <Input
@@ -365,7 +342,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>State</FormLabel>
                     <Input
@@ -378,7 +354,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>Country</FormLabel>
                     <Autocomplete
@@ -424,7 +399,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>Pin Code</FormLabel>
                     <Input
@@ -493,7 +467,7 @@ function AddTeacher() {
                     <Autocomplete
                       placeholder="Select Class"
                       value={classes.find(
-                        (className) =>  classes.label === formData.classmentor
+                        (className) => className.label === formData.classmentor
                       )}
                       onChange={handleAutocompleteChange("classmentor")}
                       options={classes}
@@ -504,7 +478,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>Subjects</FormLabel>
                     <Autocomplete
@@ -534,7 +507,7 @@ function AddTeacher() {
                       placeholder="Maximum Qualification"
                       value={qualifications.find(
                         (qualification) =>
-                          qualifications.label === formData.qualification
+                          qualification.label === formData.qualification
                       )}
                       onChange={handleAutocompleteChange("qualification")}
                       options={qualifications}
@@ -545,7 +518,6 @@ function AddTeacher() {
 
                     />
                   </FormControl>
-
                   <FormControl sx={{ display: "flex" }}>
                     <FormLabel>Designation</FormLabel>
                     <Input
@@ -583,3 +555,4 @@ function AddTeacher() {
 }
 
 export default AddTeacher;
+

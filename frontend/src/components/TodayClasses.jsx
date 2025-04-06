@@ -101,6 +101,5 @@ const TodayClasses = () => {
     </ThemeProvider>
   );
 };
-
 export default TodayClasses;
 

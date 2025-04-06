@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import com.collegemanagementsystem.backend.dto.QuestionList;
 import com.collegemanagementsystem.backend.dto.StudentProfile;
+import com.collegemanagementsystem.backend.dto.StudentSubjectCieDTO;
 import com.collegemanagementsystem.backend.dto.TeacherProfile;
 import com.collegemanagementsystem.backend.model.ClassSchedule;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
@@ -29,8 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
-
-
 
 @RequestMapping("/teacher")
 @RestController
@@ -52,6 +51,13 @@ public class TeacherController {
     @GetMapping("/")
     public String greetByTeacher() {
         return "Hello Teacher From Teacher Dashboard";
+    }
+
+    @GetMapping("/by-subject")
+    public ResponseEntity<List<StudentSubjectCieDTO>> getStudentsBySubject(
+            @RequestParam String subjectName) {
+        List<StudentSubjectCieDTO> result = teacherService.getAllStudentsBySubject(subjectName);
+        return ResponseEntity.ok(result);
     }
 
     @PostMapping("/sendattendence")
@@ -105,8 +111,9 @@ public class TeacherController {
     }
 
     @PutMapping("/modifyAnswerList/{examId}")
-    public ResponseEntity<?> modifyAnswerList(@PathVariable String examId, @RequestBody StudentExamDetail studentExamDetail) {
-        
+    public ResponseEntity<?> modifyAnswerList(@PathVariable String examId,
+            @RequestBody StudentExamDetail studentExamDetail) {
+
         return teacherService.modifyAnswerList(examId, studentExamDetail);
     }
 
@@ -158,12 +165,6 @@ public class TeacherController {
         return semResultService.getSemResultDetails(regdNo);
     }
 
-    @PostMapping("/semResults")
-    public ResponseEntity<SemesterResults> setSemResultDetails(@RequestBody SemesterResults semesterResults) {
-        SemesterResults savedResults = semResultService.saveSemesterResult(semesterResults);
-        return ResponseEntity.ok(savedResults);
-    }
-
     @GetMapping("/classShedule/{className}")
     public ClassSchedule getClassSchedule(@PathVariable String className) {
         return teacherService.getClassScheduleByClassName(className);
@@ -178,26 +179,4 @@ public class TeacherController {
     public ResponseEntity<?> deleteClassSchedule(@PathVariable String className) {
         return teacherService.deleteClassSchedule(className);
     }
-
-    @GetMapping("/studentProfile/{regdNo}")
-    public ResponseEntity<?> getstudentProfileByRegdNo(@PathVariable String regdNo) {
-        try {
-            StudentProfile profile = studentService.getStudentProfileByRegdNo(regdNo);
-            return ResponseEntity.ok(profile);
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @GetMapping("/Profile/{teacherId}")
-    public ResponseEntity<ProfileDTO> getProfileByTeacherId(@PathVariable String teacherId) {
-        try {
-            ProfileDTO profile = teacherService.getTeacherProfileData(teacherId);
-            return ResponseEntity.ok(profile);
-        } catch (NoSuchElementException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(new ProfileDTO("Teacher not found", ""));
-        }
-    }
-
 }

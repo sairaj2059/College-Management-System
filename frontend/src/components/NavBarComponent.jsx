@@ -4,6 +4,7 @@ import Tab from "@mui/material/Tab";
 import { DropdownComponent } from "./DropdownComponent";
 import { Avatar, Box, Typography } from "@mui/material";
 import logo from "../resources/images/SSSIHL-Logo_White.png";
+import DescriptionIcon from '@mui/icons-material/Description';
 import Divider from "@mui/material/Divider";
 import { MessageOutlined } from "@ant-design/icons";
 import Tooltip from "@mui/material/Tooltip";
@@ -250,6 +251,38 @@ export default function NavBarComponent() {
               />
             </Tooltip>
           )}
+          <Tooltip title="Exam Results">
+  <Tab
+    sx={{
+      borderRadius: value === 3 ? "15px" : "",
+      backgroundColor: value === 3 ? "#294c6d" : "",
+    }}
+    icon={
+      <Box
+        sx={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <DescriptionIcon style={{ fontSize: "24px", color: "white" }} />
+        {value === 3 && (
+          <Typography
+            variant="caption"
+            sx={{ ml: 1, color: "white" }}
+          >
+            Exam Results
+          </Typography>
+        )}
+      </Box>
+    }
+    aria-label="examresults"
+  />
+</Tooltip>
+
         </Tabs>
       </Box>
 

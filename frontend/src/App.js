@@ -105,6 +105,7 @@ function App() {
                     element={<NoticeBoard />}
                   />
                   <Route path="/student/exam" element={<ExamList />} />
+                  <Route path="/student/examresults" element={<ExamResults />} />
                   <Route
                     path="/student/exam/questions/:id"
                     element={<QuestionDisplay />}
