@@ -66,7 +66,11 @@ public class AdministratorService {
         return ResponseEntity.ok().body(studentDetailsRepository.findAll());
     }
 
-    public ResponseEntity<?> addTeacherByForm(TeacherDetails teacherDetails) {
+    public ResponseEntity<?> addTeacherByForm(TeacherDetails teacherDetails,MultipartFile imageFile) throws IOException{
+        if (imageFile != null && !imageFile.isEmpty()) {
+            String imageId = imageService.storeImage(imageFile);
+            teacherDetails.setImageId(imageId);  // Save image ID
+        }
         TeacherDetails teacherDetailsTemp = teacherDetailsRepository.findByTeacherId(teacherDetails.getTeacherId());
         if (teacherDetailsTemp == null) {
             teacherDetails.getSubjects()

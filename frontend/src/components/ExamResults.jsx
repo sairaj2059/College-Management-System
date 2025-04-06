@@ -14,6 +14,7 @@ import SemesterCard from "./SemesterCard";
 import "../resources/css/Semester.css";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 const theme = createTheme({
   typography: {
@@ -25,7 +26,7 @@ const ExamResults = () => {
   const [expandedSemesters, setExpandedSemesters] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [data, setData] = useState({ id: null, semesters: [] });
-  const id = "224206";
+  const id = useSelector((state)=>state.auth.username);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -34,6 +35,7 @@ const ExamResults = () => {
         console.error("No token found");
         return;
       }
+      
       try {
         console.log(token);
         const response = await axios.get(

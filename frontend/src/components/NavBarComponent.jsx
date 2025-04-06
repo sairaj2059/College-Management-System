@@ -3,54 +3,67 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import { DropdownComponent } from "./DropdownComponent";
 import { Avatar, Box, Typography } from "@mui/material";
-//import home from "../resources/images/home.png";
-//import examIcon from "../resources/images/exam.png";
-
 import logo from "../resources/images/SSSIHL-Logo_White.png";
-import SchoolSharpIcon from "@mui/icons-material/SchoolSharp";
 import Divider from "@mui/material/Divider";
 import { MessageOutlined } from "@ant-design/icons";
 import Tooltip from "@mui/material/Tooltip";
 import { useDispatch, useSelector } from "react-redux";
 import { setTab } from "../redux/slices/navSlice";
-import { Link } from "react-router-dom";
-import { InfoRounded } from "@mui/icons-material";
-import listIcon from "../resources/images/listIcon.png";
-
 import HomeIcon from "@mui/icons-material/Home";
 import AssignmentIcon from "@mui/icons-material/Assignment";
-import GroupIcon from "@mui/icons-material/Group";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-
-import ListIcon from "@mui/icons-material/List";
-import Card from "@mui/joy/Card";
-
-import ImageServive from "../services/ImageService";
 import { useEffect } from "react";
 import { useState } from "react";
+import axios from "axios";
+import ImageService from "../services/ImageService";
 
 export default function NavBarComponent() {
-  //const [value, setValue] = React.useState(0);
   const [image, setImage] = useState(null);
   const dispatch = useDispatch();
   const value = useSelector((state) => state.tabs.tabValue);
-  const Username = "kokonda Shree Shyam sundar";
-  const EmailId = "keshav@123";
-  const role = localStorage.getItem("role");
+  const username = useSelector((state) => state.auth.username);
+  const role = useSelector((state) => state.auth.role);
+  const token = useSelector((state) => state.auth.token);
+  const [details, setDetails] = useState({});
+  const [imageUrl, setImageUrl] = useState("");
+  
 
-  const fetchImage = async () => {
-    const response = await ImageServive.getImageByStudent("224210");
-    const imageUrl = URL.createObjectURL(response);
-    return imageUrl;
-  };
+  useEffect(() => {
+    const fetchImage = async() => {
+      try {
+        const response = await ImageService.getImageByStudent(username);
+        const imageUrl = URL.createObjectURL(response);
+        setImageUrl(imageUrl);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchImage();
+  }, [username]);
 
-  // useEffect(()=>{
-  //   async function getImage(){
-  //     const image = await fetchImage();
-  //     setImage(image);
-  //   }
-  //   getImage();
-  // }, [])
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (role?.toLowerCase() !== "admin") {
+        try {
+          const response = await axios.get(
+            `http://localhost:8080/${role.toLowerCase()}/Profile/${username}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          setDetails(response.data);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        }
+      } else {
+        setDetails({
+          name: "Administrator",
+          email: "admin",
+        });
+      }
+    };
+    fetchUserData();
+  }, [role, username]);
 
   const handleChange = (event, newValue) => {
     dispatch(setTab(newValue));
@@ -184,7 +197,7 @@ export default function NavBarComponent() {
                       justifyContent: "center",
                     }}
                   >
-                    <FormatListBulletedIcon  sx={{ color: "white" }}/>
+                    <FormatListBulletedIcon sx={{ color: "white" }} />
                     {value === 1 && (
                       <Typography
                         variant="caption"
@@ -260,10 +273,7 @@ export default function NavBarComponent() {
           </Box>
 
           <Box>
-            <Avatar
-              src={image}
-              sx={{ width: 47, height: 47 }}
-            />
+            <Avatar src={imageUrl} sx={{ width: 47, height: 47 }} />
           </Box>
 
           <Box
@@ -276,7 +286,7 @@ export default function NavBarComponent() {
               overflow: "hidden",
             }}
           >
-            <Tooltip title={String(Username)} arrow>
+            <Tooltip title={details?.name || username} arrow>
               <Box>
                 <Typography
                   sx={{
@@ -288,7 +298,7 @@ export default function NavBarComponent() {
                     textOverflow: "ellipsis",
                   }}
                 >
-                  {Username}
+                  {details.name || username}
                 </Typography>
 
                 <Typography
@@ -298,7 +308,7 @@ export default function NavBarComponent() {
                     fontWeight: 400,
                   }}
                 >
-                  {EmailId}
+                  {details?.email || "user@gmail.com"}
                 </Typography>
               </Box>
             </Tooltip>

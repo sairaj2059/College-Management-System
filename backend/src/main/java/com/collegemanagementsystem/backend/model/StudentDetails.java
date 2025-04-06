@@ -51,4 +51,8 @@ public class StudentDetails {
     private String guardiansEmailAddress;
     private String guardiansAddress;
     private String semester;
+    public StudentDetails orElseThrow(Object object) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
+    }
 }

@@ -2,6 +2,7 @@ package com.collegemanagementsystem.backend.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,13 @@ import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.examModel.ExamResult;
 import com.collegemanagementsystem.backend.model.examModel.StudentExamDetail;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
+import com.collegemanagementsystem.backend.model.ProfileDTO;
+import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.model.TeacherDetails;
 import com.collegemanagementsystem.backend.repository.ClassScheduleRepository;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
 import com.collegemanagementsystem.backend.repository.ExamRepository;
 import com.collegemanagementsystem.backend.repository.ExamResultsRepository;
-import com.collegemanagementsystem.backend.repository.ResultsRepository;
 import com.collegemanagementsystem.backend.repository.TeacherDetailsRepository;
 
 @Service
@@ -42,11 +44,13 @@ public class TeacherService {
     private ImageService imageService;
 
     @Autowired
+    @Autowired
     private ClassScheduleRepository scheduleRepository;
 
     public ClassSchedule getClassScheduleByClassName(String className) {
         return scheduleRepository.findByClassName(className);
     }
+
 
     public ResponseEntity<?> setClassSchedule(ClassSchedule schedule) {
         try {
@@ -56,6 +60,8 @@ public class TeacherService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save schedule");
         }
+    }
+
     }
 
     public ResponseEntity<?> deleteClassSchedule(String className) {
@@ -74,10 +80,16 @@ public class TeacherService {
 
     public ClasswiseAttendance setStudentAttendanceByRegdNo(String className, String regdNo, String month,
             int newAbsentDays,
+
+    public ClasswiseAttendance setStudentAttendanceByRegdNo(String className, String regdNo, String month,
+            int newAbsentDays,
             AbsentDay absentDay) {
         ClasswiseAttendance classwiseAttendance = classWiseAttendaceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(
                 className, regdNo,
+        ClasswiseAttendance classwiseAttendance = classWiseAttendaceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(
+                className, regdNo,
                 month);
+        classwiseAttendance.getStudents().get(0).getAttendance().get(0).setDaysAbsent(newAbsentDays);
         classwiseAttendance.getStudents().get(0).getAttendance().get(0).setDaysAbsent(newAbsentDays);
         classwiseAttendance.getStudents().get(0).getAttendance().get(0).getAbsentDays().addLast(absentDay);
         System.out.println(classwiseAttendance);
@@ -151,7 +163,7 @@ public class TeacherService {
     public TeacherProfile getTeacherProfileByTeacherId(String teacherId) {
         TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
         if (teacher == null) {
-            throw new IllegalArgumentException("Student with regdNo " + teacherId + " not found.");
+            throw new IllegalArgumentException("teacher with regdNo " + teacherId + " not found.");
         }
         return convertToTeacherProfile(teacher);
     }
@@ -170,8 +182,10 @@ public class TeacherService {
                 teacher.getLastName(),
                 teacher.getClassmentor(),
                 teacher.getSubjects());
+                teacher.getSubjects());
     }
 
+    public ResponseEntity<?> getTeacherImage(String teacherId) throws IOException {
     public ResponseEntity<?> getTeacherImage(String teacherId) throws IOException {
         TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
         if (teacher == null || teacher.getImageId() == null) {

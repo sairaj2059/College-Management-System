@@ -37,8 +37,11 @@ public class AdminController {
     }
 
     @PostMapping("/addTeacher")
-    public ResponseEntity<?> addTeacher(@RequestBody TeacherDetails teacherDetails) {
-        return administratorService.addTeacherByForm(teacherDetails);
+    public ResponseEntity<?> addTeacherByForm(
+        @RequestPart("teacherDetails") TeacherDetails teacherDetails,
+        @RequestPart(value = "imageFile",required = false)MultipartFile imageFile) throws IOException
+    {
+        return administratorService.addTeacherByForm(teacherDetails,imageFile);
     }
 
     @PostMapping("/addNotice")

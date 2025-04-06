@@ -86,31 +86,37 @@ function AddTeacher() {
   const handleSubmit = async (event) => {
     event.preventDefault();
   
-    const { teacherId } = formData; // Extract teacher ID
+    const { teacherId } = formData; // Extract registration number
   
     if (!teacherId) {
-      console.error("Teacher ID is required");
+      console.error("Registration number is required");
       return;
     }
   
     try {
-      // Register the teacher using teacherId as username
+      // Register the student using regdNo as the username
       const registerResponse = await UserService.Register(teacherId, "omsrisairam", "TEACHER");
   
       if (registerResponse) {
-        console.log("Teacher registered successfully:", registerResponse);
+        console.log("User registered successfully:", registerResponse);
   
-        // Proceed with adding teacher details
-        const result = await UserService.addTeacher(formData);
+        // Proceed with adding student details
+        const formDataToSend = new FormData();
+        formDataToSend.append("teacherDetails", new Blob([JSON.stringify(formData)], { type: "application/json" }));
+  
+        if (selectedImage) {
+          formDataToSend.append("imageFile", selectedImage);
+        }
+  
+        const result = await UserService.addTeacher(formDataToSend);
         console.log("Teacher added successfully:", result);
       } else {
-        console.error("Failed to register the teacher.");
+        console.error("Failed to register the user.");
       }
     } catch (error) {
       console.error("Error during registration or teacher addition:", error);
     }
   };
-  
 
   const handleAutocompleteChange = (fieldName) => (event, newValue) => {
     setFormData((prevData) => ({
@@ -150,7 +156,7 @@ function AddTeacher() {
         >
           <Box sx={{ px: { xs: 2, md: 6 } }}>
             <Typography level="h3" fontWeight={"bold"}>
-              Add Student
+              Add Teacher
             </Typography>
             <Breadcrumbs
               size="sm"

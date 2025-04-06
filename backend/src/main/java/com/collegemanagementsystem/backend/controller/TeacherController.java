@@ -2,21 +2,24 @@ package com.collegemanagementsystem.backend.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.collegemanagementsystem.backend.dto.QuestionList;
+import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.dto.TeacherProfile;
 import com.collegemanagementsystem.backend.model.ClassSchedule;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
-import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
-import com.collegemanagementsystem.backend.model.SemesterResults;
+import com.collegemanagementsystem.backend.model.ProfileDTO;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.examModel.StudentExamDetail;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
+import com.collegemanagementsystem.backend.model.resultModal.SemesterResults;
 import com.collegemanagementsystem.backend.service.TeacherService;
 import com.collegemanagementsystem.backend.service.NoticeService;
 import com.collegemanagementsystem.backend.service.SemResultService;
@@ -149,10 +152,18 @@ public class TeacherController {
         return teacherService.getTeacherImage(teacherId);
     }
 
+    // results controller
     @GetMapping("/semResults/{regdNo}")
     public SemesterResults getSemResultDetails(@PathVariable String regdNo) {
         return semResultService.getSemResultDetails(regdNo);
     }
+
+    @PostMapping("/semResults")
+    public ResponseEntity<SemesterResults> setSemResultDetails(@RequestBody SemesterResults semesterResults) {
+        SemesterResults savedResults = semResultService.saveSemesterResult(semesterResults);
+        return ResponseEntity.ok(savedResults);
+    }
+
     @GetMapping("/classShedule/{className}")
     public ClassSchedule getClassSchedule(@PathVariable String className) {
         return teacherService.getClassScheduleByClassName(className);
@@ -167,4 +178,26 @@ public class TeacherController {
     public ResponseEntity<?> deleteClassSchedule(@PathVariable String className) {
         return teacherService.deleteClassSchedule(className);
     }
+
+    @GetMapping("/studentProfile/{regdNo}")
+    public ResponseEntity<?> getstudentProfileByRegdNo(@PathVariable String regdNo) {
+        try {
+            StudentProfile profile = studentService.getStudentProfileByRegdNo(regdNo);
+            return ResponseEntity.ok(profile);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/Profile/{teacherId}")
+    public ResponseEntity<ProfileDTO> getProfileByTeacherId(@PathVariable String teacherId) {
+        try {
+            ProfileDTO profile = teacherService.getTeacherProfileData(teacherId);
+            return ResponseEntity.ok(profile);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ProfileDTO("Teacher not found", ""));
+        }
+    }
+
 }

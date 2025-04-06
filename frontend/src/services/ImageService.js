@@ -27,6 +27,7 @@ class ImageService {
       const response = await axios.get(
         `${this.BASE_URL}/teacher/teacherImage/${teacherId}`,
         {
+          responseType: "blob",
           headers: {
             Authorization: `Bearer ${token}`,
           },

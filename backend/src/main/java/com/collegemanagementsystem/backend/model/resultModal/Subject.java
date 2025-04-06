@@ -1,4 +1,4 @@
-package com.collegemanagementsystem.backend.model;
+package com.collegemanagementsystem.backend.model.resultModal;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 

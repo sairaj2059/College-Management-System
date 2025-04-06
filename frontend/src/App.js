@@ -95,10 +95,15 @@ function App() {
                   <Route path="/teacher/exam-marks" element={<ExamMarks />} />
                   <Route path="/teacher/discussion" element={<Discussion />} />
                 </Route>
+
                 <Route element={<ProtectedRoute allowedRoles={"STUDENT"} />}>
                   <Route path="/" element={<StudentDashboard />} />
                   <Route path="/student" element={<StudentDashboard />} />
                   <Route path="/student/home" element={<StudentDashboard />} />
+                  <Route
+                    path="/student/notice-board"
+                    element={<NoticeBoard />}
+                  />
                   <Route path="/student/exam" element={<ExamList />} />
                   <Route
                     path="/student/exam/questions/:id"

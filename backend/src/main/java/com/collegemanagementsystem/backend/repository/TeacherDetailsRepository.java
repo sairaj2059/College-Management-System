@@ -7,7 +7,6 @@ import com.collegemanagementsystem.backend.model.TeacherDetails;
 @Repository
 public interface TeacherDetailsRepository extends MongoRepository<TeacherDetails,String> {
     TeacherDetails findTeacherDetailsByUsername(String username);
-
     TeacherDetails findByTeacherId(String teacherId);
 
 }
