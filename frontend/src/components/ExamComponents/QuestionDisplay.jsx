@@ -44,21 +44,24 @@ function QuestionDisplay() {
     const studentExamDetail = {
       regdNo: regdNo,
       studentName: regdNo,
-      attemptedQuestions: questionsList.length, 
-      correctAnswers: questionsList.filter((question) => question.isCorrect).length,
+      attemptedQuestions: questionsList.length,
+      correctAnswers: questionsList.filter((question) => question.isCorrect)
+        .length,
       totalMarks: questionsList
-        .map((question) => question.marksAwarded || 0) 
+        .map((question) => question.marksAwarded || 0)
         .reduce((a, b) => a + b, 0),
       attemptedQuestionsList: questionsList,
     };
-  
+
     try {
-      const response = await ExamService.submitExam(studentExamDetail, selectedExam.id);
+      const response = await ExamService.submitExam(
+        studentExamDetail,
+        selectedExam.id
+      );
     } catch (error) {
       console.error("Error submitting exam:", error);
     }
   };
-  
 
   const handleAttemptQuestion = (questionDetails, userAnswer) => {
     const updatedQuestion = {

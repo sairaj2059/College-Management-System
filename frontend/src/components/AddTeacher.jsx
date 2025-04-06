@@ -156,7 +156,7 @@ function AddTeacher() {
         >
           <Box sx={{ px: { xs: 2, md: 6 } }}>
             <Typography level="h3" fontWeight={"bold"}>
-              Add Student
+              Add Teacher
             </Typography>
             <Breadcrumbs
               size="sm"

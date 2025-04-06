@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Login from "./pages/Login";
@@ -28,6 +28,18 @@ import ResultsList from "./components/ExamComponents/ResultsList";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
+
+  useEffect(() => {
+    const handleUnload = () => {
+      localStorage.clear();
+    };
+
+    window.addEventListener('unload', handleUnload);
+
+    return () => {
+      window.removeEventListener('unload', handleUnload);
+    };
+  }, []);
 
   return (
     <>
@@ -83,10 +95,15 @@ function App() {
                   <Route path="/teacher/exam-marks" element={<ExamMarks />} />
                   <Route path="/teacher/discussion" element={<Discussion />} />
                 </Route>
+
                 <Route element={<ProtectedRoute allowedRoles={"STUDENT"} />}>
                   <Route path="/" element={<StudentDashboard />} />
                   <Route path="/student" element={<StudentDashboard />} />
                   <Route path="/student/home" element={<StudentDashboard />} />
+                  <Route
+                    path="/student/notice-board"
+                    element={<NoticeBoard />}
+                  />
                   <Route path="/student/exam" element={<ExamList />} />
                   <Route path="/student/examresults" element={<ExamResults />} />
                   <Route

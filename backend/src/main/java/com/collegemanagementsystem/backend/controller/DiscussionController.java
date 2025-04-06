@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.collegemanagementsystem.backend.dto.AddMember;
 import com.collegemanagementsystem.backend.dto.CreateRoom;
 import com.collegemanagementsystem.backend.model.Discussion;
+import com.collegemanagementsystem.backend.model.Message;
 import com.collegemanagementsystem.backend.service.DiscussionService;
 
 import java.util.List;
@@ -42,11 +43,11 @@ public class DiscussionController {
     }
 
     @GetMapping("/getMessages/{groupId}")
-    public ResponseEntity<List<Discussion.Message>> getMessagesByStudent(@PathVariable String groupId, @RequestParam String regdNo) {
+    public ResponseEntity<List<Message>> getMessagesByStudent(@PathVariable String groupId, @RequestParam String regdNo) {
         return discussionService.getMessageByGroupId(groupId, regdNo);
     }
     @GetMapping("/teacher/getMessages/{groupId}")
-    public ResponseEntity<List<Discussion.Message>> getMessagesByTeacher(@PathVariable String groupId, @RequestParam String teacherId) {
+    public ResponseEntity<List<Message>> getMessagesByTeacher(@PathVariable String groupId, @RequestParam String teacherId) {
         return discussionService.getMessageByGroupIdByTeacher(groupId, teacherId);
     }
     @PostMapping("/teacher/createRoom")
@@ -64,7 +65,6 @@ public class DiscussionController {
         return discussionService.getJoinedRooms(regdNo);
     }
     
-
     @GetMapping("/getParticipants/{groupId}")
     public ResponseEntity<?> getParticipants (@PathVariable String groupId) {
         return discussionService.getParticipants(groupId);

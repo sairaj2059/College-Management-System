@@ -2,7 +2,9 @@ package com.collegemanagementsystem.backend.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +24,7 @@ public class AdministratorService {
 
     @Autowired
     StudentDetailsRepository studentDetailsRepository;
+
     @Autowired
     ClasswiseStudentRepository classwiseStudentRepository;
 
@@ -84,6 +87,20 @@ public class AdministratorService {
         } else {
             return ResponseEntity.badRequest().body("Teacher Already Exists");
         }
+    }
+
+
+     public Map<String, Long> getTotalTeachersAndStudents() {
+    
+        long totalTeachers = teacherDetailsRepository.count();
+        long totalStudents = studentDetailsRepository.count();
+
+        // Create a map to hold the response data
+        Map<String, Long> result = new HashMap<>();
+        result.put("totalTeachers", totalTeachers);
+        result.put("totalStudents", totalStudents);
+
+        return result;
     }
 
 }

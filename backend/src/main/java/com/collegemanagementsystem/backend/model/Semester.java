@@ -1,6 +1,9 @@
 package com.collegemanagementsystem.backend.model;
 
 import java.util.List;
+
+import com.collegemanagementsystem.backend.model.resultModal.Subject;
+
 import lombok.*;
 
 @NoArgsConstructor  

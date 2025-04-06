@@ -3,6 +3,7 @@ package com.collegemanagementsystem.backend.service;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
+import com.collegemanagementsystem.backend.model.ProfileDTO;
 import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.examModel.ExamResult;
@@ -152,6 +154,20 @@ public class StudentService {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error submitting exam: " + e.getMessage());
         }
+    }
+
+    public ProfileDTO getStudentProfile(String regdNo) {
+        StudentDetails student = studentdetailsRepo.findByRegdNo(regdNo);
+
+        if (student == null) {
+            throw new NoSuchElementException("Student not found for regdNo: " + regdNo);
+        }
+
+        String firstName = student.getFirstName() != null ? student.getFirstName().trim() : "";
+        String lastName = student.getLastName() != null ? student.getLastName().trim() : "";
+    
+        String fullName = (firstName + " " + lastName).trim(); 
+        return new ProfileDTO(fullName, student.getEmailAddress());
     }
 
 }

@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 
 @RestController
-@RequestMapping("/api/images")  // ✅ Base URL for images
+@RequestMapping("/api/images") 
 public class ImageController {
 
     @Autowired

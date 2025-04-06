@@ -11,6 +11,8 @@ import org.springframework.data.mongodb.gridfs.GridFsTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.collegemanagementsystem.backend.dto.MessageRequest;
+import com.collegemanagementsystem.backend.model.Message;
 import com.mongodb.client.gridfs.model.GridFSFile;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -29,43 +31,50 @@ public class ImageService {
         byte[] compressedImage = compressImage(file.getInputStream());
 
         ObjectId id = gridFsTemplate.store(
-            new ByteArrayInputStream(compressedImage), 
-            file.getOriginalFilename(), 
-            file.getContentType()
-        );
+                new ByteArrayInputStream(compressedImage),
+                file.getOriginalFilename(),
+                file.getContentType());
+
+        return id.toString();
+    }
+
+    public String storeAttachment(MessageRequest file) throws IOException {
+
+        ObjectId id = gridFsTemplate.store(
+                new ByteArrayInputStream(file.getAttachment().getBytes()),
+                file.getAttachmentName(),
+                file.getAttachmentType());
 
         return id.toString();
     }
 
     /* Retrieve image from MongoDB */
-   /* Retrieve image from MongoDB */
-   public ResponseEntity<byte[]> getImage(String imageId) throws IOException {
-    GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(imageId)));
+    /* Retrieve image from MongoDB */
+    public ResponseEntity<byte[]> getImage(String imageId) throws IOException {
+        GridFSFile gridFSFile = gridFsTemplate.findOne(new Query(Criteria.where("_id").is(imageId)));
 
-    // Read the image data properly
-    byte[] imageBytes = gridFsTemplate.getResource(gridFSFile).getContent().readAllBytes();
+        // Read the image data properly
+        byte[] imageBytes = gridFsTemplate.getResource(gridFSFile).getContent().readAllBytes();
 
-    // Determine content type dynamically
-    String contentType = gridFSFile.getMetadata() != null ? gridFSFile.getMetadata().getString("_contentType") : "image/jpeg";
+        // Determine content type dynamically
+        String contentType = gridFSFile.getMetadata() != null ? gridFSFile.getMetadata().getString("_contentType")
+                : "image/jpeg";
 
-    return ResponseEntity.ok()
-            .contentType(MediaType.parseMediaType(contentType))
-            .body(imageBytes);
-}
-
-
+        return ResponseEntity.ok()
+                .contentType(MediaType.parseMediaType(contentType))
+                .body(imageBytes);
+    }
 
     /* Compress Image using Thumbnailator */
     private byte[] compressImage(InputStream inputStream) throws IOException {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
         Thumbnails.of(inputStream)
-                  .scale(0.5) //  Maintain aspect ratio, scale to 50%
-                  .outputQuality(0.5) //  Reduce quality to 50%
-                  .outputFormat("jpg") //    Convert to JPEG
-                  .toOutputStream(outputStream);
+                .scale(0.5) // Maintain aspect ratio, scale to 50%
+                .outputQuality(0.5) // Reduce quality to 50%
+                .outputFormat("jpg") // Convert to JPEG
+                .toOutputStream(outputStream);
 
         return outputStream.toByteArray();
     }
 }
-
