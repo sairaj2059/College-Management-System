@@ -2,8 +2,10 @@ package com.collegemanagementsystem.backend.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +15,7 @@ import com.collegemanagementsystem.backend.dto.TeacherProfile;
 import com.collegemanagementsystem.backend.model.ClassSchedule;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
+import com.collegemanagementsystem.backend.model.ProfileDTO;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.model.resultModal.SemesterResults;
@@ -166,4 +169,16 @@ public class TeacherController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/Profile/{teacherId}")
+    public ResponseEntity<ProfileDTO> getProfileByTeacherId(@PathVariable String teacherId) {
+        try {
+            ProfileDTO profile = teacherService.getTeacherProfileData(teacherId);
+            return ResponseEntity.ok(profile);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ProfileDTO("Teacher not found", ""));
+        }
+    }
+
 }

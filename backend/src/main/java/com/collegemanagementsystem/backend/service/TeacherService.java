@@ -2,6 +2,7 @@ package com.collegemanagementsystem.backend.service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,8 @@ import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.examModel.ExamResult;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
+import com.collegemanagementsystem.backend.model.ProfileDTO;
+import com.collegemanagementsystem.backend.model.StudentDetails;
 import com.collegemanagementsystem.backend.model.TeacherDetails;
 import com.collegemanagementsystem.backend.repository.ClassScheduleRepository;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
@@ -178,15 +181,6 @@ public class TeacherService {
         return imageService.getImage(teacher.getImageId());
     }
 
-    // public ResponseEntity<List<SemesterResults>>
-    // findBySubjectTeacherAndSubjectName(String subjectTeacher, String subjectName)
-    // {
-    // try {
-    // // Fetch results from the repository
-    // List<SemesterResults> results =
-    // resultsRepository.findBySubjectTeacherAndSubjectName(subjectTeacher,
-    // subjectName);
-
     public ResponseEntity<?> getResultList(String examId) {
         try {
             ExamResult examResults = examResultsRepository.findByExamId(examId);
@@ -199,6 +193,11 @@ public class TeacherService {
             e.printStackTrace(); // Log the exception for debugging
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    public ProfileDTO getTeacherProfile(String regdNo) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTeacherProfile'");
     }
 
     // // Check if results are empty
@@ -214,5 +213,19 @@ public class TeacherService {
     // .body(Collections.emptyList());
     // }
     // }
+
+    public ProfileDTO getTeacherProfileData(String teacherId) {
+        TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
+
+        if (teacher == null) {
+            throw new NoSuchElementException("Teacher not found for teacherId: " + teacherId);
+        }
+
+        String firstName = teacher.getFirstName() != null ? teacher.getFirstName().trim() : "";
+        String lastName = teacher.getLastName() != null ? teacher.getLastName().trim() : "";
+
+        String fullName = (firstName + " " + lastName).trim();
+        return new ProfileDTO(fullName, teacher.getEmailAddress());
+    }
 
 }

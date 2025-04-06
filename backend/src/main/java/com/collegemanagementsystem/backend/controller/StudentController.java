@@ -2,8 +2,10 @@ package com.collegemanagementsystem.backend.controller;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
+import com.collegemanagementsystem.backend.model.ProfileDTO;
 import com.collegemanagementsystem.backend.model.examModel.StudentExamDetail;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.model.resultModal.SemesterResults;
@@ -57,8 +60,16 @@ public class StudentController {
         }
     }
 
-    
-    
+    @GetMapping("/Profile/{regdNo}")
+    public ResponseEntity<ProfileDTO> getProfileByRegdNo(@PathVariable String regdNo) {
+        try {
+            ProfileDTO profile = studentService.getStudentProfile(regdNo);
+            return ResponseEntity.ok(profile);
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @GetMapping("/getNotices")
     public ResponseEntity<List<Notices>> getNotices() {
         List<Notices> notices = noticeService.getallNotices();
@@ -67,7 +78,7 @@ public class StudentController {
 
     @GetMapping("/get_Sattendance/{className}")
     public ResponseEntity<?> getAttendanceMonth(
-            @PathVariable String className, 
+            @PathVariable String className,
             @RequestParam String regdNo,
             @RequestParam String month) {
         System.out.println("classname: " + className);
@@ -93,6 +104,7 @@ public class StudentController {
     public ResponseEntity<?> getExamList(@PathVariable String regdNo) {
         return studentService.getExamList(regdNo);
     }
+
     @GetMapping("/studentImage/{regdNo}")
     public ResponseEntity<?> getStudentImage(@PathVariable String regdNo) throws IOException {
         return studentService.getStudentImage(regdNo);
@@ -102,6 +114,5 @@ public class StudentController {
     public ResponseEntity<?> submitExam(@PathVariable String examId, @RequestBody StudentExamDetail studentExamDetail) {
         return studentService.submitExam(examId, studentExamDetail);
     }
-    
 
 }

@@ -97,10 +97,10 @@ function StudentDashboard() {
         </Box>
       </Box>
       <Box sx={{ width: "100%", height: "25%" }}>
-          <Paper sx={{ width: "100%", minWidth: "300px", padding: "10px", marginLeft: "-15px" }}>
+          <Paper sx={{ width: "100%", minWidth: "300px" }}>
             <ExamResults/>
           </Paper>
-        </Box>
+      </Box>
     </Box>
   );
 }
