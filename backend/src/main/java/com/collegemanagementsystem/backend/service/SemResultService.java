@@ -1,7 +1,13 @@
 package com.collegemanagementsystem.backend.service;
+
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.collegemanagementsystem.backend.model.SemesterResults;
+
+import com.collegemanagementsystem.backend.model.resultModal.SemesterMarks;
+import com.collegemanagementsystem.backend.model.resultModal.SemesterResults;
+import com.collegemanagementsystem.backend.model.resultModal.SubjectMarks;
 import com.collegemanagementsystem.backend.repository.ResultsRepository;
 
 @Service
@@ -9,53 +15,53 @@ public class SemResultService {
     @Autowired
     private ResultsRepository resultsRepository;
 
-   public SemesterResults getSemResultDetails(String regdNo) {
-    return resultsRepository.findByRegdNo(regdNo);
-}
-
-public SemesterResults saveSemesterResult(SemesterResults request) {
-    SemesterResults semesterResults = resultsRepository.findByRegdNo(request.getRegdNo());
-    if (semesterResults == null) {
-        semesterResults = new SemesterResults(request.getRegdNo(), request.getSemesters());
+    public SemesterResults getSemResultDetails(String regdNo) {
+        return resultsRepository.findByRegdNo(regdNo);
     }
-    
 
-    semesterResults.setSemesters(request.getSemesters());
-    return resultsRepository.save(semesterResults);
+   public SemesterResults saveSemesterResult(SemesterResults request) {
+    String regdNo = request.getRegdNo();
+    String courseName = request.getCourseName();
+    String joinYear = request.getJoinYear();
+    SemesterMarks incomingSemester = request.getSemesters().get(0); 
+    String incomingSemNumber = incomingSemester.getSemesterNumber();
+
+    Optional<SemesterResults> existingOpt = resultsRepository
+        .findByRegdNoAndCourseNameAndJoinYear(regdNo, courseName, joinYear);
+
+    if (existingOpt.isPresent()) {
+        SemesterResults existing = existingOpt.get();
+
+        // Check if the semester already exists
+        Optional<SemesterMarks> existingSemesterOpt = existing.getSemesters().stream()
+            .filter(sem -> sem.getSemesterNumber().equals(incomingSemNumber))
+            .findFirst();
+
+        if (existingSemesterOpt.isPresent()) {
+            SemesterMarks existingSemester = existingSemesterOpt.get();
+
+            for (SubjectMarks newMark : incomingSemester.getSubjectMarks()) {
+                Optional<SubjectMarks> existingMarkOpt = existingSemester.getSubjectMarks().stream()
+                    .filter(sm -> sm.getSubject().getSubjectCode().equals(newMark.getSubject().getSubjectCode()))
+                    .findFirst();
+
+                if (existingMarkOpt.isPresent()) {
+                    existingMarkOpt.get().setCieMarks(newMark.getCieMarks()); // Update marks
+                } else {
+                    existingSemester.getSubjectMarks().add(newMark); // Add new subject
+                }
+            }
+
+        } else {
+            // Add new semester
+            existing.getSemesters().add(incomingSemester);
+        }
+
+        return resultsRepository.save(existing);
+    } else {
+        // Save as new document
+        return resultsRepository.save(request);
+    }
 }
 
-    
-
-        //Map<String, Semester> semesterMap = new HashMap<>();
-        
-        //for (Semester sem : semesterResults.getSemesters()) {
-          //  semesterMap.put(sem.getSemesterNumber(), sem);
-        //}
-
-        // for (Semester newSem : request.getSemesters()) {
-        //     if (semesterMap.containsKey(newSem.getSemesterNumber())) {
-               
-        //         Semester existingSem = semesterMap.get(newSem.getSemesterNumber());
-              
-        //         Map<String, Semester.Subject> subjectMap = new HashMap<>();
-
-        //         for (Semester.Subject subject : existingSem.getSubjects()) {
-        //             subjectMap.put(subject.getSubjectCode(), subject);
-        //         }
-               
-        //         for (Semester.Subject newSubject : newSem.getSubjects()) {
-        //             if (!subjectMap.containsKey(newSubject.getSubjectCode())) {
-        //                 subjectMap.put(newSubject.getSubjectCode(), newSubject);
-        //             }
-        //         }
-                
-        //         existingSem.setSubjects(new ArrayList<>(subjectMap.values()));
-        //     } else {
-        //         semesterMap.put(newSem.getSemesterNumber(), newSem);
-        //     }
-        // }
-
-        //semesterResults.setSemesters(new ArrayList<>(semesterMap.values()));
-    //     return resultsRepository.save(semesterResults);
-    // }
 }

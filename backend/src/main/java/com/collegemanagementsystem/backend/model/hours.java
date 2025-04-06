@@ -2,6 +2,8 @@ package com.collegemanagementsystem.backend.model;
 
 
 
+import com.collegemanagementsystem.backend.model.resultModal.Subject;
+
 import lombok.*;
 
 

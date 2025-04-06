@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.collegemanagementsystem.backend.dto.StudentProfile;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
-import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.examModel.StudentExamDetail;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
+import com.collegemanagementsystem.backend.model.resultModal.SemesterResults;
 import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
 import com.collegemanagementsystem.backend.service.NoticeService;
@@ -57,6 +57,8 @@ public class StudentController {
         }
     }
 
+    
+    
     @GetMapping("/getNotices")
     public ResponseEntity<List<Notices>> getNotices() {
         List<Notices> notices = noticeService.getallNotices();
@@ -85,12 +87,6 @@ public class StudentController {
     @GetMapping("/semResults/{regdNo}")
     public SemesterResults getSemResultDetails(@PathVariable String regdNo) {
         return semResultService.getSemResultDetails(regdNo);
-    }
-
-    @PostMapping("/semResults")
-    public ResponseEntity<SemesterResults> setSemResultDetails(@RequestBody SemesterResults semesterResults) {
-        SemesterResults savedResults = semResultService.saveSemesterResult(semesterResults);
-        return ResponseEntity.ok(savedResults);
     }
 
     @GetMapping("/getExamList/{regdNo}")

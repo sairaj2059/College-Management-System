@@ -1,5 +1,7 @@
-package com.collegemanagementsystem.backend.model;
+package com.collegemanagementsystem.backend.model.resultModal;
 
+
+import com.collegemanagementsystem.backend.model.CieMarks;
 
 import lombok.*;
 

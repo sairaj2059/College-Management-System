@@ -1,179 +1,285 @@
-import React, { useState, useEffect } from 'react';
-import { TextField, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Avatar, Typography, Box, InputAdornment, Button } from '@mui/material';
-import { Search } from '@mui/icons-material';
-import axios from 'axios';
-
-const initialStudents = [
-  {
-    id: '35013',
-    name: 'Janet Miller',
-    class: '10A',
-    subjectInfo: 'MAT101 - Mathematics',
-    cie1: '',
-    cie2: '',
-    cie3: '',
-    ese: '',
-    combined: '',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop'
-  },
-  {
-    id: '35014',
-    name: 'Michael Chen',
-    class: '10B',
-    subjectInfo: 'PHY201 - Physics',
-    cie1: '',
-    cie2: '',
-    cie3: '',
-    ese: '',
-    combined: '',
-    avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=150&h=150&fit=crop'
-  },
-  {
-    id: '35015',
-    name: 'Sarah Johnson',  
-    class: '10A',
-    subjectInfo: 'CHE301 - Chemistry',
-    cie1: '',
-    cie2: '',
-    cie3: '',
-    ese: '',
-    combined: '',
-    avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop'
-  }
-];
+import React, { useState, useEffect } from "react";
+import {
+  TextField,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Paper,
+  Avatar,
+  Typography,
+  Box,
+  InputAdornment,
+  Button,
+} from "@mui/material";
+import { Search } from "@mui/icons-material";
+import axios from "axios";
+import { useSelector } from "react-redux";
 
 const ExamMarks = () => {
-  const [students, setStudents] = useState(initialStudents);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [data, setData] = useState({ id: null, semesters: [] });
-  const id = "224209";
+  const [students, setStudents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [disabledFields, setDisabledFields] = useState({});
+  const [courseName, setCourseName] = useState("");
+  const username = useSelector((state) => state.auth.username);
+  const token = useSelector((state) => state.auth.token);
+  const joinYear = "2022";
+  const semesterNumber = "1";
 
   useEffect(() => {
-      const fetchData = async () => {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          console.error("No token found");
-          return;
-        }
-        try {
-          console.log(token);
-          const response = await axios.get(
-            `http://localhost:8080/teacher/semResults/${id}`,
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-                "Content-Type": "application/json",
-              },
-            }
+    const fetchData = async () => {
+      try {
+        // Get subjects by teacher ID
+        const subjectRes = await axios.get(
+          `http://localhost:8080/courses/getSubjectsByTeacherId/${username}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const course = subjectRes.data[0];
+        const courseName = course.courseName;
+        setCourseName(courseName);
+
+        const sem1Subjects = course.semesters
+          .filter((sem) => sem.semesterNumber === semesterNumber)
+          .flatMap((sem) => sem.subjects)
+          .filter((sub) => sub.subjectTeacherId === username);
+
+        // Get students
+        const studentRes = await axios.get(
+          `http://localhost:8080/class/${courseName}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const allStudents = studentRes.data;
+
+        // Get previously saved results
+        const savedRes = await axios.get(
+          `http://localhost:8080/teacher/semResults/${username}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        const savedResults = savedRes.data;
+
+        // Build lookup for saved results
+        const resultMap = {};
+        for (const result of savedResults) {
+          if (!resultMap[result.regdNo]) resultMap[result.regdNo] = {};
+          const semester = result.semesters.find(
+            (s) => s.semesterNumber === semesterNumber
           );
-          setData(response.data || { id: null, semesters: [] });
-          console.log(response.data);
-        } catch (error) {
-          console.error("Failed to fetch data:", error.response?.data || error.message);
-          setData({ id: null, semesters: [] });
+          if (semester) {
+            for (const mark of semester.subjectMarks) {
+              resultMap[result.regdNo][mark.subject.subjectCode] =
+                mark.cieMarks;
+            }
+          }
         }
-      };
-      fetchData();
-    }, []);
 
-    console.log(data);
-    
+        // Build students state
+        const mapped = allStudents.map((student) => {
+          const studentMarks = sem1Subjects.map((subject) => {
+            const saved = resultMap[student.regdNo]?.[subject.subjectCode] || {};
+            return {
+              subject,
+              cie1: saved.cie1 || "",
+              cie2: saved.cie2 || "",
+              cie3: saved.cie3 || "",
+              ese_gpa: saved.ese_gpa || "",
+              gpa: saved.gpa || "",
+            };
+          });
 
-  const handleInputChange = (id, field, value) => {
-    setStudents(prevStudents => 
-      prevStudents.map(student => 
-        student.id === id ? { ...student, [field]: value } : student
+          // Set which fields are disabled
+          studentMarks.forEach((mark) => {
+            const key = `${student.regdNo}-${mark.subject.subjectCode}`;
+            if (resultMap[student.regdNo]?.[mark.subject.subjectCode]) {
+              setDisabledFields((prev) => ({ ...prev, [key]: true }));
+            }
+          });
+
+          return {
+            regdNo: student.regdNo,
+            name: student.studentName,
+            class: courseName,
+            avatar: student.avatar || "",
+            marks: studentMarks,
+          };
+        });
+
+        setStudents(mapped);
+      } catch (err) {
+        console.error("Error fetching data:", err);
+      }
+    };
+
+    fetchData();
+  }, [token, username]);
+
+  const handleInputChange = (regdNo, subjectCode, field, value) => {
+    setStudents((prev) =>
+      prev.map((student) =>
+        student.regdNo === regdNo
+          ? {
+              ...student,
+              marks: student.marks.map((mark) =>
+                mark.subject.subjectCode === subjectCode
+                  ? { ...mark, [field]: value }
+                  : mark
+              ),
+            }
+          : student
       )
     );
   };
 
-  const handleUpdate = (id) => {
-    const student = students.find(s => s.id === id);
-    console.log("Updated Student Data:", student);
-    // Here, you could add an API call to save the updated student data
+  const handleSave = async (student, subjectCode) => {
+    const subjectData = student.marks.find(
+      (mark) => mark.subject.subjectCode === subjectCode
+    );
+
+    const payload = {
+      regdNo: student.regdNo,
+      courseName,
+      joinYear,
+      semesters: [
+        {
+          semesterNumber,
+          subjectMarks: [
+            {
+              subject: subjectData.subject,
+              cieMarks: {
+                cie1: Number(subjectData.cie1),
+                cie2: Number(subjectData.cie2),
+                cie3: Number(subjectData.cie3),
+                ese_gpa: Number(subjectData.ese_gpa),
+                gpa: Number(subjectData.gpa),
+              },
+            },
+          ],
+        },
+      ],
+    };
+
+    try {
+      await axios.post("http://localhost:8080/teacher/semResults", payload, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const key = `${student.regdNo}-${subjectCode}`;
+      setDisabledFields((prev) => ({ ...prev, [key]: true }));
+      console.log("Saved successfully!");
+    } catch (err) {
+      console.error("Failed to save:", err);
+      alert("Error saving marks.");
+    }
   };
 
-  const filteredStudents = students.filter(student => 
-    student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    student.id.includes(searchQuery) ||
-    student.subjectInfo.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    student.class.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
-    <Box sx={{ minHeight: '100%', backgroundColor: 'white', padding: 4 }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={2}>
-        <Typography variant="h4" fontWeight="bold">Student Marks</Typography>
-        <TextField
-          variant="outlined"
-          placeholder="Search by name, ID, subject, or class..."
-          slotProps={{
-            input: {
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Search color="action" sx={{ marginRight: 1 }} />
-                </InputAdornment>
-              ),
-            },
-          }}
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
-      </Box>
-
+    <Box sx={{ p: 4, backgroundColor: "#fff" }}>
+      <Typography variant="h5" fontWeight="bold" gutterBottom>
+        Enter Marks
+      </Typography>
+      <TextField
+        fullWidth
+        placeholder="Search students..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <Search />
+            </InputAdornment>
+          ),
+        }}
+        sx={{ mb: 2 }}
+      />
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell>Student</TableCell>
-              <TableCell>Class</TableCell>
               <TableCell>Subject</TableCell>
               <TableCell>CIE 1</TableCell>
               <TableCell>CIE 2</TableCell>
               <TableCell>CIE 3</TableCell>
-              <TableCell>ESE</TableCell>
-              <TableCell>Combined</TableCell>
-              <TableCell>Actions</TableCell>
+              <TableCell>ESE GPA</TableCell>
+              <TableCell>GPA</TableCell>
+              <TableCell>Save</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredStudents.map((student) => (
-              <TableRow key={student.id}>
-                <TableCell>
-                  <Box display="flex" alignItems="center" gap={2}>
-                    <Avatar src={student.avatar} />
-                    <Box>
-                      <Typography fontWeight="medium">{student.name}</Typography>
-                      <Typography variant="body2" color="textSecondary">Regd ID: {student.id}</Typography>
-                    </Box>
-                  </Box>
-                </TableCell>
-                <TableCell>{student.class}</TableCell>
-                <TableCell>{student.subjectInfo}</TableCell>
-                {['cie1', 'cie2', 'cie3', 'ese', 'combined'].map(field => (
-                  <TableCell key={field}>
-                    <TextField
-                      type="number"
-                      value={student[field]}
-                      onChange={(e) => handleInputChange(student.id, field, e.target.value)}
-                      variant="outlined"
-                      size="small"
-                      sx={{ width: 80 }}
-                    />
-                  </TableCell>
-                ))}
-                <TableCell>
-                  <Button variant="contained" color="primary" onClick={() => handleUpdate(student.id)}>
-                    Update
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
+            {students
+              .filter(
+                (s) =>
+                  s.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                  s.regdNo.includes(searchQuery)
+              )
+              .map((student) =>
+                student.marks.map((mark) => {
+                  const subjectCode = mark.subject.subjectCode;
+                  const fieldKey = `${student.regdNo}-${subjectCode}`;
+                  const isDisabled = disabledFields[fieldKey];
+
+                  return (
+                    <TableRow key={fieldKey}>
+                      <TableCell>
+                        <Box display="flex" alignItems="center" gap={1}>
+                          <Avatar src={student.avatar} />
+                          <Box>
+                            <Typography>{student.name}</Typography>
+                            <Typography variant="body2" color="gray">
+                              {student.regdNo}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </TableCell>
+                      <TableCell>{mark.subject.subjectName}</TableCell>
+                      {["cie1", "cie2", "cie3", "ese_gpa", "gpa"].map(
+                        (field) => (
+                          <TableCell key={field}>
+                            <TextField
+                              size="small"
+                              type="number"
+                              disabled={isDisabled}
+                              value={mark[field]}
+                              onChange={(e) =>
+                                handleInputChange(
+                                  student.regdNo,
+                                  subjectCode,
+                                  field,
+                                  e.target.value
+                                )
+                              }
+                              sx={{ width: 80 }}
+                            />
+                          </TableCell>
+                        )
+                      )}
+                      <TableCell>
+                        <Button
+                          variant="contained"
+                          color="success"
+                          size="small"
+                          disabled={isDisabled}
+                          onClick={() => handleSave(student, subjectCode)}
+                        >
+                          Save
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  );
+                })
+              )}
           </TableBody>
         </Table>
       </TableContainer>
     </Box>
   );
-}
+};
 
 export default ExamMarks;

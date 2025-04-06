@@ -20,7 +20,6 @@ import com.collegemanagementsystem.backend.repository.ClassScheduleRepository;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
 import com.collegemanagementsystem.backend.repository.ExamRepository;
 import com.collegemanagementsystem.backend.repository.ExamResultsRepository;
-import com.collegemanagementsystem.backend.repository.ResultsRepository;
 import com.collegemanagementsystem.backend.repository.TeacherDetailsRepository;
 
 @Service
@@ -40,14 +39,13 @@ public class TeacherService {
     @Autowired
     private ImageService imageService;
 
-
-     @Autowired
+    @Autowired
     private ClassScheduleRepository scheduleRepository;
 
     public ClassSchedule getClassScheduleByClassName(String className) {
         return scheduleRepository.findByClassName(className);
     }
-    
+
     public ResponseEntity<?> setClassSchedule(ClassSchedule schedule) {
         try {
             // Save or update the schedule
@@ -56,8 +54,8 @@ public class TeacherService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save schedule");
         }
-    }  
-    
+    }
+
     public ResponseEntity<?> deleteClassSchedule(String className) {
         try {
             ClassSchedule schedule = scheduleRepository.findByClassName(className);
@@ -71,13 +69,14 @@ public class TeacherService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to delete class schedule.");
         }
     }
-    
 
-    public ClasswiseAttendance setStudentAttendanceByRegdNo(String className, String regdNo, String month, int newAbsentDays,
+    public ClasswiseAttendance setStudentAttendanceByRegdNo(String className, String regdNo, String month,
+            int newAbsentDays,
             AbsentDay absentDay) {
-        ClasswiseAttendance classwiseAttendance = classWiseAttendaceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(className, regdNo,
+        ClasswiseAttendance classwiseAttendance = classWiseAttendaceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(
+                className, regdNo,
                 month);
-            classwiseAttendance.getStudents().get(0).getAttendance().get(0).setDaysAbsent(newAbsentDays);
+        classwiseAttendance.getStudents().get(0).getAttendance().get(0).setDaysAbsent(newAbsentDays);
         classwiseAttendance.getStudents().get(0).getAttendance().get(0).getAbsentDays().addLast(absentDay);
         System.out.println(classwiseAttendance);
         return classWiseAttendaceRepo.save(classwiseAttendance);
@@ -90,7 +89,7 @@ public class TeacherService {
         } else {
             return ResponseEntity.notFound().build();
         }
-        
+
     }
 
     public ResponseEntity<?> addExam(Exam exam) {
@@ -103,48 +102,46 @@ public class TeacherService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to add exam");
         }
-       
+
     }
 
     public ResponseEntity<?> deleteExam(String examId) {
         examRepository.deleteById(examId);
-        return ResponseEntity.ok().body("Exam deleted") ;
+        return ResponseEntity.ok().body("Exam deleted");
     }
 
     public ResponseEntity<?> getQuestionsByTeacher(String teacherId, String examId) {
         Exam exam = examRepository.findExamById(examId);
-        if(exam!=null){
-            if(exam.getUploadedBy().equals(teacherId)){
+        if (exam != null) {
+            if (exam.getUploadedBy().equals(teacherId)) {
                 return ResponseEntity.ok().body(exam.getQuestions());
-            }
-            else{
+            } else {
                 return ResponseEntity.notFound().build();
             }
-        }else{
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
-    public ResponseEntity<?> addQuestion(QuestionList questions){
-       Exam exam = examRepository.findExamById(questions.getExamId());
-        if (exam!=null) {
+
+    public ResponseEntity<?> addQuestion(QuestionList questions) {
+        Exam exam = examRepository.findExamById(questions.getExamId());
+        if (exam != null) {
             exam.setQuestions(questions.getQuestions());
             examRepository.save(exam);
             return ResponseEntity.ok().body("Questions added successfully");
         } else {
             return ResponseEntity.notFound().build();
-            
+
         }
     }
 
-
-
     public ResponseEntity<?> publishExam(String examId) {
         Exam exam = examRepository.findExamById(examId);
-        if(exam!=null){
+        if (exam != null) {
             exam.setStatus("PUBLISHED");
             examRepository.save(exam);
             return ResponseEntity.ok().body("Exam published Successfully");
-        }else{
+        } else {
             return ResponseEntity.notFound().build();
         }
     }
@@ -152,10 +149,11 @@ public class TeacherService {
     public TeacherProfile getTeacherProfileByTeacherId(String teacherId) {
         TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
         if (teacher == null) {
-            throw new IllegalArgumentException("Student with regdNo " + teacherId + " not found.");
+            throw new IllegalArgumentException("teacher with regdNo " + teacherId + " not found.");
         }
         return convertToTeacherProfile(teacher);
     }
+
     private TeacherProfile convertToTeacherProfile(TeacherDetails teacher) {
         String imageurl = null;
         if (teacher.getImageId() != null) {
@@ -169,11 +167,10 @@ public class TeacherService {
                 teacher.getFirstName(),
                 teacher.getLastName(),
                 teacher.getClassmentor(),
-                teacher.getSubjects()
-               ) ;
+                teacher.getSubjects());
     }
 
-     public ResponseEntity<?> getTeacherImage(String teacherId) throws IOException {
+    public ResponseEntity<?> getTeacherImage(String teacherId) throws IOException {
         TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
         if (teacher == null || teacher.getImageId() == null) {
             return ResponseEntity.notFound().build();
@@ -181,39 +178,41 @@ public class TeacherService {
         return imageService.getImage(teacher.getImageId());
     }
 
+    // public ResponseEntity<List<SemesterResults>>
+    // findBySubjectTeacherAndSubjectName(String subjectTeacher, String subjectName)
+    // {
+    // try {
+    // // Fetch results from the repository
+    // List<SemesterResults> results =
+    // resultsRepository.findBySubjectTeacherAndSubjectName(subjectTeacher,
+    // subjectName);
 
-//   public ResponseEntity<List<SemesterResults>> findBySubjectTeacherAndSubjectName(String subjectTeacher, String subjectName) {
-//     try {
-//         // Fetch results from the repository
-//         List<SemesterResults> results = resultsRepository.findBySubjectTeacherAndSubjectName(subjectTeacher, subjectName);
-
-public ResponseEntity<?> getResultList(String examId) {
-    try {
-        ExamResult examResults = examResultsRepository.findByExamId(examId);
-        if (examResults == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                                 .body("Exam with id " + examId + " not found.");
+    public ResponseEntity<?> getResultList(String examId) {
+        try {
+            ExamResult examResults = examResultsRepository.findByExamId(examId);
+            if (examResults == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Exam with id " + examId + " not found.");
+            }
+            return ResponseEntity.ok().body(examResults.getStudentExamDetails());
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception for debugging
+            return ResponseEntity.internalServerError().build();
         }
-        return ResponseEntity.ok().body(examResults.getStudentExamDetails());
-    } catch (Exception e) {
-        e.printStackTrace(); // Log the exception for debugging
-        return ResponseEntity.internalServerError().build();
     }
-}
 
+    // // Check if results are empty
+    // if (results.isEmpty()) {
+    // return ResponseEntity.status(HttpStatus.NOT_FOUND)
+    // .body(Collections.emptyList()); // Return empty list with 404 status
+    // }
+    // // Return results with 200 OK status
+    // return ResponseEntity.ok(results);
+    // } catch (Exception e) {
+    // // Log the exception and return a 500 Internal Server Error response
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    // .body(Collections.emptyList());
+    // }
+    // }
 
-//         // Check if results are empty
-//         if (results.isEmpty()) {
-//             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-//                                  .body(Collections.emptyList()); // Return empty list with 404 status
-//         }
-//         // Return results with 200 OK status
-//         return ResponseEntity.ok(results);
-//     } catch (Exception e) {
-//         // Log the exception and return a 500 Internal Server Error response
-//         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//                              .body(Collections.emptyList());
-//     }
-//}
-    
 }

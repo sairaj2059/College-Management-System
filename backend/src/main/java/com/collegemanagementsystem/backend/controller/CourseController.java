@@ -3,14 +3,14 @@ package com.collegemanagementsystem.backend.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.collegemanagementsystem.backend.model.Course;
+import com.collegemanagementsystem.backend.model.CourseSubjectDTO;
 import com.collegemanagementsystem.backend.model.Semester;
-import com.collegemanagementsystem.backend.model.Subject;
+import com.collegemanagementsystem.backend.model.resultModal.Subject;
 import com.collegemanagementsystem.backend.service.CourseService;
 
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,6 +39,12 @@ public class CourseController {
     @GetMapping("/getCourseDetails/{courseName}")
     public ResponseEntity<Course> getCourseDetails(@PathVariable String courseName) {
         return courseService.getCourseDetails(courseName);
+    }
+
+    @GetMapping("/getSubjectsByTeacherId/{teacherId}")
+    public ResponseEntity<List<CourseSubjectDTO>> getSubjectsByTeacherId(@PathVariable String teacherId) {
+        List<CourseSubjectDTO> subjects = courseService.getSubjectsByTeacherId(teacherId);
+        return ResponseEntity.ok(subjects);
     }
 
     @GetMapping("/getSemesterData/{courseName}/{semesterNumber}")

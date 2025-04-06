@@ -5,9 +5,9 @@ import StudentProfile from "../components/StudentProfile";
 import PerformanceChart from "../components/PerformanceChart";
 import Faculty from "../components/Faculty";
 import SubjectGraph from "../components/SubjectGraph";
-import NoticeBoardComponent from "../components/StudentNoticeBoardComponent";
 import ExamSchedule from "../components/ExamSchedule";
 import ExamResults from "../components/ExamResults";
+import NoticeBoardComponent from "../components/NoticeBoardComponent";
 
 function StudentDashboard() {
   const [regdNo, setRegdNo] = useState(localStorage.getItem("username") || ""); // Get username from localStorage
@@ -15,7 +15,7 @@ function StudentDashboard() {
   const [courseName, setCourseName] = useState("");
 
   useEffect(() => {
-    console.log("Registered Number:", regdNo); // Debugging
+    //console.log("Registered Number:", regdNo); // Debugging
   }, [regdNo]);
 
   const handleProfileLoaded = (regdNo, semester,course) => {

@@ -13,7 +13,8 @@ const NoticeBoardComponent = () => {
   const [Error, setError] = useState(null);
   const token = useSelector((state) => state.auth.token);
   const role = useSelector((state)=>state.auth.role);
-  const theme = useTheme();
+  
+  const theme = useTheme();  
 
   const getRandomColor = (id) => {
     const colors = [
@@ -36,6 +37,10 @@ const NoticeBoardComponent = () => {
   useEffect(() => {
     const fetchNotices = async () => {
       if (!token) return;
+      if (role) {
+        console.log("my role", role);
+      }
+      //console.log("my role is",role);
 
       try {
         const response = await axios.get(
@@ -85,7 +90,7 @@ const NoticeBoardComponent = () => {
         </Typography>
         <Button
           variant="text"
-          onClick={() => navigate(`/${role.toLowerCase()}/notice-board`)}
+          onClick={() => role && navigate(`/${role.toLowerCase()}/notice-board`)}
           sx={{
             color: "primary.main",
             fontSize: 12,
@@ -93,7 +98,7 @@ const NoticeBoardComponent = () => {
             textTransform: "none",
             "&:hover": { color: "primary.dark" },
           }}
-        >
+        >          
           View All
         </Button>
       </Box>
