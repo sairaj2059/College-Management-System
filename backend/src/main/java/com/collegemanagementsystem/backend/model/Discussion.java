@@ -1,5 +1,6 @@
 package com.collegemanagementsystem.backend.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -8,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -30,7 +32,7 @@ public class Discussion {
 
     private List<Participant> participants;
 
-    private List<Message> messages;
+    private List<Message> messages = new ArrayList<>();
 
     @Getter
     @Setter
@@ -40,21 +42,5 @@ public class Discussion {
         private String name;
         private String regdNo;
     }
-    @Getter
-    @Setter
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Message {
-
-        private String sender;
-
-        private String message;
-
-        private String type;
-
-        private String timestamp;
-
-        private String avatar;
-
-    }
+   
 }

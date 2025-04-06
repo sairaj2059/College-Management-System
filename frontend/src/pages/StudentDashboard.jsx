@@ -8,7 +8,6 @@ import SubjectGraph from "../components/SubjectGraph";
 import NoticeBoardComponent from "../components/StudentNoticeBoardComponent";
 import ExamSchedule from "../components/ExamSchedule";
 import ExamResults from "../components/ExamResults";
-import ExamResults from "../components/ExamResults";
 
 function StudentDashboard() {
   const [regdNo, setRegdNo] = useState(localStorage.getItem("username") || ""); // Get username from localStorage

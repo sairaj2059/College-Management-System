@@ -21,6 +21,25 @@ class DiscussionService {
     }
   }
 
+  static async getAttachment(attachmentFileId){
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `${this.BASE_URL}/api/messages/attachment/${attachmentFileId}`,
+          {
+            responseType: 'blob',
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        return response.data; // blob
+      } catch (error) {
+        console.error("Error fetching attachment:", error);
+        return null;
+      }
+  }
+
   static async joinGroupByGroupId(groupId, regdNo) {
     const token = localStorage.getItem("token");
     try {

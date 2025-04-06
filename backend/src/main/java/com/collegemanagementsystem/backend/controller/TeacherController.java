@@ -15,11 +15,19 @@ import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
 import com.collegemanagementsystem.backend.model.SemesterResults;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
+import com.collegemanagementsystem.backend.model.examModel.StudentExamDetail;
 import com.collegemanagementsystem.backend.model.noticeModal.Notices;
 import com.collegemanagementsystem.backend.service.TeacherService;
 import com.collegemanagementsystem.backend.service.NoticeService;
 import com.collegemanagementsystem.backend.service.SemResultService;
 import com.collegemanagementsystem.backend.service.StudentService;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PathVariable;
+
+
 
 @RequestMapping("/teacher")
 @RestController
@@ -86,6 +94,17 @@ public class TeacherController {
     public ResponseEntity<?> publishExam(@PathVariable String examId) {
         System.out.println("From Publish controller");
         return teacherService.publishExam(examId);
+    }
+
+    @GetMapping("/getResultList/{examId}")
+    public ResponseEntity<?> getResultList(@PathVariable String examId) {
+        return teacherService.getResultList(examId);
+    }
+
+    @PutMapping("/modifyAnswerList/{examId}")
+    public ResponseEntity<?> modifyAnswerList(@PathVariable String examId, @RequestBody StudentExamDetail studentExamDetail) {
+        
+        return teacherService.modifyAnswerList(examId, studentExamDetail);
     }
 
     @GetMapping("/getExamList/{teacherId}")

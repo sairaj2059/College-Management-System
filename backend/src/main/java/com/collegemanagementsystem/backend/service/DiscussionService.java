@@ -15,7 +15,7 @@ import com.collegemanagementsystem.backend.model.ClasswiseStudent;
 import com.collegemanagementsystem.backend.model.Discussion;
 import com.collegemanagementsystem.backend.model.Student;
 import com.collegemanagementsystem.backend.model.StudentDetails;
-import com.collegemanagementsystem.backend.model.Discussion.Message;
+import com.collegemanagementsystem.backend.model.Message;
 import com.collegemanagementsystem.backend.model.Discussion.Participant;
 import com.collegemanagementsystem.backend.repository.ClasswiseStudentRepository;
 import com.collegemanagementsystem.backend.repository.DiscussionRepository;
