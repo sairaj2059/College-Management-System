@@ -38,20 +38,19 @@ class UserService{
     }
   }
 
-  static async addTeacher(formData){
+  static async addTeacher(formData) {
     const token = localStorage.getItem("token");
-
-      try {
-        const response = await axios.post(`${UserService.BASE_URL}/admin/addTeacher`, formData,{
-          headers:{
-            Authorization:`Bearer ${token}`,
-            "Content-Type": "application/json",
-          }
-        })
+    try {
+      const response = await axios.post(`${UserService.BASE_URL}/admin/addTeacher`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+         "Content-Type": "multipart/form-data",
+        },
+      });
       return response.data;
-      } catch (error) {
+    } catch (error) {
         console.log(error);
-      }
+    }
   }
 
   static async addStudent(formData) {

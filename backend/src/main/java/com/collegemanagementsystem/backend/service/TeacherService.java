@@ -20,7 +20,6 @@ import com.collegemanagementsystem.backend.repository.ClassScheduleRepository;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
 import com.collegemanagementsystem.backend.repository.ExamRepository;
 import com.collegemanagementsystem.backend.repository.ExamResultsRepository;
-import com.collegemanagementsystem.backend.repository.ResultsRepository;
 import com.collegemanagementsystem.backend.repository.TeacherDetailsRepository;
 
 @Service
