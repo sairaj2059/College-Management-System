@@ -3,7 +3,8 @@ package com.collegemanagementsystem.backend.repository;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.mongodb.repository.Query; // ✅ MongoDB version
+
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,14 @@ public interface ResultsRepository extends MongoRepository<SemesterResults, Stri
 
     // Custom query to find SemesterResults by subjectTeacher and subjectName
     List<SemesterResults> findAll();
+
+    @Query("{ 'semesters.subjectMarks.subject.subjectTeacher': ?0 }")
+    List<SemesterResults> findBySubjectTeacher(String subjectTeacher);
+    List<SemesterResults> findByCourseNameAndJoinYear(String courseName, String joinYear);
+
+    Optional<SemesterResults> findByRegdNoAndCourseNameAndJoinYear(
+        String regdNo,
+        String courseName,
+        String joinYear
+    );
 }

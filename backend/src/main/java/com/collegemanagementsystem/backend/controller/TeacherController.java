@@ -31,8 +31,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PathVariable;
 
-
-
 @RequestMapping("/teacher")
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
@@ -55,10 +53,9 @@ public class TeacherController {
         return "Hello Teacher From Teacher Dashboard";
     }
 
-     @GetMapping("/by-subject")
+    @GetMapping("/by-subject")
     public ResponseEntity<List<StudentSubjectCieDTO>> getStudentsBySubject(
-        @RequestParam String subjectName
-    ) {
+            @RequestParam String subjectName) {
         List<StudentSubjectCieDTO> result = teacherService.getAllStudentsBySubject(subjectName);
         return ResponseEntity.ok(result);
     }
@@ -114,8 +111,9 @@ public class TeacherController {
     }
 
     @PutMapping("/modifyAnswerList/{examId}")
-    public ResponseEntity<?> modifyAnswerList(@PathVariable String examId, @RequestBody StudentExamDetail studentExamDetail) {
-        
+    public ResponseEntity<?> modifyAnswerList(@PathVariable String examId,
+            @RequestBody StudentExamDetail studentExamDetail) {
+
         return teacherService.modifyAnswerList(examId, studentExamDetail);
     }
 
@@ -166,6 +164,7 @@ public class TeacherController {
     public SemesterResults getSemResultDetails(@PathVariable String regdNo) {
         return semResultService.getSemResultDetails(regdNo);
     }
+
     @GetMapping("/classShedule/{className}")
     public ClassSchedule getClassSchedule(@PathVariable String className) {
         return teacherService.getClassScheduleByClassName(className);
