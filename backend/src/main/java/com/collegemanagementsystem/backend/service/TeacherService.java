@@ -1,7 +1,9 @@
 package com.collegemanagementsystem.backend.service;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.NoSuchElementException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,7 @@ import com.collegemanagementsystem.backend.repository.ClassScheduleRepository;
 import com.collegemanagementsystem.backend.repository.ClassWiseAttendaceRepo;
 import com.collegemanagementsystem.backend.repository.ExamRepository;
 import com.collegemanagementsystem.backend.repository.ExamResultsRepository;
+import com.collegemanagementsystem.backend.repository.StudentDetailsRepository;
 import com.collegemanagementsystem.backend.repository.TeacherDetailsRepository;
 
 @Service
@@ -44,6 +47,9 @@ public class TeacherService {
 
     @Autowired
     private ClassScheduleRepository scheduleRepository;
+
+    @Autowired
+    private StudentDetailsRepository studentDetailsRepo;
 
     public ClassSchedule getClassScheduleByClassName(String className) {
         return scheduleRepository.findByClassName(className);

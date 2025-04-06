@@ -26,10 +26,9 @@ export default function NavBarComponent() {
   const token = useSelector((state) => state.auth.token);
   const [details, setDetails] = useState({});
   const [imageUrl, setImageUrl] = useState("");
-  
 
   useEffect(() => {
-    const fetchImage = async() => {
+    const fetchImage = async () => {
       try {
         const response = await ImageService.getImageByStudent(username);
         const imageUrl = URL.createObjectURL(response);
@@ -37,7 +36,7 @@ export default function NavBarComponent() {
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchImage();
   }, [username]);
 
@@ -212,40 +211,41 @@ export default function NavBarComponent() {
               />
             </Tooltip>
           )}
-
-          <Tooltip title="Messages">
-            <Tab
-              sx={{
-                borderRadius: value === 2 ? "15px" : "",
-                backgroundColor: value === 2 ? "#294c6d" : "",
-              }}
-              icon={
-                <Box
-                  sx={{
-                    width: "100%",
-                    height: "100%",
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <MessageOutlined
-                    style={{ fontSize: "24px", color: "white" }}
-                  />
-                  {value === 2 && (
-                    <Typography
-                      variant="caption"
-                      sx={{ ml: 1, color: "white" }}
-                    >
-                      Messages
-                    </Typography>
-                  )}
-                </Box>
-              }
-              aria-label="mesaages"
-            />
-          </Tooltip>
+          {role != "ADMIN" && (
+            <Tooltip title="Messages">
+              <Tab
+                sx={{
+                  borderRadius: value === 2 ? "15px" : "",
+                  backgroundColor: value === 2 ? "#294c6d" : "",
+                }}
+                icon={
+                  <Box
+                    sx={{
+                      width: "100%",
+                      height: "100%",
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <MessageOutlined
+                      style={{ fontSize: "24px", color: "white" }}
+                    />
+                    {value === 2 && (
+                      <Typography
+                        variant="caption"
+                        sx={{ ml: 1, color: "white" }}
+                      >
+                        Messages
+                      </Typography>
+                    )}
+                  </Box>
+                }
+                aria-label="mesaages"
+              />
+            </Tooltip>
+          )}
         </Tabs>
       </Box>
 

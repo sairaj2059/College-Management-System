@@ -8,5 +8,5 @@ import com.collegemanagementsystem.backend.model.TeacherDetails;
 public interface TeacherDetailsRepository extends MongoRepository<TeacherDetails,String> {
     TeacherDetails findTeacherDetailsByUsername(String username);
     TeacherDetails findByTeacherId(String teacherId);
-
+    long count();
 }
