@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Login from "./pages/Login";
@@ -28,6 +28,18 @@ import ResultsList from "./components/ExamComponents/ResultsList";
 
 function App() {
   const { isLoggedIn } = useSelector((state) => state.auth || {});
+
+  useEffect(() => {
+    const handleUnload = () => {
+      localStorage.clear();
+    };
+
+    window.addEventListener('unload', handleUnload);
+
+    return () => {
+      window.removeEventListener('unload', handleUnload);
+    };
+  }, []);
 
   return (
     <>

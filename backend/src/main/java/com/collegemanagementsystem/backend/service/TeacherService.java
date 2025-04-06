@@ -17,6 +17,7 @@ import com.collegemanagementsystem.backend.model.ClassSchedule;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance;
 import com.collegemanagementsystem.backend.model.examModel.Exam;
 import com.collegemanagementsystem.backend.model.examModel.ExamResult;
+import com.collegemanagementsystem.backend.model.examModel.StudentExamDetail;
 import com.collegemanagementsystem.backend.model.ClasswiseAttendance.Student.AttendanceMonth.AbsentDay;
 import com.collegemanagementsystem.backend.model.ProfileDTO;
 import com.collegemanagementsystem.backend.model.StudentDetails;
@@ -46,6 +47,7 @@ public class TeacherService {
     private ImageService imageService;
 
     @Autowired
+    @Autowired
     private ClassScheduleRepository scheduleRepository;
 
     @Autowired
@@ -55,6 +57,7 @@ public class TeacherService {
         return scheduleRepository.findByClassName(className);
     }
 
+
     public ResponseEntity<?> setClassSchedule(ClassSchedule schedule) {
         try {
             // Save or update the schedule
@@ -63,6 +66,8 @@ public class TeacherService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to save schedule");
         }
+    }
+
     }
 
     public ResponseEntity<?> deleteClassSchedule(String className) {
@@ -81,10 +86,16 @@ public class TeacherService {
 
     public ClasswiseAttendance setStudentAttendanceByRegdNo(String className, String regdNo, String month,
             int newAbsentDays,
+
+    public ClasswiseAttendance setStudentAttendanceByRegdNo(String className, String regdNo, String month,
+            int newAbsentDays,
             AbsentDay absentDay) {
         ClasswiseAttendance classwiseAttendance = classWiseAttendaceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(
                 className, regdNo,
+        ClasswiseAttendance classwiseAttendance = classWiseAttendaceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(
+                className, regdNo,
                 month);
+        classwiseAttendance.getStudents().get(0).getAttendance().get(0).setDaysAbsent(newAbsentDays);
         classwiseAttendance.getStudents().get(0).getAttendance().get(0).setDaysAbsent(newAbsentDays);
         classwiseAttendance.getStudents().get(0).getAttendance().get(0).getAbsentDays().addLast(absentDay);
         System.out.println(classwiseAttendance);
@@ -177,8 +188,10 @@ public class TeacherService {
                 teacher.getLastName(),
                 teacher.getClassmentor(),
                 teacher.getSubjects());
+                teacher.getSubjects());
     }
 
+    public ResponseEntity<?> getTeacherImage(String teacherId) throws IOException {
     public ResponseEntity<?> getTeacherImage(String teacherId) throws IOException {
         TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
         if (teacher == null || teacher.getImageId() == null) {
@@ -186,6 +199,15 @@ public class TeacherService {
         }
         return imageService.getImage(teacher.getImageId());
     }
+
+    // public ResponseEntity<List<SemesterResults>>
+    // findBySubjectTeacherAndSubjectName(String subjectTeacher, String subjectName)
+    // {
+    // try {
+    // // Fetch results from the repository
+    // List<SemesterResults> results =
+    // resultsRepository.findBySubjectTeacherAndSubjectName(subjectTeacher,
+    // subjectName);
 
     public ResponseEntity<?> getResultList(String examId) {
         try {
@@ -201,9 +223,44 @@ public class TeacherService {
         }
     }
 
-    public ProfileDTO getTeacherProfile(String regdNo) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getTeacherProfile'");
+    public ResponseEntity<?> modifyAnswerList(String examId, StudentExamDetail updatedStudentExamDetail) {
+        try {
+            // Fetch the ExamResult document by examId
+            ExamResult examResult = examResultsRepository.findByExamId(examId);
+
+            if (examResult == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Exam with ID " + examId + " not found.");
+            }
+
+            List<StudentExamDetail> studentExamDetails = examResult.getStudentExamDetails();
+
+            boolean studentFound = false;
+
+            // Update existing student record by matching regdNo
+            for (int i = 0; i < studentExamDetails.size(); i++) {
+                if (studentExamDetails.get(i).getRegdNo().equals(updatedStudentExamDetail.getRegdNo())) {
+                    studentExamDetails.set(i, updatedStudentExamDetail);
+                    studentFound = true;
+                    break;
+                }
+            }
+
+            // If not found, add new
+            if (!studentFound) {
+                studentExamDetails.add(updatedStudentExamDetail);
+            }
+
+            // Save the updated examResult back to DB
+            examResult.setStudentExamDetails(studentExamDetails);
+            examResultsRepository.save(examResult);
+
+            return ResponseEntity.ok("Student exam details updated successfully.");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error updating student exam details: " + e.getMessage());
+        }
     }
 
     // // Check if results are empty
@@ -219,19 +276,5 @@ public class TeacherService {
     // .body(Collections.emptyList());
     // }
     // }
-
-    public ProfileDTO getTeacherProfileData(String teacherId) {
-        TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
-
-        if (teacher == null) {
-            throw new NoSuchElementException("Teacher not found for teacherId: " + teacherId);
-        }
-
-        String firstName = teacher.getFirstName() != null ? teacher.getFirstName().trim() : "";
-        String lastName = teacher.getLastName() != null ? teacher.getLastName().trim() : "";
-
-        String fullName = (firstName + " " + lastName).trim();
-        return new ProfileDTO(fullName, teacher.getEmailAddress());
-    }
 
 }

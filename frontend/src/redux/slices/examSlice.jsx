@@ -17,37 +17,41 @@ const examSlice = createSlice({
     },
 
     updateQuestion(state, action) {
-      const updatedQuestion  = action.payload;
-      const index = state.questions.findIndex((question) => question.questionDetails.questionText === updatedQuestion.questionDetails.questionText);
+      const updatedQuestion = action.payload;
+      const index = state.questions.findIndex(
+        (question) =>
+          question.questionDetails.questionText ===
+          updatedQuestion.questionDetails.questionText
+      );
       if (index !== -1) {
-        state.questions[index] = { ...state.questions[index], ...updatedQuestion };
+        state.questions[index] = {
+          ...state.questions[index],
+          ...updatedQuestion,
+        };
       }
     },
   },
 });
 
-
-
 const questionSlice = createSlice({
-  name : "question",
-  initialState : {
-    questionDetails : null,
+  name: "question",
+  initialState: {
+    questionDetails: null,
     isAttempted: false,
     isCorrect: false,
     userAnswer: [],
-    marksAwarded: 0
+    marksAwarded: 0,
   },
-  reducers:{
-    setQuestion(state, action){
+  reducers: {
+    setQuestion(state, action) {
       state.questionDetails = action.payload.questionDetails;
       state.isAttempted = action.payload.isAttempted;
       state.isCorrect = action.payload.isCorrect;
       state.marksAwarded = action.payload.marksAwarded;
       state.userAnswer = action.payload.userAnswer;
     },
-    
-  }
-})
+  },
+});
 
 const examListSlice = createSlice({
   name: "examList",
@@ -75,9 +79,9 @@ const reducers = {
   questionsList: examSlice.reducer,
   examList: examListSlice.reducer,
 };
-export const { setQuestionList, addQuestion, clearQuestions, updateQuestion } = examSlice.actions;
+export const { setQuestionList, addQuestion, clearQuestions, updateQuestion } =
+  examSlice.actions;
 export const { setExamList, setSelectedExam } = examListSlice.actions;
-
 
 // Export the combined reducers object as the default export
 export default reducers;
