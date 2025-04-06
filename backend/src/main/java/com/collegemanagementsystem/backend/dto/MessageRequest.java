@@ -1,5 +1,7 @@
 package com.collegemanagementsystem.backend.dto;
 
+import org.bson.types.ObjectId;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +15,6 @@ public class MessageRequest {
 
     private String sender;
     private String message;
+    private ObjectId attachment;
     private String groupId;
 }
