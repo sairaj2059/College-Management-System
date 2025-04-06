@@ -26,5 +26,4 @@ public interface ResultsRepository extends MongoRepository<SemesterResults, Stri
         String joinYear
     );
     
-
 }
