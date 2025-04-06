@@ -144,9 +144,9 @@ function AddTeacher() {
     getSubjects();
   }, []);
   return (
-    <Box>
-      <Card sx={{ width: "100%", height: "100%", m: 2, p: 5 }}>
-        <Box
+    <Box margin={2}>
+
+        <Card
           sx={{
             position: "sticky",
             top: { sm: -100, md: -110 },
@@ -178,7 +178,7 @@ function AddTeacher() {
               </Typography>
             </Breadcrumbs>
           </Box>
-        </Box>
+        </Card>
 
         <Box>
           <Card sx={{ p: 0 }}>
@@ -246,7 +246,8 @@ function AddTeacher() {
                       onChange={handleInput}
                       size="sm"
                       placeholder="Enter Title"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -259,7 +260,8 @@ function AddTeacher() {
                       onChange={handleInput}
                       size="sm"
                       placeholder="Enter First Name"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -272,7 +274,8 @@ function AddTeacher() {
                       onChange={handleInput}
                       size="sm"
                       placeholder="Enter Last Name"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -285,7 +288,8 @@ function AddTeacher() {
                       onChange={handleInput}
                       size="sm"
                       placeholder="Enter Teacher Id"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -297,7 +301,8 @@ function AddTeacher() {
                       onChange={handleInput}
                       type="date"
                       size="sm"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -311,24 +316,14 @@ function AddTeacher() {
                       onChange={handleAutocompleteChange("department")}
                       size="sm"
                       options={departments}
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                       getOptionLabel={getOptionLabel}
                       isOptionEqualToValue={isOptionEqualToValue}
                     />
                   </FormControl>
 
-                  <FormControl sx={{ display: "flex" }}>
-                    <FormLabel>National ID Number</FormLabel>
-                    <Input
-                      name="nationalIdNumber"
-                      value={formData.nationalIdNumber}
-                      onChange={handleInput}
-                      size="sm"
-                      type="text"
-                      placeholder="Enter National ID No."
-                      sx={{ minWidth: 230 }}
-                    />
-                  </FormControl>
+                  
                 </Stack>
 
                 <Stack direction={"row"} spacing={4} marginTop={4}>
@@ -341,7 +336,8 @@ function AddTeacher() {
                       type="text"
                       size="sm"
                       placeholder="Address Line"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -353,7 +349,8 @@ function AddTeacher() {
                       onChange={handleInput}
                       size="sm"
                       placeholder="Enter City"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
                   <FormControl sx={{ display: "flex" }}>
@@ -364,7 +361,8 @@ function AddTeacher() {
                       onChange={handleInput}
                       size="sm"
                       placeholder="Enter District"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -376,7 +374,8 @@ function AddTeacher() {
                       onChange={handleInput}
                       size="sm"
                       placeholder="Enter State"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -392,7 +391,8 @@ function AddTeacher() {
                       size="sm"
                       getOptionLabel={getOptionLabel}
                       isOptionEqualToValue={isOptionEqualToValue}
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
                   <FormControl sx={{ display: "flex" }}>
@@ -405,7 +405,8 @@ function AddTeacher() {
                       type="email"
                       startDecorator={<EmailRoundedIcon />}
                       placeholder="Enter Email Address"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
                 </Stack>
@@ -419,7 +420,8 @@ function AddTeacher() {
                       onChange={handleInput}
                       size="sm"
                       placeholder="Enter Mobile No."
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -431,7 +433,8 @@ function AddTeacher() {
                       onChange={handleInput}
                       size="sm"
                       placeholder="Enter Pin Code"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
                   <FormControl sx={{ display: "flex" }}>
@@ -443,7 +446,21 @@ function AddTeacher() {
                       size="sm"
                       type="text"
                       placeholder="Enter Caste"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
+                    />
+                  </FormControl>
+                  <FormControl sx={{ display: "flex" }}>
+                    <FormLabel>National ID Number</FormLabel>
+                    <Input
+                      name="nationalIdNumber"
+                      value={formData.nationalIdNumber}
+                      onChange={handleInput}
+                      size="sm"
+                      type="text"
+                      placeholder="Enter National ID No."
+                      sx={{ width: { xs: "100%", sm: "48%", md: "200px" } }}
+
                     />
                   </FormControl>
                 </Stack>
@@ -483,7 +500,8 @@ function AddTeacher() {
                       size="sm"
                       getOptionLabel={getOptionLabel}
                       isOptionEqualToValue={isOptionEqualToValue}
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -523,7 +541,8 @@ function AddTeacher() {
                       size="sm"
                       getOptionLabel={getOptionLabel}
                       isOptionEqualToValue={isOptionEqualToValue}
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
 
@@ -536,7 +555,8 @@ function AddTeacher() {
                       size="sm"
                       type="text"
                       placeholder="Enter Designation"
-                      sx={{ minWidth: 230 }}
+                      sx={{ width: { xs: "100%", sm: "48%", md: "230px" } }}
+
                     />
                   </FormControl>
                 </Stack>
@@ -557,7 +577,7 @@ function AddTeacher() {
             <Button onClick={handleSubmit}>Add Teacher</Button>
           </Box>
         </Box>
-      </Card>
+
     </Box>
   );
 }

@@ -55,20 +55,23 @@ function ExamList() {
   const handleJoin = (record) => {
     dispatch(clearQuestions());
     dispatch(setSelectedExam(record));
-
-    record.questions.forEach((question) => {
-      const questionObject = {
-        questionDetails: question,
-        isAttempted: false,
-        isCorrect: false,
-        marksAwarded: 0,
-        userAnswer: [],
-      };
-
-      dispatch(addQuestion(questionObject));
-    });
+  
+    if (Array.isArray(record.questions)) {
+      record.questions.forEach((question) => {
+        const questionObject = {
+          questionDetails: question,
+          isAttempted: false,
+          isCorrect: false,
+          marksAwarded: 0,
+          userAnswer: [],
+        };
+        dispatch(addQuestion(questionObject));
+      });
+    }
+  
     navigate(`/student/exam/questions/${record.id}`);
   };
+  
 
   useEffect(() => {
     async function fetchQuestions() {

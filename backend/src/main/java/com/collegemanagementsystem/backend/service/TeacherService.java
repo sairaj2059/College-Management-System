@@ -47,7 +47,6 @@ public class TeacherService {
     private ImageService imageService;
 
     @Autowired
-    @Autowired
     private ClassScheduleRepository scheduleRepository;
 
     @Autowired
@@ -68,7 +67,7 @@ public class TeacherService {
         }
     }
 
-    }
+    
 
     public ResponseEntity<?> deleteClassSchedule(String className) {
         try {
@@ -86,12 +85,8 @@ public class TeacherService {
 
     public ClasswiseAttendance setStudentAttendanceByRegdNo(String className, String regdNo, String month,
             int newAbsentDays,
-
-    public ClasswiseAttendance setStudentAttendanceByRegdNo(String className, String regdNo, String month,
-            int newAbsentDays,
             AbsentDay absentDay) {
-        ClasswiseAttendance classwiseAttendance = classWiseAttendaceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(
-                className, regdNo,
+
         ClasswiseAttendance classwiseAttendance = classWiseAttendaceRepo.findStudentAttendanceByClassAndRegdNoAndMonth(
                 className, regdNo,
                 month);
@@ -187,11 +182,10 @@ public class TeacherService {
                 teacher.getFirstName(),
                 teacher.getLastName(),
                 teacher.getClassmentor(),
-                teacher.getSubjects());
+
                 teacher.getSubjects());
     }
 
-    public ResponseEntity<?> getTeacherImage(String teacherId) throws IOException {
     public ResponseEntity<?> getTeacherImage(String teacherId) throws IOException {
         TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
         if (teacher == null || teacher.getImageId() == null) {
@@ -276,5 +270,19 @@ public class TeacherService {
     // .body(Collections.emptyList());
     // }
     // }
+
+    public ProfileDTO getTeacherProfileData(String teacherId) {
+        TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
+
+        if (teacher == null) {
+            throw new NoSuchElementException("Teacher not found for teacherId: " + teacherId);
+        }
+
+        String firstName = teacher.getFirstName() != null ? teacher.getFirstName().trim() : "";
+        String lastName = teacher.getLastName() != null ? teacher.getLastName().trim() : "";
+
+        String fullName = (firstName + " " + lastName).trim();
+        return new ProfileDTO(fullName, teacher.getEmailAddress());
+    }
 
 }

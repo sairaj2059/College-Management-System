@@ -16,6 +16,7 @@ import { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import ImageService from "../services/ImageService";
+import { setUserProfile } from "../redux/slices/userProfileSlice";
 
 export default function NavBarComponent() {
   const [image, setImage] = useState(null);
@@ -51,6 +52,9 @@ export default function NavBarComponent() {
             }
           );
           setDetails(response.data);
+          
+          dispatch(setUserProfile(response.data));
+
         } catch (error) {
           console.error("Error fetching user data:", error);
         }

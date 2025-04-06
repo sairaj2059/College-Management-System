@@ -954,8 +954,9 @@ function Discussion() {
   const [attachment, setAttachment] = useState("");
   const [attachmentName, setAttachmentName] = useState("");
   const [attachmentType, setAttachmentType] = useState("");
-
   const currentUser = localStorage.getItem("username");
+  const name = useSelector((state) => state.userProfile?.name || "");
+
   const role = localStorage.getItem("role");
   const messagesEndRef = useRef(null);
   const fileInputRef = useRef(null);
@@ -1356,7 +1357,7 @@ function Discussion() {
                             : "neutral.500",
                       }}
                     >
-                      {msg.avatar || msg.sender[0]}
+                      {msg.avatar || msg.sender?.[0] || "?"}
                     </Avatar>
                     <Box sx={{ maxWidth: "80%", m: 1.5 }}>
                       <Typography
