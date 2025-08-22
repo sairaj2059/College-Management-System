@@ -174,74 +174,7 @@ public class TeacherService {
         }
     }
 
-    public ResponseEntity<?> publishExam(String examId) {
-        Exam exam = examRepository.findExamById(examId);
-        if (exam != null) {
-            exam.setStatus("PUBLISHED");
-            examRepository.save(exam);
-            return ResponseEntity.ok().body("Exam published Successfully");
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    public TeacherProfile getTeacherProfileByTeacherId(String teacherId) {
-        TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
-        if (teacher == null) {
-            throw new IllegalArgumentException("teacher with regdNo " + teacherId + " not found.");
-        }
-        return convertToTeacherProfile(teacher);
-    }
-
-    private TeacherProfile convertToTeacherProfile(TeacherDetails teacher) {
-        String imageurl = null;
-        if (teacher.getImageId() != null) {
-            imageurl = "http://localhost:8080/teacher/teacherImage/" + teacher.getImageId();
-            System.out.println("Generated Image URL: " + imageurl); // ✅ Debugging URL
-        }
-        return new TeacherProfile(
-                teacher.getId(),
-                teacher.getTeacherId(),
-                imageurl,
-                teacher.getFirstName(),
-                teacher.getLastName(),
-                teacher.getClassmentor(),
-
-                teacher.getSubjects());
-    }
-
-    public ResponseEntity<?> getTeacherImage(String teacherId) throws IOException {
-        TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
-        if (teacher == null || teacher.getImageId() == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return imageService.getImage(teacher.getImageId());
-    }
-
-    // public ResponseEntity<List<SemesterResults>>
-    // findBySubjectTeacherAndSubjectName(String subjectTeacher, String subjectName)
-    // {
-    // try {
-    // // Fetch results from the repository
-    // List<SemesterResults> results =
-    // resultsRepository.findBySubjectTeacherAndSubjectName(subjectTeacher,
-    // subjectName);
-
-    public ResponseEntity<?> getResultList(String examId) {
-        try {
-            ExamResult examResults = examResultsRepository.findByExamId(examId);
-            if (examResults == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Exam with id " + examId + " not found.");
-            }
-            return ResponseEntity.ok().body(examResults.getStudentExamDetails());
-        } catch (Exception e) {
-            e.printStackTrace(); // Log the exception for debugging
-            return ResponseEntity.internalServerError().build();
-        }
-    }
-
-    public ResponseEntity<?> modifyAnswerList(String examId, StudentExamDetail updatedStudentExamDetail) {
+public ResponseEntity<?> modifyAnswerList(String examId, StudentExamDetail updatedStudentExamDetail) {
         try {
             // Fetch the ExamResult document by examId
             ExamResult examResult = examResultsRepository.findByExamId(examId);
@@ -337,18 +270,4 @@ public ResponseEntity<?> getResultList(String examId) {
         return ResponseEntity.internalServerError().build();
     }
 }
-    public ProfileDTO getTeacherProfileData(String teacherId) {
-        TeacherDetails teacher = teacherDetailsRepository.findByTeacherId(teacherId);
-
-        if (teacher == null) {
-            throw new NoSuchElementException("Teacher not found for teacherId: " + teacherId);
-        }
-
-        String firstName = teacher.getFirstName() != null ? teacher.getFirstName().trim() : "";
-        String lastName = teacher.getLastName() != null ? teacher.getLastName().trim() : "";
-
-        String fullName = (firstName + " " + lastName).trim();
-        return new ProfileDTO(fullName, teacher.getEmailAddress());
-    }
-
 }

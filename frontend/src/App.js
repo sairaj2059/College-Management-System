@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Routes, Route, Navigate } from "react-router-dom";
+import { useEffect } from "react";
+import { Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Login from "./pages/Login";
 import StudentDashboard from "./pages/StudentDashboard";
@@ -12,7 +12,7 @@ import { NavigationBar } from "./pages/NavigationBar";
 import Students from "./pages/Students";
 import ExamResults from "./components/ExamResults";
 import AddStudent from "./components/AddStudent";
-import Unauthorized from "./pages/Unauthorized";
+//import Unauthorized from "./pages/Unauthorized";
 import NoticeBoard from "./components/NoticeBoard";
 import QuestionsPage from "./components/ExamComponents/QuestionsPage";
 import ExamPage from "./pages/ExamPage";

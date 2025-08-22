@@ -44,7 +44,7 @@ public class WebSocketAuthInterceptor implements HandshakeInterceptor {
 
     @Override
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response,
-            WebSocketHandler wsHandler, Exception exception) {
+        WebSocketHandler wsHandler,Exception exception) {
     }
 
     private boolean validateToken(String token) {
